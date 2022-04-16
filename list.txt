@@ -1,0 +1,4 @@
+list sdl2
+lec1-Hello SDL
+lec2-Getting an Image on the Screen
+lec3-Event Driven Programming
