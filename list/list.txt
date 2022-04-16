@@ -1,4 +1,6 @@
 list sdl2
-lec1-Hello SDL
-lec2-Getting an Image on the Screen
-lec3-Event Driven Programming
+lec1-Hello SDL( mở một cửa sổ sdl)
+lec2-Getting an Image on the Screen ( load ảnh bmp)
+lec3-Event Driven Programming ( sự dụng sự kiện để xử lí- tắt khi ko dùng cửa sổ)
+lec4-Key Presses( ấn nút để load lại ảnh khác)
+lec5-Optimized Surface Loading and Soft Stretching( sử dụng ảnh đúng kích cở của màn cửa sổ sdl)
