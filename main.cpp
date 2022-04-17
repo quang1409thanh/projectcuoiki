@@ -20,17 +20,17 @@ bool loadMedia();
 //Frees media and shuts down SDL
 void close();
 
-//Loads individual image
-SDL_Surface* loadSurface( std::string path );
+//Loads individual image as texture-Tải hình ảnh riêng lẻ làm kết cấu
+SDL_Texture* loadTexture( std::string path );
 
-//The window we'll be rendering to
+//The window we'll be rendering to-Cửa sổ chứa các kết cấu
 SDL_Window* gWindow = NULL;
 	
-//The surface contained by the window
-SDL_Surface* gScreenSurface = NULL;
+//The window renderer-cửa sổ kết xuất
+SDL_Renderer* gRenderer = NULL;
 
-//Current displayed image
-SDL_Surface* gPNGSurface = NULL;
+//Current displayed texture - cửa sổ hiện tại
+SDL_Texture* gTexture = NULL;
 
 bool init()
 {
@@ -44,7 +44,13 @@ bool init()
 		success = false;
 	}
 	else
-	{
+	{	
+		//Set texture filtering to linear-Chỉnh lỗi làm mờ
+		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) )
+		{
+			printf( "Warning: Linear texture filtering not enabled!" );
+		}
+
 		//Create window
 		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 		if( gWindow == NULL )
@@ -54,18 +60,26 @@ bool init()
 		}
 		else
 		{
-			//Initialize PNG loading- khởi tạo png
-            int imgFlags = IMG_INIT_PNG;
-            if( !( IMG_Init( imgFlags ) & imgFlags ) )
-            {
-                printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
-                success = false;
-            }
-            else
-            {
-                //Get window surface- lấy surface của window
-                gScreenSurface = SDL_GetWindowSurface( gWindow );
-            }
+			//Create renderer for window-Tạo cửa sổ kết xuất
+			gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED );
+			if( gRenderer == NULL )
+			{
+				printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
+				success = false;
+			}
+			else
+			{
+				//Initialize renderer color-Khởi tạo màu kết xuất
+				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+
+				//Initialize PNG loading-Khởi tạo tải hình ảnh PNG
+				int imgFlags = IMG_INIT_PNG;
+				if( !( IMG_Init( imgFlags ) & imgFlags ) )
+				{
+					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+					success = false;
+				}
+			}
 		}
 	}
 
@@ -77,9 +91,9 @@ bool loadMedia()
 	//Loading success flag- flag load thành công
 	bool success = true;
 
-	//Load PNG surface- load surface của png
-	gPNGSurface = loadSurface( "medialec6/loaded.png" );
-	if( gPNGSurface == NULL )
+	//Load PNG Texture-Tải kết cấu PNG
+	gTexture = loadTexture( "medialec7/texture.png" );
+	if(gTexture == NULL )
 	{
 		printf( "Failed to load stretching image!\n" );
 		success = false;
@@ -91,22 +105,24 @@ bool loadMedia()
 void close()
 {
 	//Free loaded image- free image
-	SDL_FreeSurface( gPNGSurface );
-	gPNGSurface = NULL;
+	SDL_DestroyTexture( gTexture );
+	gTexture = NULL;
 
-	//Destroy window- hủy window
-	SDL_DestroyWindow( gWindow );
-	gWindow = NULL;
+	//Destroy window    
+    SDL_DestroyRenderer( gRenderer );
+    SDL_DestroyWindow( gWindow );
+    gWindow = NULL;
+    gRenderer = NULL;
 
 	//Quit SDL subsystems- đóng các subsystem của SDL
 	IMG_Quit();
 	SDL_Quit();
 }
 
-SDL_Surface* loadSurface( std::string path )
+SDL_Texture* loadTexture( std::string path )
 {
-	//The final optimized image- khởi tạo surface
-	SDL_Surface* optimizedSurface = NULL;
+	//The final texture- texture cuối cùng
+	SDL_Texture* newTexture = NULL;
 
 	//Load image at specified path- load ảnh tại đường dẫn đã xác định
 	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
@@ -116,18 +132,26 @@ SDL_Surface* loadSurface( std::string path )
 	}
 	else
 	{
-		//Convert surface to screen format- chuyển surface thành định dạng của màn hình
-		optimizedSurface = SDL_ConvertSurface( loadedSurface, gScreenSurface->format, 0 );
-		if( optimizedSurface == NULL )
+		//Create texture from surface pixels- tạo texture từ pixel của surface
+		newTexture = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
+		if(newTexture== NULL )
 		{
 			printf( "Unable to optimize image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
 		}
-
-		//Get rid of old loaded surface- hủy surface cũ
-		SDL_FreeSurface( loadedSurface );
+		else {
+			//Create texture from surface pixels- tạo texture từ pixel của surface	
+			newTexture = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
+			if(newTexture== NULL )
+			{
+				printf( "Unable to optimize image %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
+			}
+			//Get rid of old loaded surface- hủy surface cũ
+			SDL_FreeSurface( loadedSurface );
+		}
+		
 	}
 
-	return optimizedSurface;
+	return newTexture;
 }
 
 int main( int argc, char* args[] )
@@ -152,7 +176,7 @@ int main( int argc, char* args[] )
 			//Event handler
 			SDL_Event e;
 
-			//While application is running
+			//While application is running- khi ứng dụng đang chạy
 			while( !quit )
 			{
 				//Handle events on queue
@@ -164,17 +188,19 @@ int main( int argc, char* args[] )
 						quit = true;
 					}
 				}
+				//Clear screen- xóa màn hình
+				SDL_RenderClear( gRenderer );
 
-				//Apply the image stretched
-				SDL_BlitScaled( gPNGSurface, NULL, gScreenSurface, &stretchRect );
-			
-				//Update the surface
-				SDL_UpdateWindowSurface( gWindow );
+				//Render texture to screen- kết xuất texture lên màn hình
+				SDL_RenderCopy( gRenderer, gTexture, NULL, NULL );
+
+				//update screen-câp nhật màn hình
+				SDL_RenderPresent( gRenderer );
 			}
 		}
 	}
 
-	//Free resources and close SDL
+	//Free resources and close SDL- hủy các tài nguyên và đóng SDL
 	close();
 
 	return 0;
