@@ -99,6 +99,7 @@ void close()
 	gWindow = NULL;
 
 	//Quit SDL subsystems- đóng các subsystem của SDL
+	IMG_Quit();
 	SDL_Quit();
 }
 
@@ -165,11 +166,6 @@ int main( int argc, char* args[] )
 				}
 
 				//Apply the image stretched
-				SDL_Rect stretchRect;
-				stretchRect.x = 0;
-				stretchRect.y = 0;
-				stretchRect.w = SCREEN_WIDTH;
-				stretchRect.h = SCREEN_HEIGHT;
 				SDL_BlitScaled( gPNGSurface, NULL, gScreenSurface, &stretchRect );
 			
 				//Update the surface
