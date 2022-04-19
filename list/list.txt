@@ -15,3 +15,4 @@ lec13-Alpha Blending( từ 2 ảnh có thể làm mờ dần hoặc đậm dần
 lec14-Animated Sprites and Vsync (từ 1 ảnh gồm 4 vị trí có thể làm cho con người que di chuyển một cách linh họat bằng cách cắt con người que này thành các hình chữ nhật giống nhau)
 lec15-Rotation and Flipping( từ một ảnh có thể xoay ảnh các kiểu xoay quay góc 180 độ đảo ngược ....)
 lec16-True Type Fonts( có thể in lên màn hình phông chữ tùy thích từ 1 string bất kì mình nhập vào" )
+lec17-Mouse Events( khi nháy chuột vào một ô thì nó sẽ hiện màu khác thể hiện bắt sự kiện của chuột)
