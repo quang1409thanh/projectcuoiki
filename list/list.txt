@@ -12,3 +12,4 @@ lec10-Color Keying( vẽ một ảnh vào một màn hình có ảnh ảnh đè 
 lec11-Clip Rendering and Sprite Sheets ( từ một hình ban đầu có thể cắt ra thành các hình khác nhau và đặt vào các chỗ khác nhau trên màn hình)
 lec12-Color Modulation(dùng các phím q w e a s d ) để thay đổi kích màu sắc khác nhau từ ảnh có màu có định ban đầu< có thể áp dụng cho việc sau khi ăn hết mất điểm dần thì nó sẽ đổi màu- điều chế màu sắc
 lec13-Alpha Blending( từ 2 ảnh có thể làm mờ dần hoặc đậm dần để chuyển đổi giữa 2 hình ảnh)
+lec14-Animated Sprites and Vsync (từ 1 ảnh gồm 4 vị trí có thể làm cho con người que di chuyển một cách linh họat bằng cách cắt con người que này thành các hình chữ nhật giống nhau)
