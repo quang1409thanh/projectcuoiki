@@ -265,13 +265,12 @@ int main( int argc, char* args[] )
 				//Clear screen- xóa màn hình
 				SDL_SetRenderDrawColor( gRenderer, 0x0F, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
+				
 				//Render backgrund- kết xuất nền
 				gBackgroundTexture.render( 0, 0 );
-				//Render Foo'- kết xuất Foo'
-				gFooTexture.render( 240, 190 );
-				
 
-				
+				//Render Foo'- kết xuất Foo'
+				gFooTexture.render( 240,100 );
 				//update screen-câp nhật màn hình
 				SDL_RenderPresent( gRenderer );
 			}
