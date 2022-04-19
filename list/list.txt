@@ -8,5 +8,6 @@ lec6-Extension Libraries and Loading Other Image Formats( load ảnh png jpg)
 lec7-Texture Loading and Rendering(render ảnh bằng texture lên màn hình)
 lec8-Geometry Rendering(vẽ hình full màu hoặc vẽ đường thẳng hoặc vẽ nét đứt ...)
 lec9-The Viewport( vẽ ảnh vào một phần của màn hình)
-lec10-Color Keying( vẽ một ảnh vào một màn hình có ảnh ảnh đè trên ảnh- gồm 2 đối tượng back và ảnh  ) gồm back groud của sdl+ ảng bgr+ ảnh người cây
-lec11-Clip Rendering and Sprite Sheets
+lec10-Color Keying( vẽ một ảnh vào một màn hình có ảnh ảnh đè trên ảnh- gồm 2 đối tượng back và ảnh  ) gồm back groud của sdl+ ảng bgr+ ảnh người cây+ có thể hiểu biết thêm lớp đối tượng
+lec11-Clip Rendering and Sprite Sheets ( từ một hình ban đầu có thể cắt ra thành các hình khác nhau và đặt vào các chỗ khác nhau trên màn hình)
+lec12-Color Modulation(dùng các phím q w e a s d ) để thay đổi kích màu sắc khác nhau từ ảnh có màu có định ban đầu< có thể áp dụng cho việc sau khi ăn hết mất điểm dần thì nó sẽ đổi màu- điều chế màu sắc
