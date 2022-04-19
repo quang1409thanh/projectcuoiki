@@ -194,7 +194,7 @@ bool loadMedia()
     bool success = true;
 
     //Load Foo' texture-Tải kết cấu Foo'
-    if( !gFooTexture.loadFromFile( "media/medialec10/foo.png" ) )
+    if( !gFooTexture.loadFromFile( "media/medialec10/foo8.png" ) )
     {
         printf( "Failed to load Foo' texture image!\n" );
         success = false;
@@ -263,12 +263,12 @@ int main( int argc, char* args[] )
 					}
 				}
 				//Clear screen- xóa màn hình
-				SDL_SetRenderDrawColor( gRenderer, 0x0F, 0xFF, 0xFF, 0xFF );
+				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 				//Render backgrund- kết xuất nền
 				gBackgroundTexture.render( 0, 0 );
 				//Render Foo'- kết xuất Foo'
-				gFooTexture.render( 240, 190 );
+				gFooTexture.render( 240, 00 );
 				
 
 				
