@@ -9,3 +9,4 @@ lec7-Texture Loading and Rendering(render ảnh bằng texture lên màn hình)
 lec8-Geometry Rendering(vẽ hình full màu hoặc vẽ đường thẳng hoặc vẽ nét đứt ...)
 lec9-The Viewport( vẽ ảnh vào một phần của màn hình)
 lec10-Color Keying( vẽ một ảnh vào một màn hình có ảnh ảnh đè trên ảnh- gồm 2 đối tượng back và ảnh  ) gồm back groud của sdl+ ảng bgr+ ảnh người cây
+lec11-Clip Rendering and Sprite Sheets
