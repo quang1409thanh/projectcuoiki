@@ -31,3 +31,4 @@ lec28-Per-pixel Collision Detection(di chuyển 1 điểm và một điểm cố
 lec29-Circular Collision Detection( di chuyển qua như bài 28 nhưng phát hiện va chạm hình tròn và vẽ thêm vào đó 1 hình chữ nhật nữa)
 lec30-Scrolling( di chuyển dot trên nền bg nhưng mà khi di chuyển ra ngoài thì bg sẽ thay đổi luôn) khá là hay đó
 lec31-Scrolling Backgrounds( bg có thể di chuyển mượt mà )
+lec32-Text Input and Clipboard Handling(gõ trực tiếp được vào của sổ sdl luôn :v)
