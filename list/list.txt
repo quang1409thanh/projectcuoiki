@@ -27,3 +27,4 @@ lec24-Calculating Frame Rate( tính fps nhưng mà chưa hiểu fps của cái g
 lec25-Capping Frame Rate( tính fps nhưng vẫn chưa hiểu fps gì )
 lec26-Motion( di chuyển 1 hình ảnh theo bất kì chiểu nào có thể ứng dụng để di chuyển quả bóng)
 lec27-Collision Detection(di chuyển một ảnh qua các chướng ngại vật khác nhau)   các chướng ngoại vật đó có thể do mình vẽ hoặc có thể từ ảnh
+lec28-Per-pixel Collision Detection(di chuyển 1 điểm và một điểm cố định lấy từ 1 ảnh ) xong cho nó di chuyển lại và chặn chướng ngại vật 
