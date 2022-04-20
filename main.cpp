@@ -1,332 +1,441 @@
 /*This source code copyrighted by Lazy Foo' Productions (2004-2022)
 and may not be redistributed without written permission.*/
 
-//Using SDL, standard IO, strings, and string streams
+//Using SDL, SDL_image, standard IO, and strings
 #include <SDL.h>
+#include <SDL_image.h>
 #include <stdio.h>
 #include <string>
-#include <sstream>
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-class LWindow
+//Particle count
+const int TOTAL_PARTICLES = 20;
+
+//Texture wrapper class
+class LTexture
 {
 	public:
-		//Intializes internals
-		LWindow();
+		//Initializes variables
+		LTexture();
 
-		//Creates window
-		bool init();
+		//Deallocates memory
+		~LTexture();
 
-		//Handles window events
-		void handleEvent( SDL_Event& e );
+		//Loads image at specified path
+		bool loadFromFile( std::string path );
+		
+		#if defined(SDL_TTF_MAJOR_VERSION)
+		//Creates image from font string
+		bool loadFromRenderedText( std::string textureText, SDL_Color textColor );
+		#endif
 
-		//Focuses on window
-		void focus();
-
-		//Shows windows contents
-		void render();
-
-		//Deallocates internals
+		//Deallocates texture
 		void free();
 
-		//Window dimensions
+		//Set color modulation
+		void setColor( Uint8 red, Uint8 green, Uint8 blue );
+
+		//Set blending
+		void setBlendMode( SDL_BlendMode blending );
+
+		//Set alpha modulation
+		void setAlpha( Uint8 alpha );
+		
+		//Renders texture at given point
+		void render( int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE );
+
+		//Gets image dimensions
 		int getWidth();
 		int getHeight();
 
-		//Window focii
-		bool hasMouseFocus();
-		bool hasKeyboardFocus();
-		bool isMinimized();
-		bool isShown();
-
 	private:
-		//Window data
-		SDL_Window* mWindow;
-		SDL_Renderer* mRenderer;
-		int mWindowID;
-		int mWindowDisplayID;
+		//The actual hardware texture
+		SDL_Texture* mTexture;
 
-		//Window dimensions
+		//Image dimensions
 		int mWidth;
 		int mHeight;
+};
 
-		//Window focus
-		bool mMouseFocus;
-		bool mKeyboardFocus;
-		bool mFullScreen;
-		bool mMinimized;
-		bool mShown;
+class Particle
+{
+	public:
+		//Initialize position and animation
+		Particle( int x, int y );
+
+		//Shows the particle
+		void render();
+
+		//Checks if particle is dead
+		bool isDead();
+
+	private:
+		//Offsets
+		int mPosX, mPosY;
+
+		//Current frame of animation
+		int mFrame;
+
+		//Type of particle
+		LTexture *mTexture;
+};
+
+
+//The dot that will move around on the screen
+class Dot
+{
+    public:
+		//The dimensions of the dot
+		static const int DOT_WIDTH = 20;
+		static const int DOT_HEIGHT = 20;
+
+		//Maximum axis velocity of the dot
+		static const int DOT_VEL = 10;
+
+		//Initializes the variables and allocates particles
+		Dot();
+
+		//Deallocates particles
+		~Dot();
+
+		//Takes key presses and adjusts the dot's velocity
+		void handleEvent( SDL_Event& e );
+
+		//Moves the dot
+		void move();
+
+		//Shows the dot on the screen
+		void render();
+
+    private:
+		//The particles
+		Particle* particles[ TOTAL_PARTICLES ];
+
+		//Shows the particles
+		void renderParticles();
+
+		//The X and Y offsets of the dot
+		int mPosX, mPosY;
+
+		//The velocity of the dot
+		int mVelX, mVelY;
 };
 
 //Starts up SDL and creates window
 bool init();
 
+//Loads media
+bool loadMedia();
+
 //Frees media and shuts down SDL
 void close();
 
-//Our custom window
-LWindow gWindow;
+//The window we'll be rendering to
+SDL_Window* gWindow = NULL;
 
-//Display data
-int gTotalDisplays = 0;
-SDL_Rect* gDisplayBounds = NULL; 
+//The window renderer
+SDL_Renderer* gRenderer = NULL;
 
-LWindow::LWindow()
+//Scene textures
+LTexture gDotTexture;
+LTexture gRedTexture;
+LTexture gGreenTexture;
+LTexture gBlueTexture;
+LTexture gShimmerTexture;
+
+LTexture::LTexture()
 {
-	//Initialize non-existant window
-	mWindow = NULL;
-	mRenderer = NULL;
-
-	mMouseFocus = false;
-	mKeyboardFocus = false;
-	mFullScreen = false;
-	mShown = false;
-	mWindowID = -1;
-	mWindowDisplayID = -1;
-	
+	//Initialize
+	mTexture = NULL;
 	mWidth = 0;
 	mHeight = 0;
 }
 
-bool LWindow::init()
+LTexture::~LTexture()
 {
-	//Create window
-	mWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
-	if( mWindow != NULL )
+	//Deallocate
+	free();
+}
+
+bool LTexture::loadFromFile( std::string path )
+{
+	//Get rid of preexisting texture
+	free();
+
+	//The final texture
+	SDL_Texture* newTexture = NULL;
+
+	//Load image at specified path
+	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
+	if( loadedSurface == NULL )
 	{
-		mMouseFocus = true;
-		mKeyboardFocus = true;
-		mWidth = SCREEN_WIDTH;
-		mHeight = SCREEN_HEIGHT;
-
-		//Create renderer for window
-		mRenderer = SDL_CreateRenderer( mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
-		if( mRenderer == NULL )
-		{
-			printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
-			SDL_DestroyWindow( mWindow );
-			mWindow = NULL;
-		}
-		else
-		{
-			//Initialize renderer color
-			SDL_SetRenderDrawColor( mRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-
-			//Grab window identifiers
-			mWindowID = SDL_GetWindowID( mWindow );
-			mWindowDisplayID = SDL_GetWindowDisplayIndex( mWindow );
-
-			//Flag as opened
-			mShown = true;
-		}
+		printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
 	}
 	else
 	{
-		printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
-	}
+		//Color key image
+		SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0, 0xFF, 0xFF ) );
 
-	return mWindow != NULL && mRenderer != NULL;
-}
-
-void LWindow::handleEvent( SDL_Event& e )
-{
-	//Caption update flag
-	bool updateCaption = false;
-
-	//If an event was detected for this window
-	if( e.type == SDL_WINDOWEVENT && e.window.windowID == mWindowID )
-	{
-		switch( e.window.event )
+		//Create texture from surface pixels
+        newTexture = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
+		if( newTexture == NULL )
 		{
-			//Window moved
-			case SDL_WINDOWEVENT_MOVED:
-			mWindowDisplayID = SDL_GetWindowDisplayIndex( mWindow );
-			updateCaption = true;
-			break;
-
-			//Window appeared
-			case SDL_WINDOWEVENT_SHOWN:
-			mShown = true;
-			break;
-
-			//Window disappeared
-			case SDL_WINDOWEVENT_HIDDEN:
-			mShown = false;
-			break;
-
-			//Get new dimensions and repaint
-			case SDL_WINDOWEVENT_SIZE_CHANGED:
-			mWidth = e.window.data1;
-			mHeight = e.window.data2;
-			SDL_RenderPresent( mRenderer );
-			break;
-
-			//Repaint on expose
-			case SDL_WINDOWEVENT_EXPOSED:
-			SDL_RenderPresent( mRenderer );
-			break;
-
-			//Mouse enter
-			case SDL_WINDOWEVENT_ENTER:
-			mMouseFocus = true;
-			updateCaption = true;
-			break;
-			
-			//Mouse exit
-			case SDL_WINDOWEVENT_LEAVE:
-			mMouseFocus = false;
-			updateCaption = true;
-			break;
-
-			//Keyboard focus gained
-			case SDL_WINDOWEVENT_FOCUS_GAINED:
-			mKeyboardFocus = true;
-			updateCaption = true;
-			break;
-			
-			//Keyboard focus lost
-			case SDL_WINDOWEVENT_FOCUS_LOST:
-			mKeyboardFocus = false;
-			updateCaption = true;
-			break;
-
-			//Window minimized
-			case SDL_WINDOWEVENT_MINIMIZED:
-            mMinimized = true;
-            break;
-
-			//Window maxized
-			case SDL_WINDOWEVENT_MAXIMIZED:
-			mMinimized = false;
-            break;
-			
-			//Window restored
-			case SDL_WINDOWEVENT_RESTORED:
-			mMinimized = false;
-            break;
-
-			//Hide on close
-			case SDL_WINDOWEVENT_CLOSE:
-			SDL_HideWindow( mWindow );
-			break;
+			printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
 		}
-	}
-	else if( e.type == SDL_KEYDOWN )
-	{
-		//Display change flag
-		bool switchDisplay = false;
-
-		//Cycle through displays on up/down
-		switch( e.key.keysym.sym )
+		else
 		{
-			case SDLK_UP:
-			++mWindowDisplayID;
-			switchDisplay = true;
-			break;
-
-			case SDLK_DOWN:
-			--mWindowDisplayID;
-			switchDisplay = true;
-			break;
+			//Get image dimensions
+			mWidth = loadedSurface->w;
+			mHeight = loadedSurface->h;
 		}
 
-		//Display needs to be updated
-		if( switchDisplay )
+		//Get rid of old loaded surface
+		SDL_FreeSurface( loadedSurface );
+	}
+
+	//Return success
+	mTexture = newTexture;
+	return mTexture != NULL;
+}
+
+#if defined(SDL_TTF_MAJOR_VERSION)
+bool LTexture::loadFromRenderedText( std::string textureText, SDL_Color textColor )
+{
+	//Get rid of preexisting texture
+	free();
+
+	//Render text surface
+	SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, textureText.c_str(), textColor );
+	if( textSurface != NULL )
+	{
+		//Create texture from surface pixels
+        mTexture = SDL_CreateTextureFromSurface( gRenderer, textSurface );
+		if( mTexture == NULL )
 		{
-			//Bound display index
-			if( mWindowDisplayID < 0 )
-			{
-				mWindowDisplayID = gTotalDisplays - 1;
-			}
-			else if( mWindowDisplayID >= gTotalDisplays )
-			{
-				mWindowDisplayID = 0;
-			}
-
-			//Move window to center of next display
-			SDL_SetWindowPosition( mWindow, gDisplayBounds[ mWindowDisplayID ].x + ( gDisplayBounds[ mWindowDisplayID ].w - mWidth ) / 2, gDisplayBounds[ mWindowDisplayID ].y + ( gDisplayBounds[ mWindowDisplayID ].h - mHeight ) / 2 );
-			updateCaption = true;
+			printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
 		}
-	}
+		else
+		{
+			//Get image dimensions
+			mWidth = textSurface->w;
+			mHeight = textSurface->h;
+		}
 
-	//Update window caption with new data
-	if( updateCaption )
+		//Get rid of old surface
+		SDL_FreeSurface( textSurface );
+	}
+	else
 	{
-		std::stringstream caption;
-		caption << "SDL Tutorial - ID: " << mWindowID << " Display: " << mWindowDisplayID << " MouseFocus:" << ( ( mMouseFocus ) ? "On" : "Off" ) << " KeyboardFocus:" << ( ( mKeyboardFocus ) ? "On" : "Off" );
-		SDL_SetWindowTitle( mWindow, caption.str().c_str() );
+		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
 	}
-}
 
-void LWindow::focus()
+	
+	//Return success
+	return mTexture != NULL;
+}
+#endif
+
+void LTexture::free()
 {
-	//Restore window if needed
-	if( !mShown )
+	//Free texture if it exists
+	if( mTexture != NULL )
 	{
-		SDL_ShowWindow( mWindow );
-	}
-
-	//Move window forward
-	SDL_RaiseWindow( mWindow );
-}
-
-void LWindow::render()
-{
-	if( !mMinimized )
-	{	
-		//Clear screen
-		SDL_SetRenderDrawColor( mRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-		SDL_RenderClear( mRenderer );
-
-		//Update screen
-		SDL_RenderPresent( mRenderer );
+		SDL_DestroyTexture( mTexture );
+		mTexture = NULL;
+		mWidth = 0;
+		mHeight = 0;
 	}
 }
 
-void LWindow::free()
+void LTexture::setColor( Uint8 red, Uint8 green, Uint8 blue )
 {
-	if( mWindow != NULL )
+	//Modulate texture rgb
+	SDL_SetTextureColorMod( mTexture, red, green, blue );
+}
+
+void LTexture::setBlendMode( SDL_BlendMode blending )
+{
+	//Set blending function
+	SDL_SetTextureBlendMode( mTexture, blending );
+}
+		
+void LTexture::setAlpha( Uint8 alpha )
+{
+	//Modulate texture alpha
+	SDL_SetTextureAlphaMod( mTexture, alpha );
+}
+
+void LTexture::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip )
+{
+	//Set rendering space and render to screen
+	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+
+	//Set clip rendering dimensions
+	if( clip != NULL )
 	{
-		SDL_DestroyWindow( mWindow );
+		renderQuad.w = clip->w;
+		renderQuad.h = clip->h;
 	}
 
-	mMouseFocus = false;
-	mKeyboardFocus = false;
-	mWidth = 0;
-	mHeight = 0;
+	//Render to screen
+	SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, angle, center, flip );
 }
 
-int LWindow::getWidth()
+int LTexture::getWidth()
 {
 	return mWidth;
 }
 
-int LWindow::getHeight()
+int LTexture::getHeight()
 {
 	return mHeight;
 }
 
-bool LWindow::hasMouseFocus()
+Particle::Particle( int x, int y )
 {
-	return mMouseFocus;
+    //Set offsets
+    mPosX = x - 5 + ( rand() % 25 );
+    mPosY = y - 5 + ( rand() % 25 );
+
+    //Initialize animation
+    mFrame = rand() % 5;
+
+    //Set type
+    switch( rand() % 3 )
+    {
+        case 0: mTexture = &gRedTexture; break;
+        case 1: mTexture = &gGreenTexture; break;
+        case 2: mTexture = &gBlueTexture; break;
+    }
 }
 
-bool LWindow::hasKeyboardFocus()
+void Particle::render()
 {
-	return mKeyboardFocus;
+    //Show image
+	mTexture->render( mPosX, mPosY );
+
+    //Show shimmer
+    if( mFrame % 2 == 0 )
+    {
+		gShimmerTexture.render( mPosX, mPosY );
+    }
+
+    //Animate
+    mFrame++;
 }
 
-bool LWindow::isMinimized()
+bool Particle::isDead()
 {
-	return mMinimized;
+    return mFrame > 10;
 }
 
-bool LWindow::isShown()
+Dot::Dot()
 {
-	return mShown;
+    //Initialize the offsets
+    mPosX = 0;
+    mPosY = 0;
+
+    //Initialize the velocity
+    mVelX = 0;
+    mVelY = 0;
+
+    //Initialize particles
+    for( int i = 0; i < TOTAL_PARTICLES; ++i )
+    {
+        particles[ i ] = new Particle( mPosX, mPosY );
+    }
+}
+
+Dot::~Dot()
+{
+    //Delete particles
+    for( int i = 0; i < TOTAL_PARTICLES; ++i )
+    {
+        delete particles[ i ];
+    }
+}
+
+void Dot::handleEvent( SDL_Event& e )
+{
+    //If a key was pressed
+	if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
+    {
+        //Adjust the velocity
+        switch( e.key.keysym.sym )
+        {
+            case SDLK_UP: mVelY -= DOT_VEL; break;
+            case SDLK_DOWN: mVelY += DOT_VEL; break;
+            case SDLK_LEFT: mVelX -= DOT_VEL; break;
+            case SDLK_RIGHT: mVelX += DOT_VEL; break;
+        }
+    }
+    //If a key was released
+    else if( e.type == SDL_KEYUP && e.key.repeat == 0 )
+    {
+        //Adjust the velocity
+        switch( e.key.keysym.sym )
+        {
+            case SDLK_UP: mVelY += DOT_VEL; break;
+            case SDLK_DOWN: mVelY -= DOT_VEL; break;
+            case SDLK_LEFT: mVelX += DOT_VEL; break;
+            case SDLK_RIGHT: mVelX -= DOT_VEL; break;
+        }
+    }
+}
+
+void Dot::move()
+{
+    //Move the dot left or right
+    mPosX += mVelX;
+
+    //If the dot went too far to the left or right
+    if( ( mPosX < 0 ) || ( mPosX + DOT_WIDTH > SCREEN_WIDTH ) )
+    {
+        //Move back
+        mPosX -= mVelX;
+    }
+
+    //Move the dot up or down
+    mPosY += mVelY;
+
+    //If the dot went too far up or down
+    if( ( mPosY < 0 ) || ( mPosY + DOT_HEIGHT > SCREEN_HEIGHT ) )
+    {
+        //Move back
+        mPosY -= mVelY;
+    }
+}
+
+void Dot::render()
+{
+    //Show the dot
+	gDotTexture.render( mPosX, mPosY );
+
+	//Show particles on top of dot
+	renderParticles();
+}
+
+void Dot::renderParticles()
+{
+	//Go through particles
+    for( int i = 0; i < TOTAL_PARTICLES; ++i )
+    {
+        //Delete and replace dead particles
+        if( particles[ i ]->isDead() )
+        {
+            delete particles[ i ];
+            particles[ i ] = new Particle( mPosX, mPosY );
+        }
+    }
+
+    //Show particles
+    for( int i = 0; i < TOTAL_PARTICLES; ++i )
+    {
+        particles[ i ]->render();
+    }
 }
 
 bool init()
@@ -348,41 +457,107 @@ bool init()
 			printf( "Warning: Linear texture filtering not enabled!" );
 		}
 
-		//Get number of displays
-		gTotalDisplays = SDL_GetNumVideoDisplays();
-		if( gTotalDisplays < 2 )
-		{
-			printf( "Warning: Only one display connected!" );
-		}
-		
-		//Get bounds of each display
-		gDisplayBounds = new SDL_Rect[ gTotalDisplays ];
-		for( int i = 0; i < gTotalDisplays; ++i )
-		{
-			SDL_GetDisplayBounds( i, &gDisplayBounds[ i ] );
-		}
-
 		//Create window
-		if( !gWindow.init() )
+		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		if( gWindow == NULL )
 		{
-			printf( "Window could not be created!\n" );
+			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
 			success = false;
+		}
+		else
+		{
+			//Create renderer for window
+			gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+			if( gRenderer == NULL )
+			{
+				printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
+				success = false;
+			}
+			else
+			{
+				//Initialize renderer color
+				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+
+				//Initialize PNG loading
+				int imgFlags = IMG_INIT_PNG;
+				if( !( IMG_Init( imgFlags ) & imgFlags ) )
+				{
+					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+					success = false;
+				}
+			}
 		}
 	}
 
 	return success;
 }
 
+bool loadMedia()
+{
+	//Loading success flag
+	bool success = true;
+
+	//Load dot texture
+	if( !gDotTexture.loadFromFile( "media/medialec38/dot.bmp" ) )
+	{
+		printf( "Failed to load dot texture!\n" );
+		success = false;
+	}
+
+	//Load red texture
+	if( !gRedTexture.loadFromFile( "media/medialec38/red.bmp" ) )
+	{
+		printf( "Failed to load red texture!\n" );
+		success = false;
+	}
+
+	//Load green texture
+	if( !gGreenTexture.loadFromFile( "media/medialec38/green.bmp" ) )
+	{
+		printf( "Failed to load green texture!\n" );
+		success = false;
+	}
+
+	//Load blue texture
+	if( !gBlueTexture.loadFromFile( "media/medialec38/blue.bmp" ) )
+	{
+		printf( "Failed to load blue texture!\n" );
+		success = false;
+	}
+
+	//Load shimmer texture
+	if( !gShimmerTexture.loadFromFile( "media/medialec38/shimmer.bmp" ) )
+	{
+		printf( "Failed to load shimmer texture!\n" );
+		success = false;
+	}
+	
+	//Set texture transparency
+	gRedTexture.setAlpha( 192 );
+	gGreenTexture.setAlpha( 192 );
+	gBlueTexture.setAlpha( 192 );
+	gShimmerTexture.setAlpha( 192 );
+
+	return success;
+}
+
 void close()
 {
-	//Destroy window
-	gWindow.free();
+	//Free loaded images
+	gDotTexture.free();
+	gRedTexture.free();
+	gGreenTexture.free();
+	gBlueTexture.free();
+	gShimmerTexture.free();
 
-	//Deallocate bounds
-	delete[] gDisplayBounds;
-	gDisplayBounds = NULL;
+	//Destroy window	
+	SDL_DestroyRenderer( gRenderer );
+	SDL_DestroyWindow( gWindow );
+	gWindow = NULL;
+	gRenderer = NULL;
 
 	//Quit SDL subsystems
+	IMG_Quit();
 	SDL_Quit();
 }
 
@@ -395,30 +570,51 @@ int main( int argc, char* args[] )
 	}
 	else
 	{
-		//Main loop flag
-		bool quit = false;
-
-		//Event handler
-		SDL_Event e;
-
-		//While application is running
-		while( !quit )
+		//Load media
+		if( !loadMedia() )
 		{
-			//Handle events on queue
-			while( SDL_PollEvent( &e ) != 0 )
+			printf( "Failed to load media!\n" );
+		}
+		else
+		{	
+			//Main loop flag
+			bool quit = false;
+
+			//Event handler
+			SDL_Event e;
+
+			//The dot that will be moving around on the screen
+			Dot dot;
+
+			//While application is running
+			while( !quit )
 			{
-				//User requests quit
-				if( e.type == SDL_QUIT )
+				//Handle events on queue
+				while( SDL_PollEvent( &e ) != 0 )
 				{
-					quit = true;
+					//User requests quit
+					if( e.type == SDL_QUIT )
+					{
+						quit = true;
+					}
+
+					//Handle input for the dot
+					dot.handleEvent( e );
 				}
 
-				//Handle window events
-				gWindow.handleEvent( e );
-			}
+				//Move the dot
+				dot.move();
 
-			//Update window
-			gWindow.render();
+				//Clear screen
+				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+				SDL_RenderClear( gRenderer );
+
+				//Render objects
+				dot.render();
+
+				//Update screen
+				SDL_RenderPresent( gRenderer );
+			}
 		}
 	}
 
