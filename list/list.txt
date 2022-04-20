@@ -18,3 +18,4 @@ lec16-True Type Fonts( có thể in lên màn hình phông chữ tùy thích t�
 lec17-Mouse Events( khi nháy chuột vào một ô thì nó sẽ hiện màu khác thể hiện bắt sự kiện của chuột)
 lec18-Key States( nhấn phím có thể thay đổi nhưng mà nó sẽ hiện trở lại ban đầu không thay đổi luôn như bài 4 keypress) có thể ứng dụng vào game như kiểu chuyển màn hình chẳng hạn 
 lec19-Gamepads and Joysticks(kết nối với bộ chơi điều khiển nhưng ko có điểu khiển nào được kết nối nên chưa biết được chức năng cụ thể)
+lec20-Force Feedback( tương tự như bài 19 thì cũng ko có bộ điều khiển nào được kết nối)
