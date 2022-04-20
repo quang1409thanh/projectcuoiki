@@ -23,3 +23,4 @@ lec20-Force Feedback( tương tự như bài 19 thì cũng ko có bộ điều k
 lec21-Sound Effects and Music( nhấn phím để bật bài hát từ 1 đến 4 bấm 9 để phát hoặc dừng bấm ko để stop) có thể ứng dụng trong âm thanh trò chơi 
 lec22-Timing( ấn enter để reset thời gian về 0)
 lec23-Advanced Timers(ấn s để bắt đầu từ 0, ấn p để dừng hoặc tiếp tục)
+lec4-Calculating Frame Rate( tính fps nhưng mà chưa hiểu fps của cái gì :v)
