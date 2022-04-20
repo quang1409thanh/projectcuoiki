@@ -1,9 +1,8 @@
 /*This source code copyrighted by Lazy Foo' Productions (2004-2022)
 and may not be redistributed without written permission.*/
 
-//Using SDL, SDL Threads, SDL_image, standard IO, and, strings
+//Using SDL, SDL_image, standard IO, and, strings
 #include <SDL.h>
-#include <SDL_thread.h>
 #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
@@ -83,8 +82,8 @@ bool loadMedia();
 //Frees media and shuts down SDL
 void close();
 
-//Our worker thread function
-int worker( void* data );
+//Our test callback function
+Uint32 callback( Uint32 interval, void* param );
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -94,12 +93,6 @@ SDL_Renderer* gRenderer = NULL;
 
 //Scene textures
 LTexture gSplashTexture;
-
-//Data access semaphore
-SDL_sem* gDataLock = NULL;
-
-//The "data buffer"
-int gData = -1;
 
 LTexture::LTexture()
 {
@@ -394,7 +387,7 @@ bool init()
 	bool success = true;
 
 	//Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+	if (SDL_Init( SDL_INIT_VIDEO | SDL_INIT_TIMER ) < 0 )
 	{
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
 		success = false;
@@ -406,6 +399,9 @@ bool init()
 		{
 			printf( "Warning: Linear texture filtering not enabled!" );
 		}
+
+		//Seed random
+		srand( SDL_GetTicks() );
 
 		//Create window
 		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
@@ -432,7 +428,7 @@ bool init()
 				int imgFlags = IMG_INIT_PNG;
 				if( !( IMG_Init( imgFlags ) & imgFlags ) )
 				{
-					printf( "SDL_image could not initialize! %s\n", IMG_GetError() );
+					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 					success = false;
 				}
 			}
@@ -444,14 +440,11 @@ bool init()
 
 bool loadMedia()
 {
-	//Initialize semaphore
-	gDataLock = SDL_CreateSemaphore( 1 );
-
 	//Loading success flag
 	bool success = true;
 	
 	//Load splash texture
-	if( !gSplashTexture.loadFromFile( "media/medialec47/splash.png" ) )
+	if( !gSplashTexture.loadFromFile( "media/medialec45/splash.png" ) )
 	{
 		printf( "Failed to load splash texture!\n" );
 		success = false;
@@ -465,10 +458,6 @@ void close()
 	//Free loaded images
 	gSplashTexture.free();
 
-	//Free semaphore
-	SDL_DestroySemaphore( gDataLock );
-	gDataLock = NULL;
-
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyWindow( gWindow );
@@ -480,43 +469,13 @@ void close()
 	SDL_Quit();
 }
 
-int worker( void* data )
+Uint32 callback( Uint32 interval, void* param )
 {
-	printf( "%s starting...\n", data );
-
-	//Pre thread random seeding
-	srand( SDL_GetTicks() );
-	
-	//Work 5 times
-	for( int i = 0; i < 5; ++i )
-	{
-		//Wait randomly
-		SDL_Delay( 16 + rand() % 32 );
-		
-		//Lock
-		SDL_SemWait( gDataLock );
-
-		//Print pre work data
-		printf( "%s gets %d\n", data, gData );
-
-		//"Work"
-		gData = rand() % 256;
-
-		//Print post work data
-		printf( "%s sets %d\n\n", data, gData );
-		
-		//Unlock
-		SDL_SemPost( gDataLock );
-
-		//Wait randomly
-		SDL_Delay( 16 + rand() % 640 );
-	}
-
-	printf( "%s finished!\n\n", data );
+	//Print callback message
+	printf( "Callback called back with message: %s\n", reinterpret_cast<char*>(param) );
 
 	return 0;
 }
-
 
 int main( int argc, char* args[] )
 {
@@ -540,12 +499,9 @@ int main( int argc, char* args[] )
 			//Event handler
 			SDL_Event e;
 
-			//Run the threads
-			srand( SDL_GetTicks() );
-			SDL_Thread* threadA = SDL_CreateThread( worker, "Thread A", (void*)"Thread A" );
-			SDL_Delay( 16 + rand() % 32 );
-			SDL_Thread* threadB = SDL_CreateThread( worker, "Thread B", (void*)"Thread B" );
-			
+			//Set callback
+			SDL_TimerID timerID = SDL_AddTimer( 3 * 1000, callback, reinterpret_cast<void*>( "3 seconds waited!" ) );
+
 			//While application is running
 			while( !quit )
 			{
@@ -570,9 +526,8 @@ int main( int argc, char* args[] )
 				SDL_RenderPresent( gRenderer );
 			}
 
-			//Wait for threads to finish
-			SDL_WaitThread( threadA, NULL );
-			SDL_WaitThread( threadB, NULL );
+			//Remove timer in case the call back was not called
+			SDL_RemoveTimer( timerID );
 		}
 	}
 

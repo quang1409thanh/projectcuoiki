@@ -44,3 +44,6 @@ lec41-Bitmap Fonts( chả hiểu lắm nhưng nói chung là trích xuất ra m�
 lec42-Texture Streaming( từ 4 ảnh có thể cho con người que di chuyển từ 4 ảnh, chứ ko phải từ 1 ảnh từ bài 14)
 lec43-Render to Texture(vẽ hình được như bài 8 nhưng có thể xoay hình 1 cách linh hoạt)
 lec44-Frame Independent Movement( kiểu tương tự dot di chuyển độc lập so với khung hình hiện tại)
+lec45-Timer Callbacks bài 45 bị lỗi gì mà ko chạy được ???
+lec46-Multithreading( có thể chạy nhiều thread trong 1 lúc) nhưng mà nó cũng bị lỗi gì chả chạy được
+lec47-Semaphores(làm cái việc gì mà mình cũng chả hiểu) 
