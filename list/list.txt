@@ -36,3 +36,4 @@ lec33-File Reading and Writing ( tạo ra 1 file num.bin có thể di chuyển v
 lec34-Audio Recording( ấn 1 để ghi âm khoảng 5s sau đó ấn 2 để phát lại)
 lec35-Window Events( có thể thay đổi kích thước của cửa sổ bằng cách dùng chuột hoặc phím enter ( ko thực sự cần thiết trong game của mình cho lắm)
 lec36-Multiple Windows( nhiều cửa sổ )- thêm ý tưởng có thể mở ra nhiều của sổ để chơi game
+lec37-Multiple Displays( có thể hiện thị được ở trên nhiều màn hình khác nhau)- nhưng mình chỉ có 1 màn hình nên chẳng có ứng dụng gì cả
