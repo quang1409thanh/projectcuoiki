@@ -39,3 +39,4 @@ lec36-Multiple Windows( nhiều cửa sổ )- thêm ý tưởng có thể mở r
 lec37-Multiple Displays( có thể hiện thị được ở trên nhiều màn hình khác nhau)- nhưng mình chỉ có 1 màn hình nên chẳng có ứng dụng gì cả
 lec38-Particle Engines( dot có các hạt xung quanh, khi dot di chuyển thì các hạt này di chuyển theo nên nhìn rất đẹp mắt)
 lec39-Tiling( từ một ảnh có thể lát gạch tạo ra một ma trận và dot có thể di chuyển trong khoảng những khu vực màu đen)
+lec40-Texture Manipulation(có thể là tách hình ảnh giống bài 10 nhưng mà kĩ từng pixel)
