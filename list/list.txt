@@ -29,3 +29,4 @@ lec26-Motion( di chuyển 1 hình ảnh theo bất kì chiểu nào có thể �
 lec27-Collision Detection(di chuyển một ảnh qua các chướng ngại vật khác nhau)   các chướng ngoại vật đó có thể do mình vẽ hoặc có thể từ ảnh
 lec28-Per-pixel Collision Detection(di chuyển 1 điểm và một điểm cố định lấy từ 1 ảnh ) xong cho nó di chuyển lại và chặn chướng ngại vật 
 lec29-Circular Collision Detection( di chuyển qua như bài 28 nhưng phát hiện va chạm hình tròn và vẽ thêm vào đó 1 hình chữ nhật nữa)
+lec30-Scrolling( di chuyển dot trên nền bg nhưng mà khi di chuyển ra ngoài thì bg sẽ thay đổi luôn) khá là hay đó
