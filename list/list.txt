@@ -42,3 +42,4 @@ lec39-Tiling( từ một ảnh có thể lát gạch tạo ra một ma trận v�
 lec40-Texture Manipulation(có thể là tách hình ảnh giống bài 10 nhưng mà kĩ từng pixel)
 lec41-Bitmap Fonts( chả hiểu lắm nhưng nói chung là trích xuất ra một font từ 1 chính xác đến từng pixel)
 lec42-Texture Streaming( từ 4 ảnh có thể cho con người que di chuyển từ 4 ảnh, chứ ko phải từ 1 ảnh từ bài 14)
+lec43-Render to Texture(vẽ hình được như bài 8 nhưng có thể xoay hình 1 cách linh hoạt)
