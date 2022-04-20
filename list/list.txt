@@ -47,3 +47,5 @@ lec44-Frame Independent Movement( kiểu tương tự dot di chuyển độc l�
 lec45-Timer Callbacks bài 45 bị lỗi gì mà ko chạy được ???
 lec46-Multithreading( có thể chạy nhiều thread trong 1 lúc) nhưng mà nó cũng bị lỗi gì chả chạy được
 lec47-Semaphores(làm cái việc gì mà mình cũng chả hiểu) 
+* bài học kết thúc ở đây- bắt đầu từ buổi sau sẽ tập trung vào các bài học thực tế trong game
+- ít nhất 2 tuần nữa-13 là phải chạy được cái chương trình đầu tiên của mình
