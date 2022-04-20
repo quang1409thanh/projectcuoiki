@@ -24,4 +24,5 @@ lec21-Sound Effects and Music( nhấn phím để bật bài hát từ 1 đến 
 lec22-Timing( ấn enter để reset thời gian về 0)
 lec23-Advanced Timers(ấn s để bắt đầu từ 0, ấn p để dừng hoặc tiếp tục)
 lec24-Calculating Frame Rate( tính fps nhưng mà chưa hiểu fps của cái gì :v)
-lec25-Capping Frame Rate
+lec25-Capping Frame Rate( tính fps nhưng vẫn chưa hiểu fps gì )
+lec26-Motion( di chuyển 1 hình ảnh theo bất kì chiểu nào có thể ứng dụng để di chuyển quả bóng)
