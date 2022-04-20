@@ -32,3 +32,4 @@ lec29-Circular Collision Detection( di chuyển qua như bài 28 nhưng phát hi
 lec30-Scrolling( di chuyển dot trên nền bg nhưng mà khi di chuyển ra ngoài thì bg sẽ thay đổi luôn) khá là hay đó
 lec31-Scrolling Backgrounds( bg có thể di chuyển mượt mà )
 lec32-Text Input and Clipboard Handling(gõ trực tiếp được vào của sổ sdl luôn :v)
+lec33- File Reading and Writing ( tạo ra 1 file num.bin có thể di chuyển và ghi vào tăng số bằng nút right và giảm bên trái bằng nút left)
