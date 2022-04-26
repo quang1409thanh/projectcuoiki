@@ -1,0 +1,2 @@
+
+	gWindow = NULL;

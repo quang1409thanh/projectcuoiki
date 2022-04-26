@@ -1,0 +1,8 @@
+từ bài 27 của lazyfoo
++ tạo brick từ mảng 2 chiều thay vì một chiều wall[3];
+bước 2 tạo ra 1 class paddle tương tự class dot
+viết các hàm và thêm vào hàm main tương tự dot
+lưu ý biến thành viên nên phải đưa biến paddle ra toàn câu
+kiểu kiểu qua là thế 
+giờ đã làm được các bước cơ bản của game rồi
+up lên github đã:
