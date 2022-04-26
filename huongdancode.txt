@@ -6,3 +6,9 @@ lưu ý biến thành viên nên phải đưa biến paddle ra toàn câu
 kiểu kiểu qua là thế 
 giờ đã làm được các bước cơ bản của game rồi
 up lên github đã:
+còn lỗi khi bóng va chạm paddle sau nhớ fix lại: ở chỗ phát hiện va chạm vào bề ngang
+ở bài này đã tạo thêm được 1 class nữa là brick- chưa biết có nên hay không nhưng cứ tạo ra nhiều lớp thì làm cho bài toán nó trở nên phức tạp hay hơn 
+ở đây chỉ mới load lên được 1 viên gach thôi
+bài tiếp theo sẽ load 1 mảng các viên gach vào
+
+*/

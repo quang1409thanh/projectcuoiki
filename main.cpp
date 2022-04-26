@@ -6,6 +6,8 @@ and may not be redistributed without written permission.*/
 #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
+#include<iostream>
+using namespace std;
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 800;
@@ -17,7 +19,20 @@ const int ARR_Y = 7;
 const int brickw=80;
 const int brickh=35;
 
+
+
+bool init();
+
+//Loads media
+bool loadMedia();
+
+//Frees media and shuts down SDL
+void close();
+
+
+
 //Texture wrapper class
+
 class LTexture
 {
 	public:
@@ -62,46 +77,16 @@ class LTexture
 		int mWidth;
 		int mHeight;
 };
-
-//The dot that will move around on the screen
-class Dot
-{
-    public:
-		//The dimensions of the dot
-		static const int DOT_WIDTH = 20;
-		static const int DOT_HEIGHT = 20;
-
-		//Maximum axis velocity of the dot
-		static const int DOT_VEL = 10;
-
-		//Initializes the variables
-		Dot();
-
-		//Takes key presses and adjusts the dot's velocity
-		void handleEvent( SDL_Event& e );
-
-		//Moves the dot and checks collision
-		void move( SDL_Rect brickrect[ARR_X][ARR_Y] );
-
-		//Shows the dot on the screen
-		void render();
-
-    private:
-		//The X and Y offsets of the dot
-		int mPosX, mPosY;
-
-		//The velocity of the dot
-		int mVelX, mVelY;
-		
-		//Dot's collision box
-		SDL_Rect mCollider;
-};
+//Scene textures
+LTexture gDotTexture;
+LTexture gPaddleTexture;
+LTexture gBrickTexture;
 
 class Paddle
 {
     public:
 		//The dimensions of the dot
-		static const int PADDLE_WIDTH = 92;
+		static const int PADDLE_WIDTH = 128;
 		static const int PADDLE_HEIGHT = 21;
 
 		//Maximum axis velocity of the dot
@@ -134,20 +119,329 @@ class Paddle
 		SDL_Rect mPaddle;
 };
 
+
+int Paddle::getPosXP(){
+	return mPosXP;
+}
+int Paddle::getPosYP(){
+	return mPosYP;
+}
+int Paddle::getVelXP(){
+	return mVelXP;
+}
+int Paddle::getVelYP(){
+	return mVelYP;
+}
+
+Paddle::Paddle(){
+	mPosXP = SCREEN_WIDTH/2 - PADDLE_WIDTH/2;
+	mPosYP = SCREEN_HEIGHT - PADDLE_HEIGHT;
+	mVelXP = 0;
+	mVelYP = 0;
+	mPaddle.w = PADDLE_WIDTH;
+	mPaddle.h = PADDLE_HEIGHT;
+}
+
+void Paddle::handleEventPaddle( SDL_Event& e )
+{
+    //If a key was pressed
+	if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
+    {
+        //Adjust the velocity
+        switch( e.key.keysym.sym )
+        {
+            // case SDLK_UP: mVelYP -= PADDLE_VEL; break;
+            // case SDLK_DOWN: mVelYP += PADDLE_VEL; break;
+            case SDLK_LEFT: mVelXP -= PADDLE_VEL; break;
+            case SDLK_RIGHT: mVelXP += PADDLE_VEL; break;
+        }
+    }
+    //If a key was released
+    else if( e.type == SDL_KEYUP && e.key.repeat == 0 )
+    {
+        //Adjust the velocity
+        switch( e.key.keysym.sym )
+        {
+            // case SDLK_UP: mVelYP += PADDLE_VEL; break;
+            // case SDLK_DOWN: mVelYP -= PADDLE_VEL; break;
+            case SDLK_LEFT: mVelXP += PADDLE_VEL; break;
+            case SDLK_RIGHT: mVelXP -= PADDLE_VEL; break;
+        }
+    }
+}
+void Paddle::moveP(){
+    //Move the dot left or right
+    mPosXP += mVelXP;
+	mPaddle.x = mPosXP;
+
+    //If the dot collided or went too far to the left or right
+			if( ( mPosXP < 0 ) || ( mPosXP + PADDLE_WIDTH > SCREEN_WIDTH )  )
+				{
+					//Move back
+					mPosXP -= mVelXP;
+					mPaddle.x = mPosXP;
+					}
+
+    //Move the dot up or down
+    mPosYP += mVelYP;
+	mPaddle.y = mPosYP;
+
+    //If the dot collided or went too far up or down
+	
+			 if( ( mPosYP < 0 ) || ( mPosYP + PADDLE_HEIGHT > SCREEN_HEIGHT ) )
+				{
+					//Move back
+					mPosYP -= mVelYP;
+					mPaddle.y = mPosYP;
+					}
+}
+//Starts up SDL and creates window
+void Paddle::renderP(){
+	//Render paddle
+	gPaddleTexture.render(mPosXP, mPosYP);
+}
+
 Paddle paddle;
+
+class Brick{
+	public:
+		//The dimensions of the dot
+		static const int BRICK_WIDTH = 80;
+		static const int BRICK_HEIGHT = 35;
+
+		//Maximum axis velocity of the dot
+		static const int BRICK_VEL = 0;
+
+		//Initializes the variables
+		Brick();
+
+		//Takes key presses and adjusts the dot's velocity
+		void handleEventBrick( SDL_Event& e );
+
+		//Moves the dot and checks collision
+		void moveB( Brick **brick );
+
+		//Shows the dot on the screen
+		void renderB();
+
+		int getPosXB();
+		int getPosYB();
+		int getVelXB();
+		int getVelYB();
+		
+		void setPosXB(int x);
+		void setPosYB(int y);
+		void setVelXB(int x);
+		void setVelYB(int y);
+		
+		void setBrick(int x, int y);
+		
+		void setBrick(int x, int y, int velx, int vely);
+		
+		void setBrick(int x, int y, int velx, int vely, int w, int h);
+		
+		void setBrick(int x, int y, int velx, int vely, int w, int h, int r, int g, int b);
+		
+		void setBrick(int x, int y, int velx, int vely, int w, int h, int r, int g, int b, int a);
+		
+		void setBrick(int x, int y, int velx, int vely, int w, int h, int r, int g, int b, int a, int s);
+		
+		void setBrick(int x, int y, int velx, int vely, int w, int h, int r, int g, int b, int a, int s, int t);
+	private:
+		//The X and Y offsets of the dot
+		int mPosXB, mPosYB;
+
+		//The velocity of the dot
+		int mVelXB, mVelYB;
+		
+		//Dot's collision box
+		SDL_Rect mBrick;
+		
+		//int mR, mG, mB, mA, mS, mT;
+};
+Brick::Brick(){
+	mPosXB=100;
+	mPosYB=100;
+	mVelXB=0;
+	mVelYB=0;
+	mBrick={mPosXB,mPosYB,BRICK_WIDTH,BRICK_HEIGHT};
+	// mR=255;
+	// mG=255;
+	// mB=255;
+	// mA=255;
+	// mS=0;
+	// mT=0;
+}
+
+int Brick::getPosXB(){
+	return mPosXB;
+}
+int Brick::getPosYB(){
+	return mPosYB;
+}
+int Brick::getVelXB(){
+	return mVelXB;
+}
+int Brick::getVelYB(){
+	return mVelYB;
+}
+
+
+void Brick::setBrick(int x, int y, int velx, int vely, int w, int h){
+	mPosXB=x;
+	mPosYB=y;
+	mVelXB=velx;
+	mVelYB=vely;
+	mBrick={x,y,w,h};
+}
+
+void Brick::renderB(){
+	//Render the dot
+	gBrickTexture.render(mPosXB, mPosYB);
+}
+//Box collision detector
+bool checkCollision( SDL_Rect a, Brick b );
+//The dot that will move around on the screen
+class Dot
+{
+    public:
+		//The dimensions of the dot
+		static const int DOT_WIDTH = 20;
+		static const int DOT_HEIGHT = 20;
+
+		//Maximum axis velocity of the dot
+		static const int DOT_VEL = 10;
+
+		//Initializes the variables
+		Dot();
+
+		//Takes key presses and adjusts the dot's velocity
+		void handleEvent( SDL_Event& e );
+
+		//Moves the dot and checks collision
+		void move( Brick brick );
+
+		//Shows the dot on the screen
+		void render();
+
+    private:
+		//The X and Y offsets of the dot
+		int mPosX, mPosY;
+
+		//The velocity of the dot
+		int mVelX, mVelY;
+		
+		//Dot's collision box
+		SDL_Rect mCollider;
+};
+
+Dot::Dot()
+{
+    //Initialize the offsets
+    mPosX = 100;
+    mPosY = 500;
+
+	//Set collision box dimension
+	mCollider.w = DOT_WIDTH;
+	mCollider.h = DOT_HEIGHT;
+
+    //Initialize the velocity
+    mVelX = 10;
+    mVelY = 10;
+}
+
+void Dot::handleEvent( SDL_Event& e )
+{
+    //If a key was pressed
+	if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
+    {
+        //Adjust the velocity
+        switch( e.key.keysym.sym )
+        {
+            case SDLK_UP: mVelY -= DOT_VEL; break;
+            case SDLK_DOWN: mVelY += DOT_VEL; break;
+            case SDLK_LEFT: mVelX -= DOT_VEL; break;
+            case SDLK_RIGHT: mVelX += DOT_VEL; break;
+        }
+    }
+    //If a key was released
+    else if( e.type == SDL_KEYUP && e.key.repeat == 0 )
+    {
+        //Adjust the velocity
+        switch( e.key.keysym.sym )
+        {
+            case SDLK_UP: mVelY += DOT_VEL; break;
+            case SDLK_DOWN: mVelY -= DOT_VEL; break;
+            case SDLK_LEFT: mVelX += DOT_VEL; break;
+            case SDLK_RIGHT: mVelX -= DOT_VEL; break;
+        }
+    }
+}
+
+void Dot::move( Brick brick ){
+	int PADDLE_HEIGHT=paddle.PADDLE_HEIGHT;
+	int PADDLE_WIDTH=paddle.PADDLE_WIDTH;
+	int batx=paddle.getPosXP();
+	int baty=paddle.getPosYP();
+    //Move the dot left or right
+    mPosX += mVelX;
+	mCollider.x = mPosX;
+
+    //If the dot collided or went too far to the left or right
+	// for(int i=1;i<=ARR_X;i++){
+	// 	for(int j=1;j<=ARR_Y;j++){
+	// 		if( ( mPosX < 0 ) || ( mPosX + DOT_WIDTH > SCREEN_WIDTH ) || checkCollision( mCollider, brick[i][j] ) )
+	// 			{
+	// 				//Move back
+	// 				mVelX*=-1;
+	// 			}
+	// 	}
+	// }
+	if( ( mPosX < 0 ) || ( mPosX + DOT_WIDTH > SCREEN_WIDTH ) || checkCollision( mCollider, brick ) )
+				{
+					//Move back
+					mVelX*=-1;
+				}
+    //Move the dot up or down
+    mPosY += mVelY;
+	mCollider.y = mPosY;
+
+    //If the dot collided or went too far up or down
+	// for(int i=1;i<=ARR_X;i++){
+	// 	for(int j=1;j<=ARR_Y;j++){
+	// 		 if( ( mPosY < 0 ) || ( mPosY + DOT_HEIGHT > SCREEN_HEIGHT ) || checkCollision( mCollider, brick[i][j] ) )
+	// 			{
+	// 				//Move back
+	// 				mVelY*=-1;
+	// 			}
+	// 	}
+	// }
+	if( ( mPosY < 0 ) || ( mPosY + DOT_HEIGHT > SCREEN_HEIGHT ) || checkCollision( mCollider, brick ) )
+				{
+					//Move back
+					mVelY*=-1;
+				}
+	int ballscaling=PADDLE_HEIGHT;// hoặc bằng 20 check sau đoạn này 
+    if(mPosY+ballscaling>baty&&mPosY<baty+PADDLE_HEIGHT&&mPosX>batx&&mPosX<batx+PADDLE_WIDTH){
+        mVelY*=-1;
+    }
+}
+void Dot::render()
+{
+    //Show the dot
+	gDotTexture.render( mPosX, mPosY );
+}
+
+
+Brick brick;
+// for(int i=1; i<=ARR_X; i++){
+// 	for(int j=1; j<=ARR_Y; j++){
+// 		brick[i][j].setBrick(i*BRICK_WIDTH, j*BRICK_HEIGHT, 0, 0, BRICK_WIDTH, BRICK_HEIGHT);// có thể nên lấy từ file ra chỗ này
+// 	}
+// }
 			
 Dot dot;
 
-bool init();
-
-//Loads media
-bool loadMedia();
-
-//Frees media and shuts down SDL
-void close();
-
-//Box collision detector
-bool checkCollision( SDL_Rect a, SDL_Rect b );
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -155,9 +449,6 @@ SDL_Window* gWindow = NULL;
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
 
-//Scene textures
-LTexture gDotTexture;
-LTexture gPaddleTexture;
 
 LTexture::LTexture()
 {
@@ -307,173 +598,6 @@ int LTexture::getHeight()
 	return mHeight;
 }
 
-Dot::Dot()
-{
-    //Initialize the offsets
-    mPosX = 100;
-    mPosY = 500;
-
-	//Set collision box dimension
-	mCollider.w = DOT_WIDTH;
-	mCollider.h = DOT_HEIGHT;
-
-    //Initialize the velocity
-    mVelX = 5;
-    mVelY = 5;
-}
-
-void Dot::handleEvent( SDL_Event& e )
-{
-    //If a key was pressed
-	if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
-    {
-        //Adjust the velocity
-        switch( e.key.keysym.sym )
-        {
-            case SDLK_UP: mVelY -= DOT_VEL; break;
-            case SDLK_DOWN: mVelY += DOT_VEL; break;
-            case SDLK_LEFT: mVelX -= DOT_VEL; break;
-            case SDLK_RIGHT: mVelX += DOT_VEL; break;
-        }
-    }
-    //If a key was released
-    else if( e.type == SDL_KEYUP && e.key.repeat == 0 )
-    {
-        //Adjust the velocity
-        switch( e.key.keysym.sym )
-        {
-            case SDLK_UP: mVelY += DOT_VEL; break;
-            case SDLK_DOWN: mVelY -= DOT_VEL; break;
-            case SDLK_LEFT: mVelX += DOT_VEL; break;
-            case SDLK_RIGHT: mVelX -= DOT_VEL; break;
-        }
-    }
-}
-
-int Paddle::getPosXP(){
-	return mPosXP;
-}
-int Paddle::getPosYP(){
-	return mPosYP;
-}
-int Paddle::getVelXP(){
-	return mVelXP;
-}
-int Paddle::getVelYP(){
-	return mVelYP;
-}
-
-Paddle::Paddle(){
-	mPosXP = SCREEN_WIDTH/2 - PADDLE_WIDTH/2;
-	mPosYP = SCREEN_HEIGHT - PADDLE_HEIGHT;
-	mVelXP = 0;
-	mVelYP = 0;
-	mPaddle.w = PADDLE_WIDTH;
-	mPaddle.h = PADDLE_HEIGHT;
-}
-
-void Paddle::handleEventPaddle( SDL_Event& e )
-{
-    //If a key was pressed
-	if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
-    {
-        //Adjust the velocity
-        switch( e.key.keysym.sym )
-        {
-            // case SDLK_UP: mVelYP -= PADDLE_VEL; break;
-            // case SDLK_DOWN: mVelYP += PADDLE_VEL; break;
-            case SDLK_LEFT: mVelXP -= PADDLE_VEL; break;
-            case SDLK_RIGHT: mVelXP += PADDLE_VEL; break;
-        }
-    }
-    //If a key was released
-    else if( e.type == SDL_KEYUP && e.key.repeat == 0 )
-    {
-        //Adjust the velocity
-        switch( e.key.keysym.sym )
-        {
-            // case SDLK_UP: mVelYP += PADDLE_VEL; break;
-            // case SDLK_DOWN: mVelYP -= PADDLE_VEL; break;
-            case SDLK_LEFT: mVelXP += PADDLE_VEL; break;
-            case SDLK_RIGHT: mVelXP -= PADDLE_VEL; break;
-        }
-    }
-}
-void Paddle::moveP(){
-    //Move the dot left or right
-    mPosXP += mVelXP;
-	mPaddle.x = mPosXP;
-
-    //If the dot collided or went too far to the left or right
-			if( ( mPosXP < 0 ) || ( mPosXP + PADDLE_WIDTH > SCREEN_WIDTH )  )
-				{
-					//Move back
-					mPosXP -= mVelXP;
-					mPaddle.x = mPosXP;
-					}
-
-    //Move the dot up or down
-    mPosYP += mVelYP;
-	mPaddle.y = mPosYP;
-
-    //If the dot collided or went too far up or down
-	
-			 if( ( mPosYP < 0 ) || ( mPosYP + PADDLE_HEIGHT > SCREEN_HEIGHT ) )
-				{
-					//Move back
-					mPosYP -= mVelYP;
-					mPaddle.y = mPosYP;
-					}
-}
-//Starts up SDL and creates window
-void Paddle::renderP(){
-	//Render paddle
-	gPaddleTexture.render(mPosXP, mPosYP);
-}
-
-void Dot::move( SDL_Rect brickrect[ARR_X][ARR_Y] ){
-
-	int batx=paddle.getPosXP();
-	int baty=paddle.getPosYP();
-    //Move the dot left or right
-    mPosX += mVelX;
-	mCollider.x = mPosX;
-
-    //If the dot collided or went too far to the left or right
-	for(int i=0;i<ARR_X;i++){
-		for(int j=0;j<ARR_Y;j++){
-			if( ( mPosX < 0 ) || ( mPosX + DOT_WIDTH > SCREEN_WIDTH ) || checkCollision( mCollider, brickrect[i][j] ) )
-				{
-					//Move back
-					mVelX*=-1;
-				}
-		}
-	}
-
-    //Move the dot up or down
-    mPosY += mVelY;
-	mCollider.y = mPosY;
-
-    //If the dot collided or went too far up or down
-	for(int i=0;i<ARR_X;i++){
-		for(int j=0;j<ARR_Y;j++){
-			 if( ( mPosY < 0 ) || ( mPosY + DOT_HEIGHT > SCREEN_HEIGHT ) || checkCollision( mCollider, brickrect[i][j] ) )
-				{
-					//Move back
-					mVelY*=-1;
-				}
-		}
-	}
-	int ballscaling=22;// hoặc bằng 20 check sau đoạn này 
-    if(mPosY+ballscaling>baty&&mPosY<baty+22&&mPosX>batx&&mPosX<batx+91){
-        mVelY*=-1;
-    }
-}
-void Dot::render()
-{
-    //Show the dot
-	gDotTexture.render( mPosX, mPosY );
-}
 
 bool init()
 {
@@ -529,13 +653,13 @@ bool init()
 	return success;
 }
 
-bool loadMedia()
+bool loadMedia()    
 {
 	//Loading success flag
 	bool success = true;
 
 	//Load press texture
-	if( !gDotTexture.loadFromFile( "media/medialec27/dot.bmp" )||!gPaddleTexture.loadFromFile("batdone.png"))
+	if( !gDotTexture.loadFromFile( "media/medialec27/dot.bmp" )||!gPaddleTexture.loadFromFile("source1/img/paddle/paddlelarge.png")||!gBrickTexture.loadFromFile("source1/img/bricks/blue.png"))
 	{
 		printf( "Failed to load dot texture!\n" );
 		success = false;
@@ -560,7 +684,7 @@ void close()
 	SDL_Quit();
 }
 
-bool checkCollision( SDL_Rect a, SDL_Rect b )
+bool checkCollision( SDL_Rect a, Brick b )
 {
     //The sides of the rectangles
     int leftA, leftB;
@@ -575,10 +699,10 @@ bool checkCollision( SDL_Rect a, SDL_Rect b )
     bottomA = a.y + a.h;
 
     //Calculate the sides of rect B
-    leftB = b.x;
-    rightB = b.x + b.w;
-    topB = b.y;
-    bottomB = b.y + b.h;
+    leftB = b.getPosXB();
+    rightB = b.getPosXB() + b.BRICK_WIDTH;
+    topB = b.getPosYB();
+    bottomB = b.getPosYB()+ b.BRICK_HEIGHT;
 
     //If any of the sides from A are outside of B
     if( bottomA <= topB )
@@ -631,28 +755,28 @@ int main( int argc, char* args[] )
 			// Dot dot;
 			
 			//Set the brickrect
-			SDL_Rect brickrect[ARR_X][ARR_Y];
-			brickrect[0][0]={50,50,brickw,brickh};
-			brickrect[0][1]={150,50,brickw,brickh};
-			brickrect[0][2]={250,50,brickw,brickh};
-			brickrect[0][3]={350,50,brickw,brickh};
-			brickrect[0][4]={450,50,brickw,brickh};
-			brickrect[0][5]={550,50,brickw,brickh};
-			brickrect[0][6]={650,50,brickw,brickh};
-			brickrect[1][0]={50,150,brickw,brickh};
-			brickrect[1][1]={150,150,brickw,brickh};
-			brickrect[1][2]={250,150,brickw,brickh};
-			brickrect[1][3]={350,150,brickw,brickh};
-			brickrect[1][4]={450,150,brickw,brickh};
-			brickrect[1][5]={550,150,brickw,brickh};
-			brickrect[1][6]={650,150,brickw,brickh};
-			brickrect[2][0]={50,250,brickw,brickh};
-			brickrect[2][1]={150,250,brickw,brickh};
-			brickrect[2][2]={250,250,brickw,brickh};
-			brickrect[2][3]={350,250,brickw,brickh};
-			brickrect[2][4]={450,250,brickw,brickh};
-			brickrect[2][5]={550,250,brickw,brickh};
-			brickrect[2][6]={650,250,brickw,brickh};
+			// SDL_Rect brickrect[ARR_X][ARR_Y];
+			// brickrect[0][0]={50,50,brickw,brickh};
+			// brickrect[0][1]={150,50,brickw,brickh};
+			// brickrect[0][2]={250,50,brickw,brickh};
+			// brickrect[0][3]={350,50,brickw,brickh};
+			// brickrect[0][4]={450,50,brickw,brickh};
+			// brickrect[0][5]={550,50,brickw,brickh};
+			// brickrect[0][6]={650,50,brickw,brickh};
+			// brickrect[1][0]={50,150,brickw,brickh};
+			// brickrect[1][1]={150,150,brickw,brickh};
+			// brickrect[1][2]={250,150,brickw,brickh};
+			// brickrect[1][3]={350,150,brickw,brickh};
+			// brickrect[1][4]={450,150,brickw,brickh};
+			// brickrect[1][5]={550,150,brickw,brickh};
+			// brickrect[1][6]={650,150,brickw,brickh};
+			// brickrect[2][0]={50,250,brickw,brickh};
+			// brickrect[2][1]={150,250,brickw,brickh};
+			// brickrect[2][2]={250,250,brickw,brickh};
+			// brickrect[2][3]={350,250,brickw,brickh};
+			// brickrect[2][4]={450,250,brickw,brickh};
+			// brickrect[2][5]={550,250,brickw,brickh};
+			// brickrect[2][6]={650,250,brickw,brickh};
 			//While application is running
 			while( !quit )
 			{
@@ -671,8 +795,8 @@ int main( int argc, char* args[] )
 				}
 
 				//Move the dot and check collision
-				dot.move( brickrect );
-				paddle.moveP( );
+				dot.move( brick );
+				paddle.moveP();
 				//Clear screen
 				SDL_SetRenderDrawColor( gRenderer, 0x0F, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
@@ -684,19 +808,22 @@ int main( int argc, char* args[] )
 				// SDL_Rect bgrect={0,0,SCREEN_WIDTH,SCREEN_HEIGHT};
 				// SDL_RenderCopy(gRenderer,bgtex,NULL,&bgrect);
 
-				SDL_Surface *brick = IMG_Load( "blue.png" );
-				SDL_Texture* brickTexture = SDL_CreateTextureFromSurface( gRenderer, brick );
+				// SDL_Surface *brick = IMG_Load( "blue.png" );
+				// SDL_Texture* brickTexture = SDL_CreateTextureFromSurface( gRenderer, brick );
 				
-				for(int i=0;i<ARR_X;i++){
-					for(int j=0;j<ARR_Y;j++){
-						SDL_RenderCopy( gRenderer, brickTexture, NULL, &brickrect[i][j] ); 
-					}
-				}		
+				// for(int i=1;i<=ARR_X;i++){
+				// 	for(int j=1;j<=ARR_Y;j++){
+				// 		SDL_RenderCopy( gRenderer, brickTexture, NULL, &brick[i][j] ); 
+				// 	}
+				// }		
+				//SDL_RenderCopy( gRenderer, brickTexture, NULL, &brick);
+
 				
 				
 				//Render dot
 				dot.render();
 				paddle.renderP();
+				brick.renderB();
 
 				//Update screen
 				SDL_RenderPresent( gRenderer );
@@ -706,6 +833,5 @@ int main( int argc, char* args[] )
 
 	//Free resources and close SDL
 	close();
-
 	return 0;
 }
