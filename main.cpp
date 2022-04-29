@@ -84,6 +84,14 @@ LTexture gDotTexture;
 LTexture gPaddleTexture;
 LTexture gBrickTexture;
 
+
+//The window we'll be rendering to
+SDL_Window* gWindow = NULL;
+
+//The window renderer
+SDL_Renderer* gRenderer = NULL;
+
+
 class Paddle
 {
     public:
@@ -137,7 +145,7 @@ int Paddle::getVelYP(){
 
 Paddle::Paddle(){
 	mPosXP = SCREEN_WIDTH/2 - PADDLE_WIDTH/2;
-	mPosYP = SCREEN_HEIGHT - PADDLE_HEIGHT;
+	mPosYP = (SCREEN_HEIGHT-70) - PADDLE_HEIGHT;
 	mVelXP = 0;
 	mVelYP = 0;
 	mPaddle.w = PADDLE_WIDTH;
@@ -190,7 +198,7 @@ void Paddle::moveP(){
 
     //If the dot collided or went too far up or down
 	
-			 if( ( mPosYP < 0 ) || ( mPosYP + PADDLE_HEIGHT > SCREEN_HEIGHT ) )
+			 if( ( mPosYP < 0 ) || ( mPosYP + PADDLE_HEIGHT > (SCREEN_HEIGHT-70) ) )
 				{
 					//Move back
 					mPosYP -= mVelYP;
@@ -326,8 +334,8 @@ class Dot
 Dot::Dot()
 {
     //Initialize the offsets
-    mPosX = 100;
-    mPosY = 500;
+    mPosX = SCREEN_WIDTH / 2 - DOT_WIDTH / 2;
+    mPosY = SCREEN_HEIGHT-70 - DOT_HEIGHT -paddle.getPosYP();
 
 	//Set collision box dimension
 	mCollider.w = DOT_WIDTH;
@@ -379,6 +387,7 @@ void Dot::ball_brick_collision(Brick brick[BRICK_ROWS][BRICK_COLUMNS]){
         }
     }
 }
+void gameOver();
 void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
 	int PADDLE_HEIGHT=paddle.PADDLE_HEIGHT;
 	int PADDLE_WIDTH=paddle.PADDLE_WIDTH;
@@ -419,14 +428,21 @@ void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
 				}
 		}
 	}
-    if(( mPosY < 0 ) || ( mPosY + DOT_HEIGHT > SCREEN_HEIGHT ) ) {
+    if(( mPosY < 0|| mPosY + DOT_HEIGHT > (SCREEN_HEIGHT-70) ) ) {
         mVelY *= -1;
         Mix_PlayChannel(-1,ballcollision,0);
     }
+	
 	int ballscaling=PADDLE_HEIGHT;// hoặc bằng 20 check sau đoạn này 
-    if(mPosY+ballscaling>baty&&mPosY<baty+PADDLE_HEIGHT&&mPosX>batx&&mPosX<batx+PADDLE_WIDTH){
+    if(mPosY+ballscaling>=baty&&mPosY<=(SCREEN_HEIGHT-70)&&mPosX>=batx&&mPosX<=batx+PADDLE_WIDTH){
         mVelY*=-1;
+		Mix_PlayChannel(-1,ballcollision,0);
     }
+	// if(mPosY+ballscaling>baty&&mPosY<SCREEN_HEIGHT&&mPosX>batx&&mPosX<batx+PADDLE_WIDTH){
+	// 	mVelX*=-1;
+	// 	Mix_PlayChannel(-1,ballcollision,0);
+	// }
+	// ** lưu ý chỗ lỗi thì ko phải là trường hợp gameover hôm sau cần fix cho chuẩn xác
 }
 void Dot::render()
 {
@@ -449,12 +465,6 @@ void Dot::render()
 			
 Dot dot;
 
-
-//The window we'll be rendering to
-SDL_Window* gWindow = NULL;
-
-//The window renderer
-SDL_Renderer* gRenderer = NULL;
 
 
 LTexture::LTexture()
@@ -754,6 +764,24 @@ bool checkCollision( SDL_Rect a, Brick b )
 }
 
 
+// void gameOver(){
+//     SDL_Surface *go=IMG_Load("C.png");
+//     SDL_Texture *gotexture=SDL_CreateTextureFromSurface(gRenderer,go);
+//     SDL_Rect gorect={0,0,800,600};
+//     SDL_RenderCopy(gRenderer,gotexture,NULL,NULL);
+//     SDL_RenderPresent(gRenderer);
+//     // while(true){
+//     //     SDL_PollEvent(&event);
+//     //     if(event.type == SDL_QUIT){
+//     //         quit = true;
+//     //         break;
+//     //     }
+//     // }
+// 	SDL_Delay(5000);
+//     //Destroy();
+//     SDL_Quit();
+// 	close();
+// }
 int main( int argc, char* args[] )
 {
 	//Start up SDL and create window
@@ -820,7 +848,9 @@ int main( int argc, char* args[] )
                         brick[i][j].renderB();
                     }
                 }
-				
+				//Draw blue horizontal line- kết xuất màu xanh vào đường ngang
+				SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0xFF, 0xFF );
+				SDL_RenderDrawLine( gRenderer, 0, SCREEN_HEIGHT-70 , SCREEN_WIDTH, SCREEN_HEIGHT -70 );
 
 				//Update screen
 				SDL_RenderPresent( gRenderer );
