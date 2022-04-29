@@ -1,9 +1,10 @@
 /*This source code copyrighted by Lazy Foo' Productions (2004-2022)
 and may not be redistributed without written permission.*/
 
-//Using SDL, SDL_image, standard IO, and strings
+//Using SDL, SDL_image, SDL_ttf, SDL_mixer, standard IO, math, and strings
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <stdio.h>
 #include <string>
 
@@ -57,40 +58,6 @@ class LTexture
 		int mHeight;
 };
 
-//The dot that will move around on the screen
-class Dot
-{
-    public:
-		//The dimensions of the dot
-		static const int DOT_WIDTH = 20;
-		static const int DOT_HEIGHT = 20;
-
-		//Maximum axis velocity of the dot
-		static const int DOT_VEL = 10;
-
-		//Initializes the variables
-		Dot();
-
-		//Takes key presses and adjusts the dot's velocity
-		void handleEvent( SDL_Event& e );
-
-		//Moves the dot and checks collision
-		void move( SDL_Rect *wall );
-
-		//Shows the dot on the screen
-		void render();
-
-    private:
-		//The X and Y offsets of the dot
-		int mPosX, mPosY;
-
-		//The velocity of the dot
-		int mVelX, mVelY;
-		
-		//Dot's collision box
-		SDL_Rect mCollider;
-};
-
 //Starts up SDL and creates window
 bool init();
 
@@ -100,17 +67,24 @@ bool loadMedia();
 //Frees media and shuts down SDL
 void close();
 
-//Box collision detector
-bool checkCollision( SDL_Rect a, SDL_Rect b );
-
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
 
-//Scene textures
-LTexture gDotTexture;
+//Scene texture
+LTexture gPromptTexture;
+
+//The music that will be played
+Mix_Music *gMusic = NULL;
+
+//The sound effects that will be used
+Mix_Chunk *gScratch = NULL;
+Mix_Chunk *gHigh = NULL;
+Mix_Chunk *gMedium = NULL;
+Mix_Chunk *gLow = NULL;
+
 
 LTexture::LTexture()
 {
@@ -260,93 +234,13 @@ int LTexture::getHeight()
 	return mHeight;
 }
 
-Dot::Dot()
-{
-    //Initialize the offsets
-    mPosX = 0;
-    mPosY = 0;
-
-	//Set collision box dimension
-	mCollider.w = DOT_WIDTH;
-	mCollider.h = DOT_HEIGHT;
-
-    //Initialize the velocity
-    mVelX = 0;
-    mVelY = 0;
-}
-
-void Dot::handleEvent( SDL_Event& e )
-{
-    //If a key was pressed
-	if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
-    {
-        //Adjust the velocity
-        switch( e.key.keysym.sym )
-        {
-            case SDLK_UP: mVelY -= DOT_VEL; break;
-            case SDLK_DOWN: mVelY += DOT_VEL; break;
-            case SDLK_LEFT: mVelX -= DOT_VEL; break;
-            case SDLK_RIGHT: mVelX += DOT_VEL; break;
-        }
-    }
-    //If a key was released
-    else if( e.type == SDL_KEYUP && e.key.repeat == 0 )
-    {
-        //Adjust the velocity
-        switch( e.key.keysym.sym )
-        {
-            case SDLK_UP: mVelY += DOT_VEL; break;
-            case SDLK_DOWN: mVelY -= DOT_VEL; break;
-            case SDLK_LEFT: mVelX += DOT_VEL; break;
-            case SDLK_RIGHT: mVelX -= DOT_VEL; break;
-        }
-    }
-}
-
-void Dot::move( SDL_Rect *wall )
-{
-    //Move the dot left or right
-    mPosX += mVelX;
-	mCollider.x = mPosX;
-
-    //If the dot collided or went too far to the left or right
-	for(int i=0;i<3;i++){
-    if( ( mPosX < 0 ) || ( mPosX + DOT_WIDTH > SCREEN_WIDTH ) || checkCollision( mCollider, wall[i] ) )
-    {
-        //Move back
-        mPosX -= mVelX;
-		mCollider.x = mPosX;
-    }
-	}
-
-    //Move the dot up or down
-    mPosY += mVelY;
-	mCollider.y = mPosY;
-
-    //If the dot collided or went too far up or down
-	for(int i=0;i<3;i++){
-    if( ( mPosY < 0 ) || ( mPosY + DOT_HEIGHT > SCREEN_HEIGHT ) || checkCollision( mCollider, wall[i] ) )
-    {
-        //Move back
-        mPosY -= mVelY;
-		mCollider.y = mPosY;
-    }
-	}
-}
-
-void Dot::render()
-{
-    //Show the dot
-	gDotTexture.render( mPosX, mPosY );
-}
-
 bool init()
 {
 	//Initialization flag
 	bool success = true;
 
 	//Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+	if( SDL_Init( SDL_INIT_VIDEO | SDL_INIT_AUDIO ) < 0 )
 	{
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
 		success = false;
@@ -387,6 +281,13 @@ bool init()
 					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 					success = false;
 				}
+
+				 //Initialize SDL_mixer
+				if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+				{
+					printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+					success = false;
+				}
 			}
 		}
 	}
@@ -399,10 +300,47 @@ bool loadMedia()
 	//Loading success flag
 	bool success = true;
 
-	//Load press texture
-	if( !gDotTexture.loadFromFile( "media/medialec27/dot.bmp" ) )
+	//Load prompt texture
+	if( !gPromptTexture.loadFromFile( "media/medialec21/prompt.png" ) )
 	{
-		printf( "Failed to load dot texture!\n" );
+		printf( "Failed to load prompt texture!\n" );
+		success = false;
+	}
+
+	//Load music
+	gMusic = Mix_LoadMUS( "media/medialec21/beat.wav" );
+	if( gMusic == NULL )
+	{
+		printf( "Failed to load beat music! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = false;
+	}
+	
+	//Load sound effects
+	gScratch = Mix_LoadWAV( "media/medialec21/scratch.wav" );
+	if( gScratch == NULL )
+	{
+		printf( "Failed to load scratch sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = false;
+	}
+	
+	gHigh = Mix_LoadWAV( "media/medialec21/high.wav" );
+	if( gHigh == NULL )
+	{
+		printf( "Failed to load high sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = false;
+	}
+
+	gMedium = Mix_LoadWAV( "media/medialec21/medium.wav" );
+	if( gMedium == NULL )
+	{
+		printf( "Failed to load medium sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
+		success = false;
+	}
+
+	gLow = Mix_LoadWAV( "media/medialec21/low.wav" );
+	if( gLow == NULL )
+	{
+		printf( "Failed to load low sound effect! SDL_mixer Error: %s\n", Mix_GetError() );
 		success = false;
 	}
 
@@ -412,7 +350,21 @@ bool loadMedia()
 void close()
 {
 	//Free loaded images
-	gDotTexture.free();
+	gPromptTexture.free();
+
+	//Free the sound effects
+	Mix_FreeChunk( gScratch );
+	Mix_FreeChunk( gHigh );
+	Mix_FreeChunk( gMedium );
+	Mix_FreeChunk( gLow );
+	gScratch = NULL;
+	gHigh = NULL;
+	gMedium = NULL;
+	gLow = NULL;
+	
+	//Free the music
+	Mix_FreeMusic( gMusic );
+	gMusic = NULL;
 
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
@@ -421,53 +373,9 @@ void close()
 	gRenderer = NULL;
 
 	//Quit SDL subsystems
+	Mix_Quit();
 	IMG_Quit();
 	SDL_Quit();
-}
-
-bool checkCollision( SDL_Rect a, SDL_Rect b )
-{
-    //The sides of the rectangles
-    int leftA, leftB;
-    int rightA, rightB;
-    int topA, topB;
-    int bottomA, bottomB;
-
-    //Calculate the sides of rect A
-    leftA = a.x;
-    rightA = a.x + a.w;
-    topA = a.y;
-    bottomA = a.y + a.h;
-
-    //Calculate the sides of rect B
-    leftB = b.x;
-    rightB = b.x + b.w;
-    topB = b.y;
-    bottomB = b.y + b.h;
-
-    //If any of the sides from A are outside of B
-    if( bottomA <= topB )
-    {
-        return false;
-    }
-
-    if( topA >= bottomB )
-    {
-        return false;
-    }
-
-    if( rightA <= leftB )
-    {
-        return false;
-    }
-
-    if( leftA >= rightB )
-    {
-        return false;
-    }
-
-    //If none of the sides from A are outside B
-    return true;
 }
 
 int main( int argc, char* args[] )
@@ -492,28 +400,6 @@ int main( int argc, char* args[] )
 			//Event handler
 			SDL_Event e;
 
-			//The dot that will be moving around on the screen
-			Dot dot;
-
-			//Set the wall
-			SDL_Rect wall[3];
-			wall[0].x = 40;
-			wall[0].y = 40;
-			wall[0].w = 40;
-			wall[0].h = 100;
-			wall[1].x = 120;
-			wall[1].y = 90;
-			wall[1].w = 40;
-			wall[1].h = 100;
-			wall[2].x = 200;
-			wall[2].y = 140;
-			wall[2].w = 40;
-			wall[2].h = 100;
-			wall[3].x = 280;
-			wall[3].y = 190;
-			wall[3].w = 40;
-			wall[3].h = 100;
-			
 			//While application is running
 			while( !quit )
 			{
@@ -525,27 +411,70 @@ int main( int argc, char* args[] )
 					{
 						quit = true;
 					}
-
-					//Handle input for the dot
-					dot.handleEvent( e );
+					//Handle key press
+					else if( e.type == SDL_KEYDOWN )
+					{
+						switch( e.key.keysym.sym )
+						{
+							//Play high sound effect
+							case SDLK_1:
+							Mix_PlayChannel( -1, gHigh, 0 );
+							break;
+							
+							//Play medium sound effect
+							case SDLK_2:
+							Mix_PlayChannel( -1, gMedium, 0 );
+							break;
+							
+							//Play low sound effect
+							case SDLK_3:
+							Mix_PlayChannel( -1, gLow, 0 );
+							break;
+							
+							//Play scratch sound effect
+							case SDLK_4:
+							Mix_PlayChannel( -1, gScratch, 0 );
+							break;
+							
+							case SDLK_9:
+							//If there is no music playing
+							if( Mix_PlayingMusic() == 0 )
+							{
+								//Play the music
+								Mix_PlayMusic( gMusic, -1 );
+							}
+							//If music is being played
+							else
+							{
+								//If the music is paused
+								if( Mix_PausedMusic() == 1 )
+								{
+									//Resume the music
+									Mix_ResumeMusic();
+								}
+								//If the music is playing
+								else
+								{
+									//Pause the music
+									Mix_PauseMusic();
+								}
+							}
+							break;
+							
+							case SDLK_0:
+							//Stop the music
+							Mix_HaltMusic();
+							break;
+						}
+					}
 				}
-
-				//Move the dot and check collision
-				dot.move( wall );
 
 				//Clear screen
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 
-				//Render wall
-				SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF );
-				for(int i=0;i<3;i++){
-					SDL_RenderFillRect( gRenderer, &wall[i] );
-				}		
-				
-				
-				//Render dot
-				dot.render();
+				//Render prompt
+				gPromptTexture.render( 0, 0 );
 
 				//Update screen
 				SDL_RenderPresent( gRenderer );

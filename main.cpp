@@ -4,6 +4,7 @@ and may not be redistributed without written permission.*/
 //Using SDL, SDL_image, standard IO, and strings
 #include <SDL.h>
 #include <SDL_image.h>
+#include<SDL_mixer.h>
 #include <stdio.h>
 #include <string>
 #include<iostream>
@@ -18,7 +19,8 @@ const int BRICK_COLUMNS = 6;
 
 const int brickw=80;
 const int brickh=35;
-
+Mix_Chunk *ballcollision=NULL;
+Mix_Chunk *brickcollision=NULL;
 
 
 bool init();
@@ -393,10 +395,14 @@ void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
 				{
 					//Move back
 					mVelX*=-1;
+                    Mix_PlayChannel(-1,brickcollision,0);
 				}
 		}
 	}
-    if( ( mPosX < 0 ) || ( mPosX + DOT_WIDTH > SCREEN_WIDTH ) ) mVelX *= -1;
+    if( ( mPosX < 0 ) || ( mPosX + DOT_WIDTH > SCREEN_WIDTH ) ) {
+        mVelX *= -1;
+        Mix_PlayChannel(-1,ballcollision,0);
+    }
 
     //Move the dot up or down
     mPosY += mVelY;
@@ -409,11 +415,14 @@ void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
 				{
 					//Move back
 					mVelY*=-1;
+                    Mix_PlayChannel(-1,brickcollision,0);
 				}
 		}
 	}
-    if(( mPosY < 0 ) || ( mPosY + DOT_HEIGHT > SCREEN_HEIGHT ) ) mVelY *= -1;
-
+    if(( mPosY < 0 ) || ( mPosY + DOT_HEIGHT > SCREEN_HEIGHT ) ) {
+        mVelY *= -1;
+        Mix_PlayChannel(-1,ballcollision,0);
+    }
 	int ballscaling=PADDLE_HEIGHT;// hoặc bằng 20 check sau đoạn này 
     if(mPosY+ballscaling>baty&&mPosY<baty+PADDLE_HEIGHT&&mPosX>batx&&mPosX<batx+PADDLE_WIDTH){
         mVelY*=-1;
@@ -603,7 +612,7 @@ bool init()
 	bool success = true;
 
 	//Initialize SDL
-	if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+	if( SDL_Init( SDL_INIT_VIDEO  | SDL_INIT_AUDIO) < 0 )
 	{
 		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
 		success = false;
@@ -644,6 +653,12 @@ bool init()
 					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 					success = false;
 				}
+                 //Initialize SDL_mixer
+				if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+				{
+					printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+					success = false;
+				}
 			}
 		}
 	}
@@ -662,7 +677,18 @@ bool loadMedia()
 		printf( "Failed to load dot texture!\n" );
 		success = false;
 	}
-
+    ballcollision=Mix_LoadWAV("source1/audio/sfx/ballcollision.wav");
+    if(ballcollision==NULL)
+    {
+        printf("Failed to load ballcolision sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }
+    brickcollision=Mix_LoadWAV("source1/audio/sfx/brickcollision.wav");
+    if(brickcollision==NULL)
+    {
+        printf("Failed to load brickcolision sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+        success = false;
+    }
 	return success;
 }
 
@@ -773,12 +799,9 @@ int main( int argc, char* args[] )
 					{
 						quit = true;
 					}
-
-					//Handle input for the dot
-					//dot.handleEvent( e );
-					paddle.handleEventPaddle( e );
+					 paddle.handleEventPaddle( e );
 				}
-
+                
 				//Move the dot and check collision
 				dot.move( brick );
                 dot.ball_brick_collision(brick);
@@ -802,9 +825,9 @@ int main( int argc, char* args[] )
 				//Update screen
 				SDL_RenderPresent( gRenderer );
 			}
-		}
+		
+        }
 	}
-
 	//Free resources and close SDL
 	close();
 	return 0;
