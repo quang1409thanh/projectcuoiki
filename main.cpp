@@ -13,8 +13,8 @@ using namespace std;
 const int SCREEN_WIDTH = 800;
 const int SCREEN_HEIGHT = 600;
 
-const int ARR_X = 3;
-const int ARR_Y = 7;
+const int BRICK_ROWS = 10;
+const int BRICK_COLUMNS = 6;
 
 const int brickw=80;
 const int brickh=35;
@@ -229,24 +229,7 @@ class Brick{
 		int getVelXB();
 		int getVelYB();
 		
-		void setPosXB(int x);
-		void setPosYB(int y);
-		void setVelXB(int x);
-		void setVelYB(int y);
-		
-		void setBrick(int x, int y);
-		
-		void setBrick(int x, int y, int velx, int vely);
-		
-		void setBrick(int x, int y, int velx, int vely, int w, int h);
-		
-		void setBrick(int x, int y, int velx, int vely, int w, int h, int r, int g, int b);
-		
-		void setBrick(int x, int y, int velx, int vely, int w, int h, int r, int g, int b, int a);
-		
-		void setBrick(int x, int y, int velx, int vely, int w, int h, int r, int g, int b, int a, int s);
-		
-		void setBrick(int x, int y, int velx, int vely, int w, int h, int r, int g, int b, int a, int s, int t);
+		Brick setBrick(int x, int y, int velx, int vely, int w, int h);
 	private:
 		//The X and Y offsets of the dot
 		int mPosXB, mPosYB;
@@ -265,12 +248,6 @@ Brick::Brick(){
 	mVelXB=0;
 	mVelYB=0;
 	mBrick={mPosXB,mPosYB,BRICK_WIDTH,BRICK_HEIGHT};
-	// mR=255;
-	// mG=255;
-	// mB=255;
-	// mA=255;
-	// mS=0;
-	// mT=0;
 }
 
 int Brick::getPosXB(){
@@ -287,12 +264,13 @@ int Brick::getVelYB(){
 }
 
 
-void Brick::setBrick(int x, int y, int velx, int vely, int w, int h){
+Brick Brick::setBrick(int x, int y, int velx, int vely, int w, int h){
 	mPosXB=x;
 	mPosYB=y;
 	mVelXB=velx;
 	mVelYB=vely;
 	mBrick={x,y,w,h};
+    return *this;
 }
 
 void Brick::renderB(){
@@ -319,7 +297,7 @@ class Dot
 		void handleEvent( SDL_Event& e );
 
 		//Moves the dot and checks collision
-		void move( Brick brick );
+		void move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] );
 
 		//Shows the dot on the screen
 		void render();
@@ -378,7 +356,7 @@ void Dot::handleEvent( SDL_Event& e )
     }
 }
 
-void Dot::move( Brick brick ){
+void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
 	int PADDLE_HEIGHT=paddle.PADDLE_HEIGHT;
 	int PADDLE_WIDTH=paddle.PADDLE_WIDTH;
 	int batx=paddle.getPosXP();
@@ -388,39 +366,33 @@ void Dot::move( Brick brick ){
 	mCollider.x = mPosX;
 
     //If the dot collided or went too far to the left or right
-	// for(int i=1;i<=ARR_X;i++){
-	// 	for(int j=1;j<=ARR_Y;j++){
-	// 		if( ( mPosX < 0 ) || ( mPosX + DOT_WIDTH > SCREEN_WIDTH ) || checkCollision( mCollider, brick[i][j] ) )
-	// 			{
-	// 				//Move back
-	// 				mVelX*=-1;
-	// 			}
-	// 	}
-	// }
-	if( ( mPosX < 0 ) || ( mPosX + DOT_WIDTH > SCREEN_WIDTH ) || checkCollision( mCollider, brick ) )
+	for(int i=0;i<BRICK_ROWS;i++){
+		for(int j=0;j<BRICK_COLUMNS;j++){
+			if(checkCollision( mCollider, brick[i][j] ) )
 				{
 					//Move back
 					mVelX*=-1;
 				}
+		}
+	}
+    if( ( mPosX < 0 ) || ( mPosX + DOT_WIDTH > SCREEN_WIDTH ) ) mVelX *= -1;
+
     //Move the dot up or down
     mPosY += mVelY;
 	mCollider.y = mPosY;
 
     //If the dot collided or went too far up or down
-	// for(int i=1;i<=ARR_X;i++){
-	// 	for(int j=1;j<=ARR_Y;j++){
-	// 		 if( ( mPosY < 0 ) || ( mPosY + DOT_HEIGHT > SCREEN_HEIGHT ) || checkCollision( mCollider, brick[i][j] ) )
-	// 			{
-	// 				//Move back
-	// 				mVelY*=-1;
-	// 			}
-	// 	}
-	// }
-	if( ( mPosY < 0 ) || ( mPosY + DOT_HEIGHT > SCREEN_HEIGHT ) || checkCollision( mCollider, brick ) )
+	for(int i=0;i<BRICK_ROWS;i++){
+		for(int j=0;j<BRICK_COLUMNS;j++){
+			 if( checkCollision( mCollider, brick[i][j] ) )
 				{
 					//Move back
 					mVelY*=-1;
 				}
+		}
+	}
+    if(( mPosY < 0 ) || ( mPosY + DOT_HEIGHT > SCREEN_HEIGHT ) ) mVelY *= -1;
+
 	int ballscaling=PADDLE_HEIGHT;// hoặc bằng 20 check sau đoạn này 
     if(mPosY+ballscaling>baty&&mPosY<baty+PADDLE_HEIGHT&&mPosX>batx&&mPosX<batx+PADDLE_WIDTH){
         mVelY*=-1;
@@ -433,9 +405,9 @@ void Dot::render()
 }
 
 
-Brick brick;
-// for(int i=1; i<=ARR_X; i++){
-// 	for(int j=1; j<=ARR_Y; j++){
+// Brick brick;
+// for(int i=1; i<=BRICK_ROWS; i++){
+// 	for(int j=1; j<=BRICK_COLUMNS; j++){
 // 		brick[i][j].setBrick(i*BRICK_WIDTH, j*BRICK_HEIGHT, 0, 0, BRICK_WIDTH, BRICK_HEIGHT);// có thể nên lấy từ file ra chỗ này
 // 	}
 // }
@@ -750,33 +722,19 @@ int main( int argc, char* args[] )
 
 			//Event handler
 			SDL_Event e;
+            Brick brick[BRICK_ROWS][BRICK_COLUMNS];
+            for(int i=0;i<BRICK_ROWS;i++)
+            {
+                for(int j=0;j<BRICK_COLUMNS;j++)
+                {
+                    brick[i][j]=brick[i][j].setBrick(i*brick[i][j].BRICK_WIDTH,j*brick[i][j].BRICK_HEIGHT,0,0,brick[i][j].BRICK_WIDTH,brick[i][j].BRICK_HEIGHT);
+                }
+            }
 
 			//The dot that will be moving around on the screen
 			// Dot dot;
 			
-			//Set the brickrect
-			// SDL_Rect brickrect[ARR_X][ARR_Y];
-			// brickrect[0][0]={50,50,brickw,brickh};
-			// brickrect[0][1]={150,50,brickw,brickh};
-			// brickrect[0][2]={250,50,brickw,brickh};
-			// brickrect[0][3]={350,50,brickw,brickh};
-			// brickrect[0][4]={450,50,brickw,brickh};
-			// brickrect[0][5]={550,50,brickw,brickh};
-			// brickrect[0][6]={650,50,brickw,brickh};
-			// brickrect[1][0]={50,150,brickw,brickh};
-			// brickrect[1][1]={150,150,brickw,brickh};
-			// brickrect[1][2]={250,150,brickw,brickh};
-			// brickrect[1][3]={350,150,brickw,brickh};
-			// brickrect[1][4]={450,150,brickw,brickh};
-			// brickrect[1][5]={550,150,brickw,brickh};
-			// brickrect[1][6]={650,150,brickw,brickh};
-			// brickrect[2][0]={50,250,brickw,brickh};
-			// brickrect[2][1]={150,250,brickw,brickh};
-			// brickrect[2][2]={250,250,brickw,brickh};
-			// brickrect[2][3]={350,250,brickw,brickh};
-			// brickrect[2][4]={450,250,brickw,brickh};
-			// brickrect[2][5]={550,250,brickw,brickh};
-			// brickrect[2][6]={650,250,brickw,brickh};
+			
 			//While application is running
 			while( !quit )
 			{
@@ -801,29 +759,17 @@ int main( int argc, char* args[] )
 				SDL_SetRenderDrawColor( gRenderer, 0x0F, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 
-				//Render brickrect
-			
-				// SDL_Surface *bg=IMG_Load("bg.jpg");
-				// SDL_Texture *bgtex=SDL_CreateTextureFromSurface(gRenderer,bg);
-				// SDL_Rect bgrect={0,0,SCREEN_WIDTH,SCREEN_HEIGHT};
-				// SDL_RenderCopy(gRenderer,bgtex,NULL,&bgrect);
-
-				// SDL_Surface *brick = IMG_Load( "blue.png" );
-				// SDL_Texture* brickTexture = SDL_CreateTextureFromSurface( gRenderer, brick );
-				
-				// for(int i=1;i<=ARR_X;i++){
-				// 	for(int j=1;j<=ARR_Y;j++){
-				// 		SDL_RenderCopy( gRenderer, brickTexture, NULL, &brick[i][j] ); 
-				// 	}
-				// }		
-				//SDL_RenderCopy( gRenderer, brickTexture, NULL, &brick);
-
-				
-				
-				//Render dot
+                //Render dot
 				dot.render();
 				paddle.renderP();
-				brick.renderB();
+                for(int i=0;i<BRICK_ROWS;i++)
+                {
+                    for(int j=0;j<BRICK_COLUMNS;j++)
+                    {
+                        brick[i][j].renderB();
+                    }
+                }
+				
 
 				//Update screen
 				SDL_RenderPresent( gRenderer );
