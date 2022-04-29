@@ -2,3 +2,9 @@ bước 1 đã oke tại đây
 bước 2 lên ý tưởng làm game -> design -> code tiếp 
 sẽ code tiếp tại đây nhé bro 
 SAU KHI CÓ ĐƯỢC CƠ BẢN THÌ GIỜ MÌNH SẼ TÁCH FILE Ở ĐÂY
+đã hiện thị được điếm số và timeline
+bây giờ lên ý tưởng mới
+hiện thị màn hình thắng và màn hình khi thua
+màn hình thắng 
+lưu ý cái TextTure ko được load từ file đâu nha
+nó chỉ lấy từ ttf nên khác lắm :v

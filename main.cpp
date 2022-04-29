@@ -37,7 +37,7 @@ bool loadMedia();
 void close();
 
 
-
+bool gOver=false;
 //Texture wrapper class
 
 class LTexture
@@ -93,6 +93,8 @@ LTexture gPaddleTexture;
 LTexture gBrickTexture;
 //Rendered texture
 LTexture gTextTexture;
+
+LTexture gameOver;
 
 //Scene textures
 LTexture gFPSTextTexture;
@@ -445,6 +447,7 @@ void Brick::renderB(){
 //Box collision detector
 bool checkCollision( SDL_Rect a, Brick b );
 //The dot that will move around on the screen
+
 class Dot
 {
     public:
@@ -581,10 +584,13 @@ void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
 				}
 		}
 	}
-    if(( mPosY < 0|| mPosY + DOT_HEIGHT > (SCREEN_HEIGHT-100) ) ) {
+    if(( mPosY < 0 ) ) {
         mVelY *= -1;
         Mix_PlayChannel(-1,ballcollision,0);
     }
+	if (mPosY + DOT_HEIGHT > (SCREEN_HEIGHT-100)){
+		gOver=true;
+	}
 	
 	int ballscaling=PADDLE_HEIGHT;// hoặc bằng 20 check sau đoạn này 
     if(mPosY+ballscaling>=baty&&mPosY<=(SCREEN_HEIGHT-100)&&mPosX>=batx&&mPosX<=batx+PADDLE_WIDTH){
@@ -841,7 +847,7 @@ bool loadMedia()
 	bool success = true;
 
 	//Load press texture
-	if( !gDotTexture.loadFromFile( "media/medialec27/dot.bmp" )||!gPaddleTexture.loadFromFile("source1/img/paddle/paddlelarge.png")||!gBrickTexture.loadFromFile("source1/img/bricks/blue.png"))
+	if( !gDotTexture.loadFromFile( "media/medialec27/dot.bmp" )||!gPaddleTexture.loadFromFile("source1/img/paddle/paddlelarge.png")||!gBrickTexture.loadFromFile("source1/img/bricks/blue.png")||!gameOver.loadFromFile("gameover.png"))
 	{
 		printf( "Failed to load dot texture!\n" );
 		success = false;
@@ -946,24 +952,7 @@ bool checkCollision( SDL_Rect a, Brick b )
 }
 
 
-// void gameOver(){
-//     SDL_Surface *go=IMG_Load("C.png");
-//     SDL_Texture *gotexture=SDL_CreateTextureFromSurface(gRenderer,go);
-//     SDL_Rect gorect={0,0,800,600};
-//     SDL_RenderCopy(gRenderer,gotexture,NULL,NULL);
-//     SDL_RenderPresent(gRenderer);
-//     // while(true){
-//     //     SDL_PollEvent(&event);
-//     //     if(event.type == SDL_QUIT){
-//     //         quit = true;
-//     //         break;
-//     //     }
-//     // }
-// 	SDL_Delay(5000);
-//     //Destroy();
-//     SDL_Quit();
-// 	close();
-// }
+
 int main( int argc, char* args[] )
 {
 	//Start up SDL and create window
@@ -1069,6 +1058,15 @@ int main( int argc, char* args[] )
 				gFPSTextTexture.render(  0,SCREEN_HEIGHT -30  );
 
 				//Update screen
+				if(gOver) {
+					    SDL_Surface *go=IMG_Load("gameover.png");
+						SDL_Texture *gotexture=SDL_CreateTextureFromSurface(gRenderer,go);
+						SDL_Rect gorect={0,0,800,600};
+						SDL_RenderCopy(gRenderer,gotexture,NULL,NULL);
+						SDL_RenderPresent(gRenderer);
+						SDL_Delay(2000);
+						//Destroy();
+					}
 				SDL_RenderPresent( gRenderer );
 				++countedFrames;
 			}
