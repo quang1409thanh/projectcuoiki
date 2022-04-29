@@ -14,10 +14,10 @@ using namespace std;
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 400;
-const int SCREEN_HEIGHT = 600;
+const int SCREEN_HEIGHT = 650;
 
-const int BRICK_ROWS = 5;
-const int BRICK_COLUMNS = 6;
+const int BRICK_ROWS = 7;
+const int BRICK_COLUMNS = 5;
 
 const int brickw=80;
 const int brickh=35;
@@ -292,7 +292,7 @@ int Paddle::getVelYP(){
 
 Paddle::Paddle(){
 	mPosXP = SCREEN_WIDTH/2 - PADDLE_WIDTH/2;
-	mPosYP = (SCREEN_HEIGHT-70) - PADDLE_HEIGHT;
+	mPosYP = (SCREEN_HEIGHT-100) - PADDLE_HEIGHT;
 	mVelXP = 0;
 	mVelYP = 0;
 	mPaddle.w = PADDLE_WIDTH;
@@ -345,7 +345,7 @@ void Paddle::moveP(){
 
     //If the dot collided or went too far up or down
 	
-			 if( ( mPosYP < 0 ) || ( mPosYP + PADDLE_HEIGHT > (SCREEN_HEIGHT-70) ) )
+			 if( ( mPosYP < 0 ) || ( mPosYP + PADDLE_HEIGHT > (SCREEN_HEIGHT-100) ) )
 				{
 					//Move back
 					mPosYP -= mVelYP;
@@ -389,6 +389,8 @@ class Brick{
 		Brick setBrick_mPosXB(int x);
 
 		Brick setBrick(int x, int y, int velx, int vely, int w, int h);
+
+		LTexture gBricks;
 	private:
 		//The X and Y offsets of the dot
 		int mPosXB, mPosYB;
@@ -482,7 +484,7 @@ Dot::Dot()
 {
     //Initialize the offsets
     mPosX = SCREEN_WIDTH / 2 - DOT_WIDTH / 2;
-    mPosY = SCREEN_HEIGHT-70 - DOT_HEIGHT-paddle.PADDLE_HEIGHT;
+    mPosY = SCREEN_HEIGHT-100 - DOT_HEIGHT-paddle.PADDLE_HEIGHT;
 
 	//Set collision box dimension
 	mCollider.w = DOT_WIDTH;
@@ -579,13 +581,13 @@ void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
 				}
 		}
 	}
-    if(( mPosY < 0|| mPosY + DOT_HEIGHT > (SCREEN_HEIGHT-70) ) ) {
+    if(( mPosY < 0|| mPosY + DOT_HEIGHT > (SCREEN_HEIGHT-100) ) ) {
         mVelY *= -1;
         Mix_PlayChannel(-1,ballcollision,0);
     }
 	
 	int ballscaling=PADDLE_HEIGHT;// hoặc bằng 20 check sau đoạn này 
-    if(mPosY+ballscaling>=baty&&mPosY<=(SCREEN_HEIGHT-70)&&mPosX>=batx&&mPosX<=batx+PADDLE_WIDTH){
+    if(mPosY+ballscaling>=baty&&mPosY<=(SCREEN_HEIGHT-100)&&mPosX>=batx&&mPosX<=batx+PADDLE_WIDTH){
         mVelY*=-1;
 		Mix_PlayChannel(-1,ballcollision,0);
     }
@@ -865,7 +867,7 @@ bool loadMedia()
 	{
 		//Render text-Tạo kết cấu từ chuỗi văn bản
 		SDL_Color textColor = { 0, 0, 0 };
-		if( !gTextTexture.loadFromRenderedText( "nguyen quang thanh cd", textColor ) )
+		if( !gTextTexture.loadFromRenderedText( "game brick", textColor ) )
 		{
 			printf( "Failed to render text texture!\n" );
 			success = false;
@@ -988,7 +990,7 @@ int main( int argc, char* args[] )
             {
                 for(int j=0;j<BRICK_COLUMNS;j++)
                 {
-                    brick[i][j]=brick[i][j].setBrick(i*brick[i][j].BRICK_WIDTH,j*brick[i][j].BRICK_HEIGHT,0,0,brick[i][j].BRICK_WIDTH,brick[i][j].BRICK_HEIGHT);
+                    brick[i][j]=brick[i][j].setBrick(20+i*brick[i][j].BRICK_WIDTH,j*brick[i][j].BRICK_HEIGHT,0,0,brick[i][j].BRICK_WIDTH,brick[i][j].BRICK_HEIGHT);
                 }
             }
 			//Angle of rotation
@@ -1031,23 +1033,22 @@ int main( int argc, char* args[] )
                 dot.ball_brick_collision(brick);
 				paddle.moveP();
 				//Calculate and correct fps
-				// float avgFPS = countedFrames / ( fpsTimer.getTicks() / 1000.f );
-				// if( avgFPS > 2000000 )
-				// {
-				// 	avgFPS = 0;
-				// }
+				float avgFPS = countedFrames / ( fpsTimer.getTicks() / 1000.f );
+				if( avgFPS > 2000000 )
+				{
+					avgFPS = 0;
+				}
 				
 				// //Set text to be rendered
 				timeText.str( "" );
-				timeText << "SCORE  " << count_Broken_Bricks; 
-
+				timeText << "SCORE:: " << count_Broken_Bricks<<"| Live:: "<<fpsTimer.getTicks()/1000.f;
 				//Render text
 				if( !gFPSTextTexture.loadFromRenderedText( timeText.str().c_str(), textColor ) )
 				{
 					printf( "Unable to render FPS texture!\n" );
 				}
 				//Clear screen
-				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+				SDL_SetRenderDrawColor( gRenderer, 0x0F, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 
                 //Render dot
@@ -1062,14 +1063,14 @@ int main( int argc, char* args[] )
                 }
 				//Draw blue horizontal line- kết xuất màu xanh vào đường ngang
 				SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0xFF, 0xFF );
-				SDL_RenderDrawLine( gRenderer, 0, SCREEN_HEIGHT-70 , SCREEN_WIDTH, SCREEN_HEIGHT -70 );
+				SDL_RenderDrawLine( gRenderer, 0, SCREEN_HEIGHT-100 , SCREEN_WIDTH, SCREEN_HEIGHT -100 );
 			    //Render current frame
 				gTextTexture.render( 0,SCREEN_HEIGHT -70 );
 				gFPSTextTexture.render(  0,SCREEN_HEIGHT -30  );
 
 				//Update screen
 				SDL_RenderPresent( gRenderer );
-				//++countedFrames;
+				++countedFrames;
 			}
         }
 	}
