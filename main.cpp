@@ -4,9 +4,11 @@ and may not be redistributed without written permission.*/
 //Using SDL, SDL_image, standard IO, and strings
 #include <SDL.h>
 #include <SDL_image.h>
+#include<SDL_ttf.h>
 #include<SDL_mixer.h>
 #include <stdio.h>
 #include <string>
+#include <sstream>
 #include<iostream>
 using namespace std;
 
@@ -21,7 +23,10 @@ const int brickw=80;
 const int brickh=35;
 Mix_Chunk *ballcollision=NULL;
 Mix_Chunk *brickcollision=NULL;
+//Globally used font
+TTF_Font *gFont = NULL;
 
+int count_Broken_Bricks=0;
 
 bool init();
 
@@ -46,6 +51,8 @@ class LTexture
 
 		//Loads image at specified path
 		bool loadFromFile( std::string path );
+		//Creates image from font string
+    	//bool loadFromRenderedText( std::string textureText, SDL_Color textColor );
 		
 		#if defined(SDL_TTF_MAJOR_VERSION)
 		//Creates image from font string
@@ -79,17 +86,157 @@ class LTexture
 		int mWidth;
 		int mHeight;
 };
+
 //Scene textures
 LTexture gDotTexture;
 LTexture gPaddleTexture;
 LTexture gBrickTexture;
+//Rendered texture
+LTexture gTextTexture;
 
+//Scene textures
+LTexture gFPSTextTexture;
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 
 //The window renderer
 SDL_Renderer* gRenderer = NULL;
+
+//The application time based timer
+class LTimer
+{
+    public:
+		//Initializes variables
+		LTimer();
+
+		//The various clock actions
+		void start();
+		void stop();
+		void pause();
+		void unpause();
+
+		//Gets the timer's time
+		Uint32 getTicks();
+
+		//Checks the status of the timer
+		bool isStarted();
+		bool isPaused();
+
+    private:
+		//The clock time when the timer started
+		Uint32 mStartTicks;
+
+		//The ticks stored when the timer was paused
+		Uint32 mPausedTicks;
+
+		//The timer status
+		bool mPaused;
+		bool mStarted;
+};
+
+
+LTimer::LTimer()
+{
+    //Initialize the variables
+    mStartTicks = 0;
+    mPausedTicks = 0;
+
+    mPaused = false;
+    mStarted = false;
+}
+
+void LTimer::start()
+{
+    //Start the timer
+    mStarted = true;
+
+    //Unpause the timer
+    mPaused = false;
+
+    //Get the current clock time
+    mStartTicks = SDL_GetTicks();
+	mPausedTicks = 0;
+}
+
+void LTimer::stop()
+{
+    //Stop the timer
+    mStarted = false;
+
+    //Unpause the timer
+    mPaused = false;
+
+	//Clear tick variables
+	mStartTicks = 0;
+	mPausedTicks = 0;
+}
+
+void LTimer::pause()
+{
+    //If the timer is running and isn't already paused
+    if( mStarted && !mPaused )
+    {
+        //Pause the timer
+        mPaused = true;
+
+        //Calculate the paused ticks
+        mPausedTicks = SDL_GetTicks() - mStartTicks;
+		mStartTicks = 0;
+    }
+}
+
+void LTimer::unpause()
+{
+    //If the timer is running and paused
+    if( mStarted && mPaused )
+    {
+        //Unpause the timer
+        mPaused = false;
+
+        //Reset the starting ticks
+        mStartTicks = SDL_GetTicks() - mPausedTicks;
+
+        //Reset the paused ticks
+        mPausedTicks = 0;
+    }
+}
+
+Uint32 LTimer::getTicks()
+{
+	//The actual timer time
+	Uint32 time = 0;
+
+    //If the timer is running
+    if( mStarted )
+    {
+        //If the timer is paused
+        if( mPaused )
+        {
+            //Return the number of ticks when the timer was paused
+            time = mPausedTicks;
+        }
+        else
+        {
+            //Return the current time minus the start time
+            time = SDL_GetTicks() - mStartTicks;
+        }
+    }
+
+    return time;
+}
+
+bool LTimer::isStarted()
+{
+	//Timer is running and paused or unpaused
+    return mStarted;
+}
+
+bool LTimer::isPaused()
+{
+	//Timer is running and paused
+    return mPaused && mStarted;
+}
 
 
 class Paddle
@@ -335,7 +482,7 @@ Dot::Dot()
 {
     //Initialize the offsets
     mPosX = SCREEN_WIDTH / 2 - DOT_WIDTH / 2;
-    mPosY = SCREEN_HEIGHT-70 - DOT_HEIGHT -paddle.getPosYP();
+    mPosY = SCREEN_HEIGHT-70 - DOT_HEIGHT-paddle.PADDLE_HEIGHT;
 
 	//Set collision box dimension
 	mCollider.w = DOT_WIDTH;
@@ -387,7 +534,7 @@ void Dot::ball_brick_collision(Brick brick[BRICK_ROWS][BRICK_COLUMNS]){
         }
     }
 }
-void gameOver();
+
 void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
 	int PADDLE_HEIGHT=paddle.PADDLE_HEIGHT;
 	int PADDLE_WIDTH=paddle.PADDLE_WIDTH;
@@ -396,15 +543,17 @@ void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
     //Move the dot left or right
     mPosX += mVelX;
 	mCollider.x = mPosX;
-
+	
     //If the dot collided or went too far to the left or right
 	for(int i=0;i<BRICK_ROWS;i++){
 		for(int j=0;j<BRICK_COLUMNS;j++){
 			if(checkCollision( mCollider, brick[i][j] ) )
 				{
 					//Move back
+					Mix_PlayChannel(-1,brickcollision,0);
 					mVelX*=-1;
-                    Mix_PlayChannel(-1,brickcollision,0);
+					mVelY*=-1;
+                    
 				}
 		}
 	}
@@ -412,10 +561,10 @@ void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
         mVelX *= -1;
         Mix_PlayChannel(-1,ballcollision,0);
     }
-
-    //Move the dot up or down
-    mPosY += mVelY;
+	mPosY += mVelY;
 	mCollider.y = mPosY;
+    //Move the dot up or down
+    // chỗ này di chuyển đúng nhưng âm thanh ko đúng
 
     //If the dot collided or went too far up or down
 	for(int i=0;i<BRICK_ROWS;i++){
@@ -423,8 +572,10 @@ void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
 			 if( checkCollision( mCollider, brick[i][j] ) )
 				{
 					//Move back
-					mVelY*=-1;
-                    Mix_PlayChannel(-1,brickcollision,0);
+					//count_Broken_Bricks++;
+					Mix_PlayChannel(-1,brickcollision,0);
+					count_Broken_Bricks++;
+                    
 				}
 		}
 	}
@@ -669,6 +820,12 @@ bool init()
 					printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
 					success = false;
 				}
+				 //Initialize SDL_ttf
+                if( TTF_Init() == -1 )
+                {
+                    printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+                    success = false;
+                }
 			}
 		}
 	}
@@ -699,13 +856,35 @@ bool loadMedia()
         printf("Failed to load brickcolision sound effect! SDL_mixer Error: %s\n", Mix_GetError());
         success = false;
     }
-	return success;
+	gFont= TTF_OpenFont( "media/medialec16/lazy.ttf", 28 );
+	if( gFont == NULL ){
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		success = false;
+	}
+	else
+	{
+		//Render text-Tạo kết cấu từ chuỗi văn bản
+		SDL_Color textColor = { 0, 0, 0 };
+		if( !gTextTexture.loadFromRenderedText( "nguyen quang thanh cd", textColor ) )
+		{
+			printf( "Failed to render text texture!\n" );
+			success = false;
+		}
+	}
+    return success;
 }
 
 void close()
 {
 	//Free loaded images
 	gDotTexture.free();
+    //Free loaded images
+    gTextTexture.free();
+	//Free loaded images
+	gFPSTextTexture.free();
+    //Free global font
+    TTF_CloseFont( gFont );
+    gFont = NULL;
 
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
@@ -714,6 +893,7 @@ void close()
 	gRenderer = NULL;
 
 	//Quit SDL subsystems
+	TTF_Quit();
 	IMG_Quit();
 	SDL_Quit();
 }
@@ -811,9 +991,25 @@ int main( int argc, char* args[] )
                     brick[i][j]=brick[i][j].setBrick(i*brick[i][j].BRICK_WIDTH,j*brick[i][j].BRICK_HEIGHT,0,0,brick[i][j].BRICK_WIDTH,brick[i][j].BRICK_HEIGHT);
                 }
             }
+			//Angle of rotation
+            double degrees = 0;
+
+			//Flip type
+            SDL_RendererFlip flipType = SDL_FLIP_NONE;
 
 			//The dot that will be moving around on the screen
 			// Dot dot;
+			SDL_Color textColor = { 0, 0, 0, 255 };
+
+			//The frames per second timer
+			LTimer fpsTimer;
+
+			//In memory text stream
+			std::stringstream timeText;
+
+			//Start counting frames per second
+			int countedFrames = 0;
+			fpsTimer.start();
 			
 			
 			//While application is running
@@ -834,8 +1030,24 @@ int main( int argc, char* args[] )
 				dot.move( brick );
                 dot.ball_brick_collision(brick);
 				paddle.moveP();
+				//Calculate and correct fps
+				// float avgFPS = countedFrames / ( fpsTimer.getTicks() / 1000.f );
+				// if( avgFPS > 2000000 )
+				// {
+				// 	avgFPS = 0;
+				// }
+				
+				// //Set text to be rendered
+				timeText.str( "" );
+				timeText << "SCORE  " << count_Broken_Bricks; 
+
+				//Render text
+				if( !gFPSTextTexture.loadFromRenderedText( timeText.str().c_str(), textColor ) )
+				{
+					printf( "Unable to render FPS texture!\n" );
+				}
 				//Clear screen
-				SDL_SetRenderDrawColor( gRenderer, 0x0F, 0xFF, 0xFF, 0xFF );
+				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 
                 //Render dot
@@ -851,11 +1063,14 @@ int main( int argc, char* args[] )
 				//Draw blue horizontal line- kết xuất màu xanh vào đường ngang
 				SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0xFF, 0xFF );
 				SDL_RenderDrawLine( gRenderer, 0, SCREEN_HEIGHT-70 , SCREEN_WIDTH, SCREEN_HEIGHT -70 );
+			    //Render current frame
+				gTextTexture.render( 0,SCREEN_HEIGHT -70 );
+				gFPSTextTexture.render(  0,SCREEN_HEIGHT -30  );
 
 				//Update screen
 				SDL_RenderPresent( gRenderer );
+				//++countedFrames;
 			}
-		
         }
 	}
 	//Free resources and close SDL
