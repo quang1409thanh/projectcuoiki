@@ -10,10 +10,10 @@ and may not be redistributed without written permission.*/
 using namespace std;
 
 //Screen dimension constants
-const int SCREEN_WIDTH = 800;
+const int SCREEN_WIDTH = 400;
 const int SCREEN_HEIGHT = 600;
 
-const int BRICK_ROWS = 10;
+const int BRICK_ROWS = 5;
 const int BRICK_COLUMNS = 6;
 
 const int brickw=80;
@@ -228,7 +228,9 @@ class Brick{
 		int getPosYB();
 		int getVelXB();
 		int getVelYB();
-		
+
+		Brick setBrick_mPosXB(int x);
+
 		Brick setBrick(int x, int y, int velx, int vely, int w, int h);
 	private:
 		//The X and Y offsets of the dot
@@ -272,6 +274,10 @@ Brick Brick::setBrick(int x, int y, int velx, int vely, int w, int h){
 	mBrick={x,y,w,h};
     return *this;
 }
+Brick Brick::setBrick_mPosXB(int x){
+    mPosXB=x;
+    return *this;
+}
 
 void Brick::renderB(){
 	//Render the dot
@@ -301,7 +307,9 @@ class Dot
 
 		//Shows the dot on the screen
 		void render();
+        void ball_brick_collision(Brick brick[BRICK_ROWS][BRICK_COLUMNS]);
 
+        int set_mVelY(int& y);
     private:
 		//The X and Y offsets of the dot
 		int mPosX, mPosY;
@@ -355,7 +363,20 @@ void Dot::handleEvent( SDL_Event& e )
         }
     }
 }
-
+void Dot::ball_brick_collision(Brick brick[BRICK_ROWS][BRICK_COLUMNS]){
+    bool a;
+    for(int i=0;i<BRICK_ROWS;i++){
+        for(int j=0;j<BRICK_COLUMNS;j++){
+            a=checkCollision(mCollider,brick[i][j]);
+            if(a==true){
+            brick[i][j]=brick[i][j].setBrick_mPosXB(30000);
+            mVelY*=-1;
+            //delete_brick_count++;
+            }
+            a=false;
+        }
+    }
+}
 void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
 	int PADDLE_HEIGHT=paddle.PADDLE_HEIGHT;
 	int PADDLE_WIDTH=paddle.PADDLE_WIDTH;
@@ -403,6 +424,11 @@ void Dot::render()
     //Show the dot
 	gDotTexture.render( mPosX, mPosY );
 }
+
+// int Dot::set_mVelY(int& y){
+//     mVelY=y;
+//     return mVelY;
+// }
 
 
 // Brick brick;
@@ -701,6 +727,7 @@ bool checkCollision( SDL_Rect a, Brick b )
     return true;
 }
 
+
 int main( int argc, char* args[] )
 {
 	//Start up SDL and create window
@@ -754,6 +781,7 @@ int main( int argc, char* args[] )
 
 				//Move the dot and check collision
 				dot.move( brick );
+                dot.ball_brick_collision(brick);
 				paddle.moveP();
 				//Clear screen
 				SDL_SetRenderDrawColor( gRenderer, 0x0F, 0xFF, 0xFF, 0xFF );
