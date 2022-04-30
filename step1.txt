@@ -8,3 +8,5 @@ hiện thị màn hình thắng và màn hình khi thua
 màn hình thắng 
 lưu ý cái TextTure ko được load từ file đâu nha
 nó chỉ lấy từ ttf nên khác lắm :v
+giờ sẽ sắp xếp lại code cho dễ nhìn 
+chỗ nào là toàn cục chỗ nào là cục bộ nhé
