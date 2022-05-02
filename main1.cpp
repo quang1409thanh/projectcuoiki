@@ -34,7 +34,7 @@ int count_Broken_Bricks=0;
 void init();
 
 //Loads media
-bool loadMedia();
+void loadMedia();
 
 //Frees media and shuts down SDL
 void close();
@@ -859,45 +859,50 @@ void init()
 	// return success;
 }
 
-bool loadMedia()    
+void loadMedia()    
 {
 	//Loading success flag
-	bool success = true;
+	//bool success = true;
 
 	//Load press texture
-	if( !gDotTexture.loadFromFile( "media/medialec27/dot.bmp" )||!gPaddleTexture.loadFromFile("source1/img/paddle/paddlelarge.png")||!gBrickTexture.loadFromFile("source1/img/bricks/blue.png")||!gGameOverTexture.loadFromFile("gameover.png"))
-	{
-		printf( "Failed to load dot texture!\n" );
-		success = false;
-	}
+	gDotTexture.loadFromFile( "media/medialec27/dot.bmp" );
+	gPaddleTexture.loadFromFile("source1/img/paddle/paddlelarge.png");
+	gBrickTexture.loadFromFile("source1/img/bricks/blue.png");
+	gGameOverTexture.loadFromFile("gameover.png");
+	// if( !gDotTexture.loadFromFile( "media/medialec27/dot.bmp" )||!gPaddleTexture.loadFromFile("source1/img/paddle/paddlelarge.png")||!gBrickTexture.loadFromFile("source1/img/bricks/blue.png")||!gGameOverTexture.loadFromFile("gameover.png"))
+	// {
+	// 	printf( "Failed to load dot texture!\n" );
+	// 	success = false;
+	// }
     ballcollision=Mix_LoadWAV("source1/audio/sfx/ballcollision.wav");
-    if(ballcollision==NULL)
-    {
-        printf("Failed to load ballcolision sound effect! SDL_mixer Error: %s\n", Mix_GetError());
-        success = false;
-    }
+    // if(ballcollision==NULL)
+    // {
+    //     printf("Failed to load ballcolision sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+    //     success = false;
+    // }
     brickcollision=Mix_LoadWAV("source1/audio/sfx/brickcollision.wav");
-    if(brickcollision==NULL)
-    {
-        printf("Failed to load brickcolision sound effect! SDL_mixer Error: %s\n", Mix_GetError());
-        success = false;
-    }
+    // if(brickcollision==NULL)
+    // {
+    //     printf("Failed to load brickcolision sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+    //     success = false;
+    // }
 	gFont= TTF_OpenFont( "media/medialec16/lazy.ttf", 28 );
-	if( gFont == NULL ){
-		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
-		success = false;
-	}
-	else
-	{
-		//Render text-Tạo kết cấu từ chuỗi văn bản
+	// if( gFont == NULL ){
+	// 	printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+	// 	success = false;
+	// }
+	// else
+	// {
+	// 	//Render text-Tạo kết cấu từ chuỗi văn bản
 		SDL_Color textColor = { 0, 0, 0 };
-		if( !gTextTexture.loadFromRenderedText( "game brick", textColor ) )
-		{
-			printf( "Failed to render text texture!\n" );
-			success = false;
-		}
-	}
-    return success;
+		gTextTexture.loadFromRenderedText( "game brick", textColor );
+		// if( !gTextTexture.loadFromRenderedText( "game brick", textColor ) )
+		// {
+		// 	printf( "Failed to render text texture!\n" );
+		// 	success = false;
+		// }
+	// }
+    // return success;
 }
 
 void close()
@@ -998,12 +1003,14 @@ int main( int argc, char* args[] )
 	// else
 	// {
 		//Load media
-		if( !loadMedia() )
-		{
-			printf( "Failed to load media!\n" );
-		}
-		else
-		{	
+	loadMedia();
+		// if( !loadMedia() )
+		// {
+		// 	printf( "Failed to load media!\n" );
+		// }
+		// else
+		// {	
+			// gameloop
 			//Main loop flag
 			bool quit = false;
 
@@ -1098,7 +1105,7 @@ int main( int argc, char* args[] )
 				//Update screen
 				SDL_RenderPresent( gRenderer );
 				++countedFrames;
-			}
+			
     
 	}
 	//Free resources and close SDL
