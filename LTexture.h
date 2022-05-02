@@ -1,4 +1,4 @@
-#
+
 class LTexture
 {
 	public:
@@ -10,6 +10,8 @@ class LTexture
 
 		//Loads image at specified path
 		bool loadFromFile( std::string path );
+		//Creates image from font string
+    	//bool loadFromRenderedText( std::string textureText, SDL_Color textColor );
 		
 		#if defined(SDL_TTF_MAJOR_VERSION)
 		//Creates image from font string
@@ -43,17 +45,18 @@ class LTexture
 		int mWidth;
 		int mHeight;
 };
+
 //Scene textures
 LTexture gDotTexture;
 LTexture gPaddleTexture;
 LTexture gBrickTexture;
+//Rendered texture
+LTexture gTextTexture;
 
+LTexture gameOver;
 
-//The window we'll be rendering to
-SDL_Window* gWindow = NULL;
-
-//The window renderer
-SDL_Renderer* gRenderer = NULL;
+//Scene textures
+LTexture gFPSTextTexture;
 
 
 LTexture::LTexture()

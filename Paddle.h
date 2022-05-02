@@ -52,7 +52,7 @@ int Paddle::getVelYP(){
 
 Paddle::Paddle(){
 	mPosXP = SCREEN_WIDTH/2 - PADDLE_WIDTH/2;
-	mPosYP = SCREEN_HEIGHT - PADDLE_HEIGHT;
+	mPosYP = (SCREEN_HEIGHT-100) - PADDLE_HEIGHT;
 	mVelXP = 0;
 	mVelYP = 0;
 	mPaddle.w = PADDLE_WIDTH;
@@ -105,7 +105,7 @@ void Paddle::moveP(){
 
     //If the dot collided or went too far up or down
 	
-			 if( ( mPosYP < 0 ) || ( mPosYP + PADDLE_HEIGHT > SCREEN_HEIGHT ) )
+			 if( ( mPosYP < 0 ) || ( mPosYP + PADDLE_HEIGHT > (SCREEN_HEIGHT-100) ) )
 				{
 					//Move back
 					mPosYP -= mVelYP;

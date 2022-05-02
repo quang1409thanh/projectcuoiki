@@ -28,6 +28,8 @@ class Brick{
 		Brick setBrick_mPosXB(int x);
 
 		Brick setBrick(int x, int y, int velx, int vely, int w, int h);
+
+		LTexture gBricks;
 	private:
 		//The X and Y offsets of the dot
 		int mPosXB, mPosYB;

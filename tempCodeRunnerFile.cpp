@@ -1,5 +1,4 @@
-//The window we'll be rendering to
-SDL_Window* gWindow = NULL;
-
-//The window renderer
-SDL_Renderer* gRenderer = NULL;
+//Move the dot and check collision
+				// dot.move( brick );
+                // dot.ball_brick_collision(brick);
+				// paddle.moveP();
