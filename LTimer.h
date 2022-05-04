@@ -1,33 +1,32 @@
-//The application time based timer
 class LTimer
 {
-    public:
-		//Initializes variables
-		LTimer();
+public:
+    //Initializes variables
+    LTimer();
 
-		//The various clock actions
-		void start();
-		void stop();
-		void pause();
-		void unpause();
+    //The various clock actions
+    void start();
+    void stop();
+    void pause();
+    void unpause();
 
-		//Gets the timer's time
-		Uint32 getTicks();
+    //Gets the timer's time
+    Uint32 getTicks();
 
-		//Checks the status of the timer
-		bool isStarted();
-		bool isPaused();
+    //Checks the status of the timer
+    bool isStarted();
+    bool isPaused();
 
-    private:
-		//The clock time when the timer started
-		Uint32 mStartTicks;
+private:
+    //The clock time when the timer started
+    Uint32 mStartTicks;
 
-		//The ticks stored when the timer was paused
-		Uint32 mPausedTicks;
+    //The ticks stored when the timer was paused
+    Uint32 mPausedTicks;
 
-		//The timer status
-		bool mPaused;
-		bool mStarted;
+    //The timer status
+    bool mPaused;
+    bool mStarted;
 };
 
 
@@ -51,7 +50,7 @@ void LTimer::start()
 
     //Get the current clock time
     mStartTicks = SDL_GetTicks();
-	mPausedTicks = 0;
+    mPausedTicks = 0;
 }
 
 void LTimer::stop()
@@ -62,29 +61,29 @@ void LTimer::stop()
     //Unpause the timer
     mPaused = false;
 
-	//Clear tick variables
-	mStartTicks = 0;
-	mPausedTicks = 0;
+    //Clear tick variables
+    mStartTicks = 0;
+    mPausedTicks = 0;
 }
 
 void LTimer::pause()
 {
     //If the timer is running and isn't already paused
-    if( mStarted && !mPaused )
+    if (mStarted && !mPaused)
     {
         //Pause the timer
         mPaused = true;
 
         //Calculate the paused ticks
         mPausedTicks = SDL_GetTicks() - mStartTicks;
-		mStartTicks = 0;
+        mStartTicks = 0;
     }
 }
 
 void LTimer::unpause()
 {
     //If the timer is running and paused
-    if( mStarted && mPaused )
+    if (mStarted && mPaused)
     {
         //Unpause the timer
         mPaused = false;
@@ -99,14 +98,14 @@ void LTimer::unpause()
 
 Uint32 LTimer::getTicks()
 {
-	//The actual timer time
-	Uint32 time = 0;
+    //The actual timer time
+    Uint32 time = 0;
 
     //If the timer is running
-    if( mStarted )
+    if (mStarted)
     {
         //If the timer is paused
-        if( mPaused )
+        if (mPaused)
         {
             //Return the number of ticks when the timer was paused
             time = mPausedTicks;
@@ -123,12 +122,12 @@ Uint32 LTimer::getTicks()
 
 bool LTimer::isStarted()
 {
-	//Timer is running and paused or unpaused
+    //Timer is running and paused or unpaused
     return mStarted;
 }
 
 bool LTimer::isPaused()
 {
-	//Timer is running and paused
+    //Timer is running and paused
     return mPaused && mStarted;
 }

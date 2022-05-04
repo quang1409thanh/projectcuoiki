@@ -117,5 +117,3 @@ void Paddle::renderP(){
 	//Render paddle
 	gPaddleTexture.render(mPosXP, mPosYP);
 }
-
-Paddle paddle;

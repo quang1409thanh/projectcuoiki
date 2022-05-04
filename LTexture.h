@@ -1,3 +1,4 @@
+//Texture wrapper class
 
 class LTexture
 {
@@ -45,18 +46,6 @@ class LTexture
 		int mWidth;
 		int mHeight;
 };
-
-//Scene textures
-LTexture gDotTexture;
-LTexture gPaddleTexture;
-LTexture gBrickTexture;
-//Rendered texture
-LTexture gTextTexture;
-
-LTexture gameOver;
-
-//Scene textures
-LTexture gFPSTextTexture;
 
 
 LTexture::LTexture()

@@ -13,8 +13,8 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 //Button constants
-const int BUTTON_WIDTH = 300;
-const int BUTTON_HEIGHT = 200;
+const int BUTTON_WIDTH = 179;
+const int BUTTON_HEIGHT = 71;
 const int TOTAL_BUTTONS = 4;
 
 enum LButtonSprite
@@ -112,12 +112,15 @@ SDL_Renderer* gRenderer = NULL;
 
 
 //Mouse button sprites
-SDL_Rect gSpriteClips[ BUTTON_SPRITE_TOTAL ];
-LTexture gButtonSpriteSheetTexture;
+//Mouse button sprites
+SDL_Rect gSpriteClips[BUTTON_SPRITE_TOTAL];
+LTexture gButtonAbout;
+LTexture gButtonPlay;
+LTexture gButtonExit;
+LTexture gButtonSound;
 
 //Buttons objects
-LButton gButtons[ TOTAL_BUTTONS ]; 
-
+LButton gButtons[TOTAL_BUTTONS];
 LTexture::LTexture()
 {
 	//Initialize-khởi tạo
@@ -302,7 +305,10 @@ void LButton::handleEvent( SDL_Event* e )
 void LButton::render()
 {
     //Show current button sprite
-    gButtonSpriteSheetTexture.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
+    gButtonAbout.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
+	// gButtonPlay.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
+	// gButtonExit.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
+	// gButtonSound.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
 }
 
 void LTexture::free()
@@ -403,36 +409,72 @@ bool loadMedia()
 	bool success = true;
 
 	//Load sprites
-	if( !gButtonSpriteSheetTexture.loadFromFile( "media/medialec17/button.png" ) )
+	if( !gButtonAbout.loadFromFile( "source1/img/buttons/aboutbutton.png" ) )
 	{
 		printf( "Failed to load button sprite texture!\n" );
 		success = false;
 	}
 	else
 	{
-		//Set sprites
-		for( int i = 0; i < BUTTON_SPRITE_TOTAL; ++i )
-		{
-			gSpriteClips[ i ].x = 0;
-			gSpriteClips[ i ].y = i * 200;
-			gSpriteClips[ i ].w = BUTTON_WIDTH;
-			gSpriteClips[ i ].h = BUTTON_HEIGHT;
-		}
+		
+			gSpriteClips[ 0 ].x = 0;
+			gSpriteClips[ 0 ].y = 0;
+			gSpriteClips[ 0 ].w = BUTTON_WIDTH;
+			gSpriteClips[ 0 ].h = BUTTON_HEIGHT;
+		
 
 		//Set buttons in corners
 		gButtons[ 0 ].setPosition( 0, 0 );
+		// gButtons[ 1 ].setPosition( SCREEN_WIDTH - BUTTON_WIDTH, 0 );
+		// gButtons[ 2 ].setPosition( 0, SCREEN_HEIGHT - BUTTON_HEIGHT );
+		// gButtons[ 3 ].setPosition( SCREEN_WIDTH - BUTTON_WIDTH, SCREEN_HEIGHT - BUTTON_HEIGHT );
+	}
+	if(!gButtonExit.loadFromFile("source1/img/buttons/exitbutton.png"))
+	{
+		printf("Failed to load button sprite texture!\n");
+		success = false;
+	}
+	else
+	{
+		gSpriteClips[ 1 ].x = 0;
+		gSpriteClips[ 1 ].y = 0;
+		gSpriteClips[ 1 ].w = BUTTON_WIDTH;
+		gSpriteClips[ 1 ].h = BUTTON_HEIGHT;
 		gButtons[ 1 ].setPosition( SCREEN_WIDTH - BUTTON_WIDTH, 0 );
+	}
+	if(!gButtonSound.loadFromFile("source1/img/buttons/soundbutton.png"))
+	{
+		printf("Failed to load button sprite texture!\n");
+		success = false;
+	}
+	else
+	{
+		gSpriteClips[ 2 ].x = 0;
+		gSpriteClips[ 2 ].y = 0;
+		gSpriteClips[ 2 ].w = BUTTON_WIDTH;
+		gSpriteClips[ 2 ].h = BUTTON_HEIGHT;
 		gButtons[ 2 ].setPosition( 0, SCREEN_HEIGHT - BUTTON_HEIGHT );
+	}
+		if(!gButtonPlay.loadFromFile("source1/img/buttons/playbutton.png"))
+	{
+		printf("Failed to load button sprite texture!\n");
+		success = false;
+	}
+	else
+	{
+		gSpriteClips[ 3].x = 0;
+		gSpriteClips[ 3 ].y = 0;
+		gSpriteClips[ 3 ].w = BUTTON_WIDTH;
+		gSpriteClips[ 3 ].h = BUTTON_HEIGHT;
 		gButtons[ 3 ].setPosition( SCREEN_WIDTH - BUTTON_WIDTH, SCREEN_HEIGHT - BUTTON_HEIGHT );
 	}
-
 	return success;
 }
 
 void close()
 {
 	//Free loaded images
-	gButtonSpriteSheetTexture.free();
+	gButtonAbout.free();
 
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );

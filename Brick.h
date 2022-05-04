@@ -81,3 +81,6 @@ void Brick::renderB(){
 	//Render the dot
 	gBrickTexture.render(mPosXB, mPosYB);
 }
+// //Box collision detector
+// bool checkCollision( SDL_Rect a, Brick b );
+//The dot that will move around on the screen
