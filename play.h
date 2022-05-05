@@ -54,13 +54,17 @@ void lose() {
 			//Handle input for the dot
 			dot.handleEvent(e);
 			paddle.handleEventPaddle(e);
-
+			gButtonRestart.handleEvent(&e);
+			gButtonMainmenu.handleEvent(&e);
 		}
         // timeText.str("");
 		// timeText << "SCORE:: " << count_Broken_Bricks ;
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(gRenderer);
+
+		gButtonRestart.render();
+		gButtonMainmenu.render();
 
         gFPSTextTexture.render(0, SCREEN_HEIGHT - 30);
 		gGameOverTexture.render(10, 100);
@@ -119,6 +123,8 @@ void play() {
 			//Handle input for the dot
 			dot.handleEvent(e);
 			paddle.handleEventPaddle(e);
+			gButton1_Pause.handleEvent(&e);
+			gButton1_Reset.handleEvent(&e);
 
 		}
 
@@ -156,6 +162,8 @@ void play() {
 				brick[i][j].renderB();
 			}
 		}
+		gButton1_Pause.render();
+		gButton1_Reset.render();
 		//Draw blue horizontal line- kết xuất màu xanh vào đường ngang
 		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0xFF, 0xFF);
 		SDL_RenderDrawLine(gRenderer, 0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, SCREEN_HEIGHT - 100);
@@ -232,6 +240,7 @@ void main_menu(){
 		{
 			SDL_Delay(200);
 			play();
+			break;// quan trọng nếu ko có thì ko thể tắt được cửa sổ
 		}
 	}
 }

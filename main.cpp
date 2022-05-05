@@ -17,6 +17,8 @@ and may not be redistributed without written permission.*/
 #include"LTimer.h"
 #include"LButton.h"
 #include"var_button.h"
+#include"LButton1.h"
+#include"var_Lbutton1.h"
 #include"fun_common.h"
 #include"Paddle.h"
 Paddle paddle;

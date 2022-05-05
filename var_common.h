@@ -20,6 +20,10 @@ int count_Broken_Bricks=0;
 const int BUTTON_WIDTH = 179;
 const int BUTTON_HEIGHT = 71;
 const int TOTAL_BUTTONS = 4;
+//Button constants
+const int BUTTON_WIDTH1 = 40;
+const int BUTTON_HEIGHT1 = 40;
+const int TOTAL_BUTTONS1 = 4;
 
 enum LButtonSprite
 {
@@ -32,3 +36,4 @@ enum LButtonSprite
 
 //Mouse button sprites
 SDL_Rect gSpriteClips[4];
+SDL_Rect gSpriteClips1[4];

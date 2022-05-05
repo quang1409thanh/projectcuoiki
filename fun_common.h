@@ -39,6 +39,23 @@ void loadMedia()
 	gButtonSound.set_texture("source1/img/buttons/soundbutton.png",i);
 	}
 	gButtonSound.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4 - 3*BUTTON_HEIGHT/4);
+	for(int i=0;i<4;i++){
+	gButton1_Pause.set_texture("source1/img/buttons/pausebutton.png",i);
+	}
+	gButton1_Pause.setPosition(SCREEN_WIDTH-85, SCREEN_HEIGHT-70);
+	for(int i=0;i<4;i++){
+	gButton1_Reset.set_texture("source1/img/buttons/resetbutton.png",i);
+	}
+	gButton1_Reset.setPosition(SCREEN_WIDTH-43, SCREEN_HEIGHT-70);
+	for(int i=0;i<4;i++){
+	gButtonRestart.set_texture("source1/img/buttons/restartbutton.png",i);
+	}
+	gButtonRestart.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 2*SCREEN_HEIGHT/4+40 - 2*BUTTON_HEIGHT/4);
+		for(int i=0;i<4;i++){
+	gButtonMainmenu.set_texture("source1/img/buttons/mainmenubutton.png",i);
+	}
+	gButtonMainmenu.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4 - 3*BUTTON_HEIGHT/4);
+	
 }
 
 void close()
