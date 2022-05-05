@@ -1,0 +1,2 @@
+hàm main là tách file 
+hàm main1 là hàm chung 

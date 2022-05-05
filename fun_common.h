@@ -20,15 +20,25 @@ void loadMedia()
 	gGameWin.loadFromFile("win.png");
     ballcollision=Mix_LoadWAV("source1/audio/sfx/ballcollision.wav");
     brickcollision=Mix_LoadWAV("source1/audio/sfx/brickcollision.wav");
-	gFont= TTF_OpenFont( "media/medialec16/lazy.ttf", 28 );
+	gFont= TTF_OpenFont( "font (2).ttf", 28 );
 	SDL_Color textColor = { 0, 0, 0 };
-	gTextTexture.loadFromRenderedText( "quangthanh", textColor );
-	//gButtonAbout.loadFromFile();
-	//gSpriteClips[0].x = 0;
-	//gSpriteClips[0].y = 0;
-	//gSpriteClips[0].w = BUTTON_WIDTH;
-	//gSpriteClips[0].h = BUTTON_HEIGHT;
-	//gButtons->setPosition(0, 0);
+	gTextTexture.loadFromRenderedText( "level 1 ", textColor );
+	for(int i=0;i<4;i++){
+	gButtonAbout.set_texture("source1/img/buttons/aboutbutton.png",i);
+	}
+	gButtonAbout.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 2*SCREEN_HEIGHT/4 - 2*BUTTON_HEIGHT/4);
+	for(int i=0;i<4;i++){
+	gButtonPlay.set_texture("source1/img/buttons/playbutton.png",i);
+	}
+	gButtonPlay.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT/4 - BUTTON_HEIGHT/4);
+		for(int i=0;i<4;i++){
+	gButtonExit.set_texture("source1/img/buttons/exitbutton.png",i);
+	}
+	gButtonExit.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 4*SCREEN_HEIGHT/4 - 4*BUTTON_HEIGHT/4);
+		for(int i=0;i<4;i++){
+	gButtonSound.set_texture("source1/img/buttons/soundbutton.png",i);
+	}
+	gButtonSound.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4 - 3*BUTTON_HEIGHT/4);
 }
 
 void close()

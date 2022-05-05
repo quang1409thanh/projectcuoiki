@@ -15,16 +15,8 @@ and may not be redistributed without written permission.*/
 #include"LTexture.h"
 #include"var_texture.h"
 #include"LTimer.h"
-//#include"LButton.h"
-////Mouse button sprites
-//SDL_Rect gSpriteClips[BUTTON_SPRITE_TOTAL];
-//LTexture gButtonAbout;
-//LTexture gButtonPlay;
-//LTexture gButtonExit;
-//LTexture gButtonSound;
-//
-////Buttons objects
-//LButton gButtons[TOTAL_BUTTONS];
+#include"LButton.h"
+#include"var_button.h"
 #include"fun_common.h"
 #include"Paddle.h"
 Paddle paddle;
@@ -37,7 +29,7 @@ int main(int argc, char* args[])
 	init();
 
 	loadMedia();
-	play();
+	main_menu();
 	//else {
 	//	close();
 	//	lose();

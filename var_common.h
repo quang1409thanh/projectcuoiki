@@ -17,8 +17,8 @@ TTF_Font *gFont = NULL;
 
 int count_Broken_Bricks=0;
 //Button constants
-const int BUTTON_WIDTH = 300;
-const int BUTTON_HEIGHT = 200;
+const int BUTTON_WIDTH = 179;
+const int BUTTON_HEIGHT = 71;
 const int TOTAL_BUTTONS = 4;
 
 enum LButtonSprite
@@ -29,3 +29,6 @@ enum LButtonSprite
     BUTTON_SPRITE_MOUSE_UP = 3,
     BUTTON_SPRITE_TOTAL = 4
 };
+
+//Mouse button sprites
+SDL_Rect gSpriteClips[4];

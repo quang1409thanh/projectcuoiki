@@ -8,6 +8,7 @@ and may not be redistributed without written permission.*/
 #include <stdio.h>
 #include <string>
 
+
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
@@ -72,29 +73,7 @@ class LTexture
 
 };
 
-//The mouse button
-class LButton
-{
-    public:
-        //Initializes internal variables
-        LButton();
 
-        //Sets top left position
-        void setPosition( int x, int y );
-
-        //Handles mouse event
-        void handleEvent( SDL_Event* e );
-    
-        //Shows button sprite
-        void render();
-
-    private:
-        //Top left position
-        SDL_Point mPosition;
-
-        //Currently used global sprite
-        LButtonSprite mCurrentSprite;
-};
 //Starts up SDL and creates window
 bool init();
 
@@ -113,14 +92,9 @@ SDL_Renderer* gRenderer = NULL;
 
 //Mouse button sprites
 //Mouse button sprites
-SDL_Rect gSpriteClips[BUTTON_SPRITE_TOTAL];
-LTexture gButtonAbout;
-LTexture gButtonPlay;
-LTexture gButtonExit;
-LTexture gButtonSound;
+SDL_Rect gSpriteClips[4];
 
-//Buttons objects
-LButton gButtons[TOTAL_BUTTONS];
+
 LTexture::LTexture()
 {
 	//Initialize-khởi tạo
@@ -230,6 +204,82 @@ bool LTexture::loadFromRenderedText(std::string textureText,SDL_Color textColor)
 }
 #endif
 
+void LTexture::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip )
+{
+    //Set rendering space and render to screen
+    SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+
+    //Set clip rendering dimensions
+    if( clip != NULL )
+    {
+        renderQuad.w = clip->w;
+        renderQuad.h = clip->h;
+    }
+
+    //Render to screen
+    SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, angle, center, flip );
+}
+
+int LTexture::getWidth()
+{
+    return mWidth;
+}
+
+int LTexture::getHeight()
+{
+    return mHeight;
+}
+void LTexture::free()
+{
+	//Free texture if it exists-giải phóng kết cấu nếu nó tồn tại
+	if(mTexture!=NULL)
+	{
+		SDL_DestroyTexture(mTexture);
+		mTexture=NULL;
+		mWidth=0;
+		mHeight=0;
+	}
+}
+
+//The mouse button
+class LButton
+{
+    public:
+        //Initializes internal variables
+        LButton();
+
+        //Sets top left position
+        void setPosition( int x, int y );
+
+        //Handles mouse event
+        void handleEvent( SDL_Event* e );
+    
+        //Shows button sprite
+        void render();
+
+		void set_texture(std::string s,const int &n);
+
+		void freeB();
+
+		LButtonSprite getStatus();
+
+		void freeStatus();
+
+    private:
+        //Top left position
+        SDL_Point mPosition;
+
+        //Currently used global sprite
+        LButtonSprite mCurrentSprite;
+		// 2 trang thái của Button	
+		LTexture texture[4];
+};
+
+LButtonSprite LButton::getStatus() {
+	return mCurrentSprite;
+}
+
+
 LButton::LButton()
 {
     mPosition.x = 0;
@@ -296,7 +346,7 @@ void LButton::handleEvent( SDL_Event* e )
                 
                 case SDL_MOUSEBUTTONUP:
                 mCurrentSprite = BUTTON_SPRITE_MOUSE_UP;
-                break;
+                break; //thừa
             }
         }
     }
@@ -304,51 +354,54 @@ void LButton::handleEvent( SDL_Event* e )
 
 void LButton::render()
 {
-    //Show current button sprite
-    gButtonAbout.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
-	// gButtonPlay.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
-	// gButtonExit.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
-	// gButtonSound.render( mPosition.x, mPosition.y, &gSpriteClips[ mCurrentSprite ] );
-}
-
-void LTexture::free()
-{
-	//Free texture if it exists-giải phóng kết cấu nếu nó tồn tại
-	if(mTexture!=NULL)
-	{
-		SDL_DestroyTexture(mTexture);
-		mTexture=NULL;
-		mWidth=0;
-		mHeight=0;
+   //Show current button sprite
+	switch (mCurrentSprite) {
+	case BUTTON_SPRITE_MOUSE_OUT: {
+		texture[0].render(mPosition.x, mPosition.y,&gSpriteClips[ mCurrentSprite ] );
+		break;
+	}
+	case BUTTON_SPRITE_MOUSE_OVER_MOTION: {
+		texture[1].render(mPosition.x, mPosition.y,&gSpriteClips[ mCurrentSprite ] );
+	}
+	case BUTTON_SPRITE_MOUSE_DOWN: {
+		texture[2].render(mPosition.x, mPosition.y,&gSpriteClips[ mCurrentSprite ] );
+	}
+	case BUTTON_SPRITE_MOUSE_UP: {
+		texture[3].render(mPosition.x, mPosition.y,&gSpriteClips[ mCurrentSprite ] );
+	}
 	}
 }
 
-void LTexture::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip )
-{
-    //Set rendering space and render to screen
-    SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+void LButton::set_texture(std::string path,const int &n) {
+	texture[n].loadFromFile(path);
+			gSpriteClips[ 0 ].x = 0;
+			gSpriteClips[ 0].y = 0;
+			gSpriteClips[ 0 ].w = BUTTON_WIDTH;
+			gSpriteClips[ 0 ].h = BUTTON_HEIGHT;
+	
+			gSpriteClips[ 1 ].x = 179;
+			gSpriteClips[ 1 ].y = 0;
+			gSpriteClips[ 1 ].w = BUTTON_WIDTH;
+			gSpriteClips[ 1 ].h = BUTTON_HEIGHT;
 
-    //Set clip rendering dimensions
-    if( clip != NULL )
-    {
-        renderQuad.w = clip->w;
-        renderQuad.h = clip->h;
-    }
-
-    //Render to screen
-    SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, angle, center, flip );
+			gSpriteClips[ 2 ].x = 358;
+			gSpriteClips[ 2 ].y = 0;
+			gSpriteClips[ 2 ].w = BUTTON_WIDTH;
+			gSpriteClips[ 2 ].h = BUTTON_HEIGHT;
+			gSpriteClips[ 3 ].x = 0;
+			gSpriteClips[ 3 ].y = 0;
+			gSpriteClips[ 3 ].w = BUTTON_WIDTH;
+			gSpriteClips[ 3 ].h = BUTTON_HEIGHT;
 }
 
-int LTexture::getWidth()
-{
-    return mWidth;
+
+
+void LButton::freeStatus() {
+	mCurrentSprite = BUTTON_SPRITE_MOUSE_OVER_MOTION;
 }
 
-int LTexture::getHeight()
-{
-    return mHeight;
-}
-
+//Buttons objects
+LButton gButtonAbout;
 bool init()
 {
 	//Initialization flag
@@ -403,78 +456,19 @@ bool init()
 	return success;
 }
 
-bool loadMedia()
-{
-	//Loading success flag
-	bool success = true;
-
-	//Load sprites
-	if( !gButtonAbout.loadFromFile( "source1/img/buttons/aboutbutton.png" ) )
-	{
-		printf( "Failed to load button sprite texture!\n" );
-		success = false;
-	}
-	else
-	{
-		
-			gSpriteClips[ 0 ].x = 0;
-			gSpriteClips[ 0 ].y = 0;
-			gSpriteClips[ 0 ].w = BUTTON_WIDTH;
-			gSpriteClips[ 0 ].h = BUTTON_HEIGHT;
-		
-
-		//Set buttons in corners
-		gButtons[ 0 ].setPosition( 0, 0 );
-		// gButtons[ 1 ].setPosition( SCREEN_WIDTH - BUTTON_WIDTH, 0 );
-		// gButtons[ 2 ].setPosition( 0, SCREEN_HEIGHT - BUTTON_HEIGHT );
-		// gButtons[ 3 ].setPosition( SCREEN_WIDTH - BUTTON_WIDTH, SCREEN_HEIGHT - BUTTON_HEIGHT );
-	}
-	if(!gButtonExit.loadFromFile("source1/img/buttons/exitbutton.png"))
-	{
-		printf("Failed to load button sprite texture!\n");
-		success = false;
-	}
-	else
-	{
-		gSpriteClips[ 1 ].x = 0;
-		gSpriteClips[ 1 ].y = 0;
-		gSpriteClips[ 1 ].w = BUTTON_WIDTH;
-		gSpriteClips[ 1 ].h = BUTTON_HEIGHT;
-		gButtons[ 1 ].setPosition( SCREEN_WIDTH - BUTTON_WIDTH, 0 );
-	}
-	if(!gButtonSound.loadFromFile("source1/img/buttons/soundbutton.png"))
-	{
-		printf("Failed to load button sprite texture!\n");
-		success = false;
-	}
-	else
-	{
-		gSpriteClips[ 2 ].x = 0;
-		gSpriteClips[ 2 ].y = 0;
-		gSpriteClips[ 2 ].w = BUTTON_WIDTH;
-		gSpriteClips[ 2 ].h = BUTTON_HEIGHT;
-		gButtons[ 2 ].setPosition( 0, SCREEN_HEIGHT - BUTTON_HEIGHT );
-	}
-		if(!gButtonPlay.loadFromFile("source1/img/buttons/playbutton.png"))
-	{
-		printf("Failed to load button sprite texture!\n");
-		success = false;
-	}
-	else
-	{
-		gSpriteClips[ 3].x = 0;
-		gSpriteClips[ 3 ].y = 0;
-		gSpriteClips[ 3 ].w = BUTTON_WIDTH;
-		gSpriteClips[ 3 ].h = BUTTON_HEIGHT;
-		gButtons[ 3 ].setPosition( SCREEN_WIDTH - BUTTON_WIDTH, SCREEN_HEIGHT - BUTTON_HEIGHT );
-	}
-	return success;
+bool loadMedia(){
+	gButtonAbout.set_texture("source1/img/buttons/aboutbutton.png",0);
+			gButtonAbout.set_texture("source1/img/buttons/aboutbutton.png", 1);
+			gButtonAbout.set_texture("source1/img/buttons/aboutbutton.png", 2);
+			gButtonAbout.set_texture("source1/img/buttons/aboutbutton.png", 3);
+			gButtonAbout.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT/2 - BUTTON_HEIGHT/2);
+			return true;
 }
 
 void close()
 {
 	//Free loaded images
-	gButtonAbout.free();
+	//gButtonAbout.freeStatus();
 
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
@@ -486,6 +480,7 @@ void close()
 	IMG_Quit();
 	SDL_Quit();
 }
+
 
 int main( int argc, char* args[] )
 {
@@ -511,6 +506,7 @@ int main( int argc, char* args[] )
 
 			//Angle of rotation
             double degrees = 0;
+			
 
 			//Flip type
             SDL_RendererFlip flipType = SDL_FLIP_NONE;
@@ -528,27 +524,25 @@ int main( int argc, char* args[] )
 				}
 				
 				// Handle button events-Xử lý sự kiện nút
-				for( int i = 0; i < TOTAL_BUTTONS; ++i )
-                    {
-                        gButtons[ i ].handleEvent( &e );
-                    }
+				gButtonAbout.handleEvent( &e );
+				
 			}
 
 				//Clear screen
-				SDL_SetRenderDrawColor( gRenderer, 0x0F, 0xFF, 0xFF, 0xFF );
+				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
+
 				//Render buttons
-                for( int i = 0; i < TOTAL_BUTTONS; ++i )
-                {
-                    gButtons[ i ].render();
-                }
+				gButtonAbout.render();
 				//Update screen-cập nhật màn hình
 				SDL_RenderPresent( gRenderer );
+				
 			}
 		}
 	}
 		
 	//Free resources and close SDL-
 	close();
+
 	return 0;
 }

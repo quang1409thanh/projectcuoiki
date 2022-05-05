@@ -1,10 +1,13 @@
 #pragma once
+
+
 void win(){
     //Main loop flag
 	bool quit = false;
 
 	//Event handler
 	SDL_Event e;
+
 	//While application is running
 	while (!quit)
 	{
@@ -36,6 +39,7 @@ void lose() {
 
 	//Event handler
 	SDL_Event e;
+        std::stringstream timeText;
 	//While application is running
 	while (!quit)
 	{
@@ -52,10 +56,13 @@ void lose() {
 			paddle.handleEventPaddle(e);
 
 		}
+        // timeText.str("");
+		// timeText << "SCORE:: " << count_Broken_Bricks ;
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(gRenderer);
 
+        gFPSTextTexture.render(0, SCREEN_HEIGHT - 30);
 		gGameOverTexture.render(10, 100);
 		//Update screen
 		SDL_RenderPresent(gRenderer);
@@ -128,7 +135,8 @@ void play() {
 
 		// //Set text to be rendered
 		timeText.str("");
-		timeText << "SCORE:: " << count_Broken_Bricks << " Live:: " << COUNT_DIES;
+		timeText << "SCORE:: " << count_Broken_Bricks ;
+        timeText << " Live:: " << COUNT_DIES;
 		//Render text
 		if (!gFPSTextTexture.loadFromRenderedText(timeText.str().c_str(), textColor))
 		{
@@ -171,4 +179,59 @@ void play() {
         }
 	}
 }
+void main_menu(){
+    //Main loop flag
+	bool quit = false;
 
+	//Event handler
+	SDL_Event e;
+	SDL_Color textColor = { 250, 0, 0, 255 };
+	std::stringstream timeText;
+
+	//While application is running
+	while (!quit)
+	{
+		//Handle events on queue
+		while (SDL_PollEvent(&e) != 0)
+		{
+			//User requests quit
+			if (e.type == SDL_QUIT)
+			{
+				quit = true;
+			}
+			//Handle input for the dot
+			// dot.handleEvent(e);
+			// paddle.handleEventPaddle(e);
+			gButtonAbout.handleEvent(&e);
+			gButtonPlay.handleEvent(&e);
+			gButtonExit.handleEvent(&e);
+			gButtonSound.handleEvent(&e);
+
+		}
+		
+		timeText.str("");
+		timeText<<"BRICKGAME";
+		//Render text
+		if (!gFPSTextTexture.loadFromRenderedText(timeText.str().c_str(), textColor))
+		{
+			printf("Unable to render FPS texture!\n");
+		}
+		//Clear screen
+		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
+		SDL_RenderClear(gRenderer);
+
+		gButtonAbout.render();
+		gButtonPlay.render();
+		gButtonExit.render();
+		gButtonSound.render();
+
+		gFPSTextTexture.render(0, 50);
+		//Update screen
+		SDL_RenderPresent(gRenderer);
+		if(gButtonPlay.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
+		{
+			SDL_Delay(200);
+			play();
+		}
+	}
+}

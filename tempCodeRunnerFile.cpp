@@ -1,4 +1,5 @@
-//Move the dot and check collision
-				// dot.move( brick );
-                // dot.ball_brick_collision(brick);
-				// paddle.moveP();
+    // int k;
+    // for(int i=0;i<m;i++){
+    //         k+=a[i][i];
+    // }
+    // cout<<k;
