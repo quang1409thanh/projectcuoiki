@@ -1,2 +1,3 @@
 hàm main là tách file 
 hàm main1 là hàm chung 
+đến đây sẽ bắt đầu làm lv và các button cho đủ hết

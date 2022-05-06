@@ -23,6 +23,7 @@ and may not be redistributed without written permission.*/
 #include"Paddle.h"
 Paddle paddle;
 #include"Brick.h"
+#include"Init_Bricklv1.h"
 #include"Dot.h"
 Dot dot;
 #include"play.h"

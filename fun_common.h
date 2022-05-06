@@ -30,15 +30,15 @@ void loadMedia()
 	for(int i=0;i<4;i++){
 	gButtonPlay.set_texture("source1/img/buttons/playbutton.png",i);
 	}
-	gButtonPlay.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT/4 - BUTTON_HEIGHT/4);
+	gButtonPlay.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT/4  - BUTTON_HEIGHT/4);
 		for(int i=0;i<4;i++){
 	gButtonExit.set_texture("source1/img/buttons/exitbutton.png",i);
 	}
-	gButtonExit.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 4*SCREEN_HEIGHT/4 - 4*BUTTON_HEIGHT/4);
+	gButtonExit.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 4*SCREEN_HEIGHT/4 -40 - 4*BUTTON_HEIGHT/4 );
 		for(int i=0;i<4;i++){
 	gButtonSound.set_texture("source1/img/buttons/soundbutton.png",i);
 	}
-	gButtonSound.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4 - 3*BUTTON_HEIGHT/4);
+	gButtonSound.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4  - 3*BUTTON_HEIGHT/4);
 	for(int i=0;i<4;i++){
 	gButton1_Pause.set_texture("source1/img/buttons/pausebutton.png",i);
 	}
@@ -47,6 +47,10 @@ void loadMedia()
 	gButton1_Reset.set_texture("source1/img/buttons/resetbutton.png",i);
 	}
 	gButton1_Reset.setPosition(SCREEN_WIDTH-43, SCREEN_HEIGHT-70);
+	for(int i=0;i<4;i++){
+	gButton1_Back.set_texture("source1/img/buttons/backbutton.png",i);
+	}
+	gButton1_Back.setPosition(80, 100);
 	for(int i=0;i<4;i++){
 	gButtonRestart.set_texture("source1/img/buttons/restartbutton.png",i);
 	}

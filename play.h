@@ -1,5 +1,48 @@
 #pragma once
 
+void play();
+void lose();
+void win();
+void main_menu();
+void sound();
+void sound(){
+	bool quit = false;
+
+	//Event handler
+	SDL_Event e;
+
+	//While application is running
+	while (!quit)
+	{
+		//Handle events on queue
+		while (SDL_PollEvent(&e) != 0)
+		{
+			//User requests quit
+			if (e.type == SDL_QUIT)
+			{
+				quit = true;
+			}
+			//Handle input for the dot
+			dot.handleEvent(e);
+			paddle.handleEventPaddle(e);
+			gButton1_Back.handleEvent(&e);
+
+		}
+		//Clear screen
+		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
+		SDL_RenderClear(gRenderer);
+		gButton1_Back.render();
+		
+		//Update screen
+		SDL_RenderPresent(gRenderer);
+		if(gButton1_Back.getStatus() == BUTTON_SPRITE_MOUSE_OVER_MOTION)
+		{
+			SDL_Delay(100);
+			main_menu();
+			break;
+		}
+	}
+}
 
 void win(){
     //Main loop flag
@@ -33,46 +76,6 @@ void win(){
 		SDL_RenderPresent(gRenderer);
 	}
 }
-void lose() {
-	//Main loop flag
-	bool quit = false;
-
-	//Event handler
-	SDL_Event e;
-        std::stringstream timeText;
-	//While application is running
-	while (!quit)
-	{
-		//Handle events on queue
-		while (SDL_PollEvent(&e) != 0)
-		{
-			//User requests quit
-			if (e.type == SDL_QUIT)
-			{
-				quit = true;
-			}
-			//Handle input for the dot
-			dot.handleEvent(e);
-			paddle.handleEventPaddle(e);
-			gButtonRestart.handleEvent(&e);
-			gButtonMainmenu.handleEvent(&e);
-		}
-        // timeText.str("");
-		// timeText << "SCORE:: " << count_Broken_Bricks ;
-		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
-		SDL_RenderClear(gRenderer);
-
-		gButtonRestart.render();
-		gButtonMainmenu.render();
-
-        gFPSTextTexture.render(0, SCREEN_HEIGHT - 30);
-		gGameOverTexture.render(10, 100);
-		//Update screen
-		SDL_RenderPresent(gRenderer);
-
-	}
-}
 void play() {
 	//Main loop flag
 	bool quit = false;
@@ -100,8 +103,7 @@ void play() {
 	int countedFrames = 0;
 	fpsTimer.start();
 
-
-	Brick brick[BRICK_ROWS][BRICK_COLUMNS];
+    Brick brick[BRICK_ROWS][BRICK_COLUMNS];
 	for (int i = 0; i < BRICK_ROWS; i++)
 	{
 		for (int j = 0; j < BRICK_COLUMNS; j++)
@@ -109,6 +111,7 @@ void play() {
 			brick[i][j] = brick[i][j].setBrick(20 + i * brick[i][j].BRICK_WIDTH, j * brick[i][j].BRICK_HEIGHT, 0, 0, brick[i][j].BRICK_WIDTH, brick[i][j].BRICK_HEIGHT);
 		}
 	}
+
 	//While application is running
 	while (!quit)
 	{
@@ -187,6 +190,59 @@ void play() {
         }
 	}
 }
+
+void lose() {
+	//Main loop flag
+	bool quit = false;
+
+	//Event handler
+	SDL_Event e;
+    std::stringstream timeText;
+	//While application is running
+	while (!quit)
+	{
+		//Handle events on queue
+		while (SDL_PollEvent(&e) != 0)
+		{
+			//User requests quit
+			if (e.type == SDL_QUIT)
+			{
+				quit = true;
+			}
+			//Handle input for the dot
+			dot.handleEvent(e);
+			paddle.handleEventPaddle(e);
+			gButtonRestart.handleEvent(&e);
+			gButtonMainmenu.handleEvent(&e);
+			gButtonExit.handleEvent(&e);
+		}
+        // timeText.str("");
+		// timeText << "SCORE:: " << count_Broken_Bricks ;
+		//Clear screen
+		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
+		SDL_RenderClear(gRenderer);
+
+		gButtonRestart.render();
+		gButtonMainmenu.render();
+		gButtonExit.render();
+
+        gFPSTextTexture.render(0, SCREEN_HEIGHT - 30);
+		gGameOverTexture.render(10, 100);
+		//Update screen
+		SDL_RenderPresent(gRenderer);
+		if(gButtonRestart.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
+		{
+			SDL_Delay(200);
+			// gButtonRestart.freeStatus();
+			// gButtonPlay.freeStatus();
+			COUNT_DIES = 2;
+			play();
+			break;// quan trọng nếu ko có thì ko thể tắt được cửa sổ
+
+		}
+
+	}
+}
 void main_menu(){
     //Main loop flag
 	bool quit = false;
@@ -241,6 +297,14 @@ void main_menu(){
 			SDL_Delay(200);
 			play();
 			break;// quan trọng nếu ko có thì ko thể tắt được cửa sổ
+		}
+		if (gButtonExit.getStatus() == BUTTON_SPRITE_MOUSE_DOWN) {
+			quit = true;
+			//exit(0);
+		}
+		if (gButtonSound.getStatus() == BUTTON_SPRITE_MOUSE_DOWN) {
+			sound();
+			break;
 		}
 	}
 }

@@ -1,5 +1,8 @@
-    // int k;
-    // for(int i=0;i<m;i++){
-    //         k+=a[i][i];
-    // }
-    // cout<<k;
+void play();
+void lose();
+void play(){
+    if(x) lose();
+}
+void lose(){
+    if(y) play();
+}

@@ -154,5 +154,5 @@ void LButton::set_texture(std::string path,const int &n) {
 
 
 void LButton::freeStatus() {
-	mCurrentSprite = BUTTON_SPRITE_MOUSE_OVER_MOTION;
+	mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
 }
