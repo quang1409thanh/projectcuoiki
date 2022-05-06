@@ -235,6 +235,7 @@ void lose() {
 			SDL_Delay(200);
 			// gButtonRestart.freeStatus();
 			// gButtonPlay.freeStatus();
+			count_Broken_Bricks=0;
 			COUNT_DIES = 2;
 			play();
 			break;// quan trọng nếu ko có thì ko thể tắt được cửa sổ

@@ -3,7 +3,7 @@ const int SCREEN_WIDTH = 400;
 const int SCREEN_HEIGHT = 650;
 
 const int BRICK_ROWS = 5;
-const int BRICK_COLUMNS = 15;
+const int BRICK_COLUMNS = 5;
 int COUNT_DIES=2;
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
