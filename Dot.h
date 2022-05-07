@@ -15,11 +15,12 @@ class Dot
 		void handleEvent( SDL_Event& e );
 
 		//Moves the dot and checks collision
-		void move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] );
+		void move( Brick brick[TOTAL_BRICKSLV1]);
 
 		//Shows the dot on the screen
 		void render();
-        void ball_brick_collision(Brick brick[BRICK_ROWS][BRICK_COLUMNS]);
+        void reset();
+        void ball_brick_collision(Brick brick[TOTAL_BRICKSLV1]);
 
         int set_mVelY(int& y);
 		void restart();
@@ -123,23 +124,21 @@ void Dot::handleEvent( SDL_Event& e )
         }
     }
 }
-void Dot::ball_brick_collision(Brick brick[BRICK_ROWS][BRICK_COLUMNS]){
+void Dot::ball_brick_collision(Brick brick[TOTAL_BRICKSLV1]){
     bool a;
-    for(int i=0;i<BRICK_ROWS;i++){
-        for(int j=0;j<BRICK_COLUMNS;j++){
-            a=checkCollision(mCollider,brick[i][j]);
+    for(int i=0;i<TOTAL_BRICKSLV1;i++){
+            a=checkCollision(mCollider,brick[i]);
             if(a==true){
-            brick[i][j]=brick[i][j].setBrick_mPosXB(30000);
+            brick[i]=brick[i].setBrick_mPosXB(30000);
             mVelY*=-1;
             //delete_brick_count++;
+            Mix_PlayChannel( -1, brickcollision, 0 );
+            count_Broken_Bricks++;
             }
             a=false;
         }
-    }
 }
-
-void gameOver();
-void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
+void Dot::move(Brick brick[TOTAL_BRICKSLV1] ){
 	int PADDLE_HEIGHT=paddle.PADDLE_HEIGHT;
 	int PADDLE_WIDTH=paddle.PADDLE_WIDTH;
 	int batx=paddle.getPosXP();
@@ -149,9 +148,9 @@ void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
 	mCollider.x = mPosX;
 	
     //If the dot collided or went too far to the left or right
-	for(int i=0;i<BRICK_ROWS;i++){
-		for(int j=0;j<BRICK_COLUMNS;j++){
-			if(checkCollision( mCollider, brick[i][j] ) )
+	for(int i=0;i<TOTAL_BRICKSLV1;i++){
+		
+			if(checkCollision( mCollider, brick[i] ) )
 				{
 					//Move back
 					Mix_PlayChannel(-1,brickcollision,0);
@@ -159,7 +158,7 @@ void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
 					mVelY*=-1;
                     
 				}
-		}
+		
 	}
     if( ( mPosX < 0 ) || ( mPosX + DOT_WIDTH > SCREEN_WIDTH ) ) {
         mVelX *= -1;
@@ -171,26 +170,15 @@ void Dot::move( Brick brick[BRICK_ROWS][BRICK_COLUMNS] ){
     // chỗ này di chuyển đúng nhưng âm thanh ko đúng
 
     //If the dot collided or went too far up or down
-	for(int i=0;i<BRICK_ROWS;i++){
-		for(int j=0;j<BRICK_COLUMNS;j++){
-			 if( checkCollision( mCollider, brick[i][j] ) )
-				{
-					//Move back
-					//count_Broken_Bricks++;
-					Mix_PlayChannel(-1,brickcollision,0);
-					count_Broken_Bricks++;
-                    
-				}
-		}
-	}
     if( mPosY < 0 ) {
         mVelY *= -1;
         Mix_PlayChannel(-1,ballcollision,0);
     }
 	if(mPosY + DOT_HEIGHT > (SCREEN_HEIGHT-100) ){
-		mPosX=batx+PADDLE_WIDTH/2-DOT_WIDTH/2;
-		mPosY=SCREEN_HEIGHT-100-DOT_HEIGHT-paddle.PADDLE_HEIGHT;
-		mVelX=10;
+        
+		reset();
+		SDL_Delay(50);
+        mVelX=10;
 		mVelY=10;
 		COUNT_DIES--;
 	}
@@ -219,4 +207,17 @@ int Dot :: getX() {
 }
 int Dot::getY() {
     return mPosY;
+}
+void Dot:: reset(){
+        //Initialize the offsets
+    mPosX = paddle.getPosXP()+paddle.PADDLE_WIDTH/2-DOT_WIDTH/2;
+    mPosY = SCREEN_HEIGHT-100 - DOT_HEIGHT-paddle.PADDLE_HEIGHT;
+
+	//Set collision box dimension
+	mCollider.w = DOT_WIDTH;
+	mCollider.h = DOT_HEIGHT;
+
+    //Initialize the velocity
+    mVelX = 0;
+    mVelY = 0;
 }

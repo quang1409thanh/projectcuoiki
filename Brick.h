@@ -18,7 +18,7 @@ class Brick{
 		void moveB( Brick **brick );
 
 		//Shows the dot on the screen
-		void renderB();
+		void renderB(char color);//n lưu ý chõ này ko sử dụng được kiểu string
 
 		int getPosXB();
 		int getPosYB();
@@ -77,9 +77,40 @@ Brick Brick::setBrick_mPosXB(int x){
     return *this;
 }
 
-void Brick::renderB(){
-	//Render the dot
-	gBrickTexture.render(mPosXB, mPosYB);
+void Brick::renderB(char color){
+	switch (color){
+		case 'r':
+			gBricksTextureRed.render(mPosXB,mPosYB);
+			break;
+		case 'b':
+			gBricksTextureBlue.render(mPosXB,mPosYB);
+			break;
+		case 'g':
+			gBricksTextureGreen.render(mPosXB,mPosYB);
+			break;
+		case 'd':
+			gBricksTexturDearkgreen.render(mPosXB,mPosYB);
+			break;
+		case 'i':
+			gBricksTextureIndigo.render(mPosXB,mPosYB);
+			break;
+		case 'o':
+			gBricksTextureOrange.render(mPosXB,mPosYB);
+			break;
+		case 'p':
+			gBricksTexturePink.render(mPosXB,mPosYB);
+			break;
+		case 's':
+			gBricksTextureSolid.render(mPosXB,mPosYB);
+			break;
+		case 'v':
+			gBricksTextureViolet.render(mPosXB,mPosYB);
+			break;
+		case 'y' :
+			gBricksTextureYellow.render(mPosXB,mPosYB);
+			break;
+		
+	}
 }
 // //Box collision detector
 // bool checkCollision( SDL_Rect a, Brick b );

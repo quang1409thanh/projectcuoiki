@@ -1,10 +1,21 @@
-void Init_Bricklv1(){
-    Brick brick[BRICK_ROWS][BRICK_COLUMNS];
-	for (int i = 0; i < BRICK_ROWS; i++)
-	{
-		for (int j = 0; j < BRICK_COLUMNS; j++)
-		{
-			brick[i][j] = brick[i][j].setBrick(20 + i * brick[i][j].BRICK_WIDTH, j * brick[i][j].BRICK_HEIGHT, 0, 0, brick[i][j].BRICK_WIDTH, brick[i][j].BRICK_HEIGHT);
-		}
+void Init_Bricklv1(Brick brick[TOTAL_BRICKSLV1]){
+   for (int i = 0; i < 5; i++){
+	   		brick[i].setBrick(i*brick[i].BRICK_WIDTH, i*brick[i].BRICK_HEIGHT,0,0,brick[i].BRICK_WIDTH, brick[i].BRICK_HEIGHT);
+	      }
+	for(int i=5;i<10;i++){	
+		brick[i].setBrick((i-5)*brick[i].BRICK_WIDTH, (i-5)*brick[i].BRICK_HEIGHT+40,0,0,brick[i].BRICK_WIDTH, brick[i].BRICK_HEIGHT);
+	}
+	for(int i=10;i<15;i++){
+		brick[i].setBrick((i-10)*brick[i].BRICK_WIDTH, (i-10)*brick[i].BRICK_HEIGHT+80,0,0,brick[i].BRICK_WIDTH, brick[i].BRICK_HEIGHT);
 	}
 }
+void Init_Bricklv2(Brick brick[TOTAL_BRICKSLV2]){
+   for (int i = 0; i < 5; i++){
+	   		brick[i].setBrick(i*brick[i].BRICK_WIDTH, i*brick[i].BRICK_HEIGHT,0,0,brick[i].BRICK_WIDTH, brick[i].BRICK_HEIGHT);
+	      }
+	for(int i=5;i<10;i++){	
+		brick[i].setBrick((i-5)*brick[i].BRICK_WIDTH+25, (i-5)*brick[i].BRICK_HEIGHT+60,0,0,brick[i].BRICK_WIDTH, brick[i].BRICK_HEIGHT);
+	}
+	
+}
+

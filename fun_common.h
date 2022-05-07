@@ -15,14 +15,22 @@ void loadMedia()
 {
 	gDotTexture.loadFromFile( "media/medialec27/dot.bmp" );
 	gPaddleTexture.loadFromFile("source1/img/paddle/paddlelarge.png");
-	gBrickTexture.loadFromFile("source1/img/bricks/blue.png");
+	gBricksTextureBlue.loadFromFile("source1/img/bricks/blue.png");
+	gBricksTextureRed.loadFromFile("source1/img/bricks/red.png");
+	gBricksTextureGreen.loadFromFile("source1/img/bricks/green.png");
+	gBricksTexturDearkgreen.loadFromFile("source1/img/bricks/darkgreen.png");
+	gBricksTextureIndigo.loadFromFile("source1/img/bricks/indigo.png");
+	gBricksTextureOrange.loadFromFile("source1/img/bricks/orange.png");
+	gBricksTexturePink.loadFromFile("source1/img/bricks/pink.png");
+	gBricksTextureSolid.loadFromFile("source1/img/bricks/solid.png");
+	gBricksTextureViolet.loadFromFile("source1/img/bricks/violet.png");
+	gBricksTextureYellow.loadFromFile("source1/img/bricks/yellow.png");
 	gGameOverTexture.loadFromFile("gameover.png");
 	gGameWin.loadFromFile("win.png");
     ballcollision=Mix_LoadWAV("source1/audio/sfx/ballcollision.wav");
     brickcollision=Mix_LoadWAV("source1/audio/sfx/brickcollision.wav");
 	gFont= TTF_OpenFont( "font (2).ttf", 28 );
-	SDL_Color textColor = { 0, 0, 0 };
-	gTextTexture.loadFromRenderedText( "level 1 ", textColor );
+	
 	for(int i=0;i<4;i++){
 	gButtonAbout.set_texture("source1/img/buttons/aboutbutton.png",i);
 	}
@@ -67,7 +75,7 @@ void close()
 	//Free loaded images
 	gDotTexture.free();
 	gPaddleTexture.free();
-	gBrickTexture.free();
+	gBricksTextureBlue.free();
     //Free loaded images
     gTextTexture.free();
 	// //Free loaded images
@@ -81,6 +89,4 @@ void close()
 	SDL_DestroyWindow( gWindow );
 	gWindow = NULL;
 	gRenderer = NULL;
-
-
 }

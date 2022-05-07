@@ -4,13 +4,13 @@ and may not be redistributed without written permission.*/
 //Using SDL, SDL_image, standard IO, and strings
 #include <SDL.h>
 #include <SDL_image.h>
-#include<SDL_ttf.h>
-#include<SDL_mixer.h>
+#include <SDL_ttf.h>
+#include <SDL_mixer.h>
 #include <stdio.h>
 #include <string>
 #include <sstream>
-#include<iostream>
-#include"var_common.h"
+#include <iostream>
+#include "var_common.h"
 
 #include"LTexture.h"
 #include"var_texture.h"
@@ -23,7 +23,7 @@ and may not be redistributed without written permission.*/
 #include"Paddle.h"
 Paddle paddle;
 #include"Brick.h"
-#include"Init_Bricklv1.h"
+#include"var_brick.h"
 #include"Dot.h"
 Dot dot;
 #include"play.h"
@@ -32,16 +32,34 @@ int main(int argc, char* args[])
 	init();
 
 	loadMedia();
-	main_menu();
-	//else {
-	//	close();
-	//	lose();
-	//}
-	//close();
-	////Quit SDL subsystems
-	//TTF_Quit();
-	//IMG_Quit();
-	//SDL_Quit();
+	//gameloop
+	bool isRestart=false;
+	do {
+		if(!isRestart){
+			main_menu();
+			if(gButtonExit.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
+			{
+				break;
+			}
+		}
+		playlv1();
+		if(gButtonRestart.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
+		{
+			isRestart=true;
+		}
+		else isRestart=false;
+
+		if(gButtonExit.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
+		{
+			isRestart=false;
+		}
+		reset();
+		gButtonExit.freeStatus();
+		gButtonRestart.freeStatus();
+		gButtonMainmenu.freeStatus();
+		gButtonPlay.freeStatus();
+	}
+	while (isRestart);
 	std::cout << COUNT_DIES << std::endl;
 	return 0;
 }
