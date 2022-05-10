@@ -19,3 +19,4 @@ LTexture gFPSTextTexture;
 LTexture gGameOverTexture;
 LTexture gGameWin;
 LTexture ghigh_Score;
+LTexture gBgTexture;

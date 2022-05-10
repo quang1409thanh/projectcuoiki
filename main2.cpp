@@ -1,78 +1,110 @@
 /*This source code copyrighted by Lazy Foo' Productions (2004-2022)
 and may not be redistributed without written permission.*/
 
-//Using SDL,SDL_image, standard math, and strings
+//Using SDL, SDL_image, standard IO, vectors, and strings
 #include <SDL.h>
-
 #include <SDL_image.h>
 #include <stdio.h>
 #include <string>
-
+#include<iostream>
+using namespace std;
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-//Button constants
-const int BUTTON_WIDTH = 179;
-const int BUTTON_HEIGHT = 71;
-const int TOTAL_BUTTONS = 4;
-
-enum LButtonSprite
+//A circle stucture
+struct Circle
 {
-    BUTTON_SPRITE_MOUSE_OUT = 0,
-    BUTTON_SPRITE_MOUSE_OVER_MOTION = 1,
-    BUTTON_SPRITE_MOUSE_DOWN = 2,
-    BUTTON_SPRITE_MOUSE_UP = 3,
-    BUTTON_SPRITE_TOTAL = 4
+	int x, y;
+	int r;
 };
 
 //Texture wrapper class
-class LTexture 
+class LTexture
 {
 	public:
-	//Initializes variables - khởi tạo biến
-	LTexture();
+		//Initializes variables
+		LTexture();
 
-	//Deallocates memory - giải phóng bộ nhớ
-	~LTexture();
+		//Deallocates memory
+		~LTexture();
 
-	//load image at specified path - tải hình ảnh tại đường dẫn đã chỉ định
-	bool loadFromFile( std::string path);
+		//Loads image at specified path
+		bool loadFromFile( std::string path );
+		
+		#if defined(SDL_TTF_MAJOR_VERSION)
+		//Creates image from font string
+		bool loadFromRenderedText( std::string textureText, SDL_Color textColor );
+		#endif
 
-	#if defined(SDL_TTF_MAJOR_VERSION)
-	//Creates image from font string
-    bool loadFromRenderedText( std::string textureText, SDL_Color textColor );
-	#endif
+		//Deallocates texture
+		void free();
 
-	//Deallocates texture - giải phóng kết cấu
-	void free();
+		//Set color modulation
+		void setColor( Uint8 red, Uint8 green, Uint8 blue );
 
-	//Set color modulation - đặt màu sắc
-	void setColor( Uint8 red, Uint8 green, Uint8 blue );
+		//Set blending
+		void setBlendMode( SDL_BlendMode blending );
 
-	//Set blending
-	void setBlendMode( SDL_BlendMode blending );
+		//Set alpha modulation
+		void setAlpha( Uint8 alpha );
+		
+		//Renders texture at given point
+		void render( int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE );
 
-	//Set alpha modulation
-	void setAlpha( Uint8 alpha );
+		//Gets image dimensions
+		int getWidth();
+		int getHeight();
 
-	//Rendes texture at given point - hiển thị kết cấu tại điểm đã chỉ định
-	void render ( int x, int y, SDL_Rect* clip = NULL,  double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE );
-
-	//get image dimensions- lấy kích thước hình ảnh
-	int getWidth();
-	int getHeight();
 	private:
-	// the actual hardware texture - kết cấu
-	SDL_Texture *mTexture;
+		//The actual hardware texture
+		SDL_Texture* mTexture;
 
-	// image dimensions - kích thước
-	int mWidth;
-	int mHeight;
-
+		//Image dimensions
+		int mWidth;
+		int mHeight;
 };
 
+//The dot that will move around on the screen
+class Dot
+{
+    public:
+		//The dimensions of the dot
+		static const int DOT_WIDTH = 20;
+		static const int DOT_HEIGHT = 20;
+
+		//Maximum axis velocity of the dot
+		static const int DOT_VEL = 10;
+
+		//Initializes the variables
+		Dot( int x, int y );
+
+		//Takes key presses and adjusts the dot's velocity
+		void handleEvent( SDL_Event& e );
+
+		//Moves the dot and checks collision
+		void move( SDL_Rect& square, Circle& circle );
+
+		//Shows the dot on the screen
+		void render();
+
+		//Gets collision circle
+		Circle& getCollider();
+
+    private:
+		//The X and Y offsets of the dot
+		int mPosX, mPosY;
+
+		//The velocity of the dot
+		int mVelX, mVelY;
+		
+		//Dot's collision circle
+		Circle mCollider;
+
+		//Moves the collision circle relative to the dot's offset
+		void shiftColliders();
+};
 
 //Starts up SDL and creates window
 bool init();
@@ -83,48 +115,36 @@ bool loadMedia();
 //Frees media and shuts down SDL
 void close();
 
-//The window we'll be rendering to-Cửa sổ chứa các kết cấu
+//Circle/Circle collision detector
+bool checkCollision( Circle& a, Circle& b );
+
+//Circle/Box collision detector
+bool checkCollision( Circle& a, SDL_Rect& b );
+
+//Calculates distance squared between two points
+double distanceSquared( int x1, int y1, int x2, int y2 );
+
+//The window we'll be rendering to
 SDL_Window* gWindow = NULL;
-	
-//The window renderer-cửa sổ kết xuất
+
+//The window renderer
 SDL_Renderer* gRenderer = NULL;
 
-
-//Mouse button sprites
-//Mouse button sprites
-SDL_Rect gSpriteClips[4];
-
+//Scene textures
+LTexture gDotTexture;
 
 LTexture::LTexture()
 {
-	//Initialize-khởi tạo
+	//Initialize
 	mTexture = NULL;
-	mWidth=0;
-	mHeight=0;
+	mWidth = 0;
+	mHeight = 0;
 }
 
 LTexture::~LTexture()
 {
-	//Deallocate-giải phóng
+	//Deallocate
 	free();
-}
-
-void LTexture::setColor( Uint8 red, Uint8 green, Uint8 blue )
-{
-    //Modulate texture
-    SDL_SetTextureColorMod( mTexture, red, green, blue );
-}
-
-void LTexture::setBlendMode( SDL_BlendMode blending )
-{
-    //Set blending function
-    SDL_SetTextureBlendMode( mTexture, blending );
-}
-        
-void LTexture::setAlpha( Uint8 alpha )
-{
-    //Modulate texture alpha
-    SDL_SetTextureAlphaMod( mTexture, alpha );
 }
 
 bool LTexture::loadFromFile( std::string path )
@@ -169,239 +189,192 @@ bool LTexture::loadFromFile( std::string path )
 }
 
 #if defined(SDL_TTF_MAJOR_VERSION)
-bool LTexture::loadFromRenderedText(std::string textureText,SDL_Color textColor)
+bool LTexture::loadFromRenderedText( std::string textureText, SDL_Color textColor )
 {
-	//Get rid of preexisting texture-Loại bỏ kết cấu có sẵn
+	//Get rid of preexisting texture
 	free();
 
-	//Render text surface-Tạo kết cấu từ chuỗi văn bản
+	//Render text surface
 	SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, textureText.c_str(), textColor );
-	if( textSurface == NULL)
+	if( textSurface != NULL )
 	{
-		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
-	}
-	else
-	{
-		//Create texture from surface pixels-Tạo kết cấu từ màu sắc của khuôn mẫu
-		mTexture = SDL_CreateTextureFromSurface( gRenderer, textSurface );
+		//Create texture from surface pixels
+        mTexture = SDL_CreateTextureFromSurface( gRenderer, textSurface );
 		if( mTexture == NULL )
 		{
 			printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
 		}
 		else
 		{
-			//Get image dimensions-Lấy kích thước hình ảnh
+			//Get image dimensions
 			mWidth = textSurface->w;
 			mHeight = textSurface->h;
 		}
 
-		//Get rid of old surface-Giải phóng khuôn mẫu cũ
+		//Get rid of old surface
 		SDL_FreeSurface( textSurface );
 	}
-	//return success-trả về thành công
-	return mTexture != NULL;
+	else
+	{
+		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+	}
 
+	
+	//Return success
+	return mTexture != NULL;
 }
 #endif
 
+void LTexture::free()
+{
+	//Free texture if it exists
+	if( mTexture != NULL )
+	{
+		SDL_DestroyTexture( mTexture );
+		mTexture = NULL;
+		mWidth = 0;
+		mHeight = 0;
+	}
+}
+
+void LTexture::setColor( Uint8 red, Uint8 green, Uint8 blue )
+{
+	//Modulate texture rgb
+	SDL_SetTextureColorMod( mTexture, red, green, blue );
+}
+
+void LTexture::setBlendMode( SDL_BlendMode blending )
+{
+	//Set blending function
+	SDL_SetTextureBlendMode( mTexture, blending );
+}
+		
+void LTexture::setAlpha( Uint8 alpha )
+{
+	//Modulate texture alpha
+	SDL_SetTextureAlphaMod( mTexture, alpha );
+}
+
 void LTexture::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip )
 {
-    //Set rendering space and render to screen
-    SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+	//Set rendering space and render to screen
+	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
 
-    //Set clip rendering dimensions
-    if( clip != NULL )
-    {
-        renderQuad.w = clip->w;
-        renderQuad.h = clip->h;
-    }
+	//Set clip rendering dimensions
+	if( clip != NULL )
+	{
+		renderQuad.w = clip->w;
+		renderQuad.h = clip->h;
+	}
 
-    //Render to screen
-    SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, angle, center, flip );
+	//Render to screen
+	SDL_RenderCopyEx( gRenderer, mTexture, clip, &renderQuad, angle, center, flip );
 }
 
 int LTexture::getWidth()
 {
-    return mWidth;
+	return mWidth;
 }
 
 int LTexture::getHeight()
 {
-    return mHeight;
-}
-void LTexture::free()
-{
-	//Free texture if it exists-giải phóng kết cấu nếu nó tồn tại
-	if(mTexture!=NULL)
-	{
-		SDL_DestroyTexture(mTexture);
-		mTexture=NULL;
-		mWidth=0;
-		mHeight=0;
-	}
+	return mHeight;
 }
 
-//The mouse button
-class LButton
+Dot::Dot( int x, int y )
 {
-    public:
-        //Initializes internal variables
-        LButton();
+    //Initialize the offsets
+    mPosX = x;
+    mPosY = y;
 
-        //Sets top left position
-        void setPosition( int x, int y );
+	//Set collision circle size
+	mCollider.r = DOT_WIDTH / 2;
 
-        //Handles mouse event
-        void handleEvent( SDL_Event* e );
-    
-        //Shows button sprite
-        void render();
+    //Initialize the velocity
+    mVelX = 0;
+    mVelY = 0;
 
-		void set_texture(std::string s,const int &n);
-
-		void freeB();
-
-		LButtonSprite getStatus();
-
-		void freeStatus();
-
-    private:
-        //Top left position
-        SDL_Point mPosition;
-
-        //Currently used global sprite
-        LButtonSprite mCurrentSprite;
-		// 2 trang thái của Button	
-		LTexture texture[4];
-};
-
-LButtonSprite LButton::getStatus() {
-	return mCurrentSprite;
+	//Move collider relative to the circle
+	shiftColliders();
 }
 
-
-LButton::LButton()
+void Dot::handleEvent( SDL_Event& e )
 {
-    mPosition.x = 0;
-    mPosition.y = 0;
-
-    mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
-}
-
-void LButton::setPosition( int x, int y )
-{
-    mPosition.x = x;
-    mPosition.y = y;
-}
-
-void LButton::handleEvent( SDL_Event* e )
-{
-    //If mouse event happened
-    if( e->type == SDL_MOUSEMOTION || e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP )
+    //If a key was pressed
+	if( e.type == SDL_KEYDOWN && e.key.repeat == 0 )
     {
-        //Get mouse position
-        int x, y;
-        SDL_GetMouseState( &x, &y );
-		//Check if mouse is in button
-        bool inside = true;
-
-        //Mouse is left of the button
-        if( x < mPosition.x )
+        //Adjust the velocity
+        switch( e.key.keysym.sym )
         {
-            inside = false;
+            case SDLK_UP: mVelY -= DOT_VEL; break;
+            case SDLK_DOWN: mVelY += DOT_VEL; break;
+            case SDLK_LEFT: mVelX -= DOT_VEL; break;
+            case SDLK_RIGHT: mVelX += DOT_VEL; break;
         }
-        //Mouse is right of the button
-        else if( x > mPosition.x + BUTTON_WIDTH )
+    }
+    //If a key was released
+    else if( e.type == SDL_KEYUP && e.key.repeat == 0 )
+    {
+        //Adjust the velocity
+        switch( e.key.keysym.sym )
         {
-            inside = false;
-        }
-        //Mouse above the button
-        else if( y < mPosition.y )
-        {
-            inside = false;
-        }
-        //Mouse below the button
-        else if( y > mPosition.y + BUTTON_HEIGHT )
-        {
-            inside = false;
-        }
-		//Mouse is outside button
-        if( !inside )
-        {
-            mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
-        }
-        //Mouse is inside button
-        else
-        {
-            //Set mouse over sprite
-            switch( e->type )
-            {
-                case SDL_MOUSEMOTION:
-                mCurrentSprite = BUTTON_SPRITE_MOUSE_OVER_MOTION;
-                break;
-            
-                case SDL_MOUSEBUTTONDOWN:
-                mCurrentSprite = BUTTON_SPRITE_MOUSE_DOWN;
-                break;
-                
-                case SDL_MOUSEBUTTONUP:
-                mCurrentSprite = BUTTON_SPRITE_MOUSE_UP;
-                break; //thừa
-            }
+            case SDLK_UP: mVelY += DOT_VEL; break;
+            case SDLK_DOWN: mVelY -= DOT_VEL; break;
+            case SDLK_LEFT: mVelX += DOT_VEL; break;
+            case SDLK_RIGHT: mVelX -= DOT_VEL; break;
         }
     }
 }
 
-void LButton::render()
+void Dot::move( SDL_Rect& square, Circle& circle )
 {
-   //Show current button sprite
-	switch (mCurrentSprite) {
-	case BUTTON_SPRITE_MOUSE_OUT: {
-		texture[0].render(mPosition.x, mPosition.y,&gSpriteClips[ mCurrentSprite ] );
-		break;
-	}
-	case BUTTON_SPRITE_MOUSE_OVER_MOTION: {
-		texture[1].render(mPosition.x, mPosition.y,&gSpriteClips[ mCurrentSprite ] );
-	}
-	case BUTTON_SPRITE_MOUSE_DOWN: {
-		texture[2].render(mPosition.x, mPosition.y,&gSpriteClips[ mCurrentSprite ] );
-	}
-	case BUTTON_SPRITE_MOUSE_UP: {
-		texture[3].render(mPosition.x, mPosition.y,&gSpriteClips[ mCurrentSprite ] );
-	}
-	}
+    //Move the dot up or down
+    mPosY += mVelY;
+	shiftColliders();
+
+    //If the dot collided or went too far to the left or right
+	if( checkCollision( mCollider, square )  )
+    {
+        //Move back
+        mPosX -= mVelX;
+		shiftColliders();
+		cout<<"lr"<<endl;
+    }
+
+    
+//Move the dot left or right
+    mPosX += mVelX;
+	shiftColliders();
+    //If the dot collided or went too far up or down
+    if( checkCollision( mCollider, square )  )
+    {
+        //Move back
+        mPosY -= mVelY;
+		shiftColliders();
+		cout<<"ud"<<endl;
+    }
+	// hay nhất chỗ cộng trừ x y sẽ biết được va chạm xảy ra ở đâu
+	// chỗ này vẫn không hiểu tại sao lại phân biệt được left right với up down nữanữa
 }
 
-void LButton::set_texture(std::string path,const int &n) {
-	texture[n].loadFromFile(path);
-			gSpriteClips[ 0 ].x = 0;
-			gSpriteClips[ 0].y = 0;
-			gSpriteClips[ 0 ].w = BUTTON_WIDTH;
-			gSpriteClips[ 0 ].h = BUTTON_HEIGHT;
-	
-			gSpriteClips[ 1 ].x = 179;
-			gSpriteClips[ 1 ].y = 0;
-			gSpriteClips[ 1 ].w = BUTTON_WIDTH;
-			gSpriteClips[ 1 ].h = BUTTON_HEIGHT;
-
-			gSpriteClips[ 2 ].x = 358;
-			gSpriteClips[ 2 ].y = 0;
-			gSpriteClips[ 2 ].w = BUTTON_WIDTH;
-			gSpriteClips[ 2 ].h = BUTTON_HEIGHT;
-			gSpriteClips[ 3 ].x = 0;
-			gSpriteClips[ 3 ].y = 0;
-			gSpriteClips[ 3 ].w = BUTTON_WIDTH;
-			gSpriteClips[ 3 ].h = BUTTON_HEIGHT;
+void Dot::render()
+{
+    //Show the dot
+	gDotTexture.render( mPosX - mCollider.r, mPosY - mCollider.r );
 }
 
-
-
-void LButton::freeStatus() {
-	mCurrentSprite = BUTTON_SPRITE_MOUSE_OVER_MOTION;
+Circle& Dot::getCollider()
+{
+	return mCollider;
 }
 
-//Buttons objects
-LButton gButtonAbout;
+void Dot::shiftColliders()
+{
+	//Align collider to center of dot
+	mCollider.x = mPosX;
+	mCollider.y = mPosY;
+}
+
 bool init()
 {
 	//Initialization flag
@@ -456,19 +429,25 @@ bool init()
 	return success;
 }
 
-bool loadMedia(){
-	gButtonAbout.set_texture("source1/img/buttons/aboutbutton.png",0);
-			gButtonAbout.set_texture("source1/img/buttons/aboutbutton.png", 1);
-			gButtonAbout.set_texture("source1/img/buttons/aboutbutton.png", 2);
-			gButtonAbout.set_texture("source1/img/buttons/aboutbutton.png", 3);
-			gButtonAbout.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT/2 - BUTTON_HEIGHT/2);
-			return true;
+bool loadMedia()
+{
+	//Loading success flag
+	bool success = true;
+
+	//Load dot texture
+	if( !gDotTexture.loadFromFile( "media/medialec29/dot.bmp" ) )
+	{
+		printf( "Failed to load dot texture!\n" );
+		success = false;
+	}
+
+	return success;
 }
 
 void close()
 {
 	//Free loaded images
-	//gButtonAbout.freeStatus();
+	gDotTexture.free();
 
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
@@ -481,6 +460,73 @@ void close()
 	SDL_Quit();
 }
 
+bool checkCollision( Circle& a, Circle& b )
+{
+	//Calculate total radius squared
+	int totalRadiusSquared = a.r + b.r;
+	totalRadiusSquared = totalRadiusSquared * totalRadiusSquared;
+
+    //If the distance between the centers of the circles is less than the sum of their radii
+    if( distanceSquared( a.x, a.y, b.x, b.y ) < ( totalRadiusSquared ) )
+    {
+        //The circles have collided
+        return true;
+    }
+
+    //If not
+    return false;
+}
+
+bool checkCollision( Circle& a, SDL_Rect& b )
+{
+    //Closest point on collision box
+    int cX, cY;
+
+    //Find closest x offset
+    if( a.x < b.x )
+    {
+        cX = b.x;
+    }
+    else if( a.x > b.x + b.w )
+    {
+        cX = b.x + b.w;
+    }
+    else
+    {
+        cX = a.x;
+    }
+
+    //Find closest y offset
+    if( a.y < b.y )
+    {
+        cY = b.y;
+    }
+    else if( a.y > b.y + b.h )
+    {
+        cY = b.y + b.h;
+    }
+    else
+    {
+        cY = a.y;
+    }
+
+    //If the closest point is inside the circle
+    if( distanceSquared( a.x, a.y, cX, cY ) < a.r * a.r )
+    {
+        //This box and the circle have collided
+        return true;
+    }
+
+    //If the shapes have not collided
+    return false;
+}
+
+double distanceSquared( int x1, int y1, int x2, int y2 )
+{
+	int deltaX = x2 - x1;
+	int deltaY = y2 - y1;
+	return deltaX*deltaX + deltaY*deltaY;
+}
 
 int main( int argc, char* args[] )
 {
@@ -504,13 +550,17 @@ int main( int argc, char* args[] )
 			//Event handler
 			SDL_Event e;
 
-			//Angle of rotation
-            double degrees = 0;
+			//The dot that will be moving around on the screen
+			Dot dot( Dot::DOT_WIDTH / 2, Dot::DOT_HEIGHT / 2 );
+			Dot otherDot( SCREEN_WIDTH / 4, SCREEN_HEIGHT / 4 );
+
+			//Set the wall
+			SDL_Rect wall;
+			wall.x = 300;
+			wall.y = 40;
+			wall.w = 40;
+			wall.h = 400;
 			
-
-			//Flip type
-            SDL_RendererFlip flipType = SDL_FLIP_NONE;
-
 			//While application is running
 			while( !quit )
 			{
@@ -518,30 +568,37 @@ int main( int argc, char* args[] )
 				while( SDL_PollEvent( &e ) != 0 )
 				{
 					//User requests quit
-				if( e.type == SDL_QUIT )
-				{
-					quit = true;
+					if( e.type == SDL_QUIT )
+					{
+						quit = true;
+					}
+
+					//Handle input for the dot
+					dot.handleEvent( e );
 				}
-				
-				// Handle button events-Xử lý sự kiện nút
-				gButtonAbout.handleEvent( &e );
-				
-			}
+
+				//Move the dot and check collision
+				dot.move( wall, otherDot.getCollider() );
 
 				//Clear screen
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
 
-				//Render buttons
-				gButtonAbout.render();
-				//Update screen-cập nhật màn hình
-				SDL_RenderPresent( gRenderer );
+				//Render wall
+				SDL_SetRenderDrawColor( gRenderer, 0x00, 0x00, 0x00, 0xFF );		
+				SDL_RenderDrawRect( gRenderer, &wall );
 				
+				//Render dots
+				dot.render();
+				otherDot.render();
+
+				//Update screen
+				SDL_RenderPresent( gRenderer );
 			}
 		}
 	}
-		
-	//Free resources and close SDL-
+
+	//Free resources and close SDL
 	close();
 
 	return 0;

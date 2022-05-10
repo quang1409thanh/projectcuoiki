@@ -25,6 +25,7 @@ class Paddle
 		int getPosYP();
 		int getVelXP();
 		int getVelYP();
+		SDL_Rect getColliderP();
     private:
 		//The X and Y offsets of the dot
 		int mPosXP, mPosYP;
@@ -49,7 +50,9 @@ int Paddle::getVelXP(){
 int Paddle::getVelYP(){
 	return mVelYP;
 }
-
+SDL_Rect Paddle::getColliderP(){
+	return mPaddle;
+}
 Paddle::Paddle(){
 	mPosXP = SCREEN_WIDTH/2 - PADDLE_WIDTH/2;
 	mPosYP = (SCREEN_HEIGHT-100) - PADDLE_HEIGHT;

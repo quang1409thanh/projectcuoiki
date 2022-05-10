@@ -19,13 +19,13 @@ and may not be redistributed without written permission.*/
 #include"var_button.h"
 #include"LButton1.h"
 #include"var_Lbutton1.h"
-#include"fun_common.h"
+
 #include"Paddle.h"
 Paddle paddle;
 #include"Brick.h"
-#include"var_brick.h"
 #include"Dot.h"
 Dot dot;
+#include"fun_common.h"
 #include"play.h"
 int main(int argc, char* args[])
 {
@@ -61,5 +61,6 @@ int main(int argc, char* args[])
 	}
 	while (isRestart);
 	std::cout << COUNT_DIES << std::endl;
+	close();
 	return 0;
 }

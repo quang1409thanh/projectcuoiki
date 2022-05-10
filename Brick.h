@@ -2,8 +2,8 @@
 class Brick{
 	public:
 		//The dimensions of the dot
-		static const int BRICK_WIDTH = 80;
-		static const int BRICK_HEIGHT = 35;
+		static const int BRICK_WIDTH = 50;
+		static const int BRICK_HEIGHT = 22;
 
 		//Maximum axis velocity of the dot
 		static const int BRICK_VEL = 0;
@@ -24,12 +24,14 @@ class Brick{
 		int getPosYB();
 		int getVelXB();
 		int getVelYB();
+		void free();
 
 		Brick setBrick_mPosXB(int x);
 
 		Brick setBrick(int x, int y, int velx, int vely, int w, int h);
 
 		LTexture gBricks;
+		SDL_Rect getColliderB();
 	private:
 		//The X and Y offsets of the dot
 		int mPosXB, mPosYB;
@@ -43,10 +45,10 @@ class Brick{
 		//int mR, mG, mB, mA, mS, mT;
 };
 Brick::Brick(){
-	mPosXB=100;
-	mPosYB=100;
-	mVelXB=0;
-	mVelYB=0;
+	mPosXB=-100;
+	mPosYB=-100;
+	mVelXB=-100;
+	mVelYB=-100;
 	mBrick={mPosXB,mPosYB,BRICK_WIDTH,BRICK_HEIGHT};
 }
 
@@ -62,7 +64,9 @@ int Brick::getVelXB(){
 int Brick::getVelYB(){
 	return mVelYB;
 }
-
+SDL_Rect Brick::getColliderB(){
+	return mBrick;
+}
 
 Brick Brick::setBrick(int x, int y, int velx, int vely, int w, int h){
 	mPosXB=x;
@@ -111,6 +115,9 @@ void Brick::renderB(char color){
 			break;
 		
 	}
+}
+void Brick::free(){
+
 }
 // //Box collision detector
 // bool checkCollision( SDL_Rect a, Brick b );

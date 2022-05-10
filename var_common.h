@@ -4,9 +4,22 @@ const int SCREEN_HEIGHT = 650;
 
 const int BRICK_ROWS = 5;
 const int BRICK_COLUMNS= 5;
-const int TOTAL_BRICKSLV1 = 15;
-const int TOTAL_BRICKSLV2 = 10;
-int COUNT_DIES=5;
+const int TOTAL_BRICKSLV1 =40;
+const int TOTAL_BRICKSLV2 = 30;
+const int TOTAL_BRICKSLV3 =34;
+const int TOTAL_BRICKSLV4 = 30;
+const int TOTAL_BRICKSLV5 =34;
+const int TOTAL_BRICKSLV6 = 30;
+const int TOTAL_BRICKSLV7 =34;
+const int TOTAL_BRICKSLV8 = 30;
+const int TOTAL_BRICKSLV9 =34;
+const int TOTAL_BRICKSLV10 = 30;
+const int TOTAL_BRICKSLV11 =34;
+const int TOTAL_BRICKSLV12 = 30;
+const int TOTAL_BRICKSLV13 =34;
+const int TOTAL_BRICKSLV14 = 30;
+const int TOTAL_BRICKSLV15 =34;
+int COUNT_DIES=50;
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 
@@ -39,3 +52,5 @@ enum LButtonSprite
 //Mouse button sprites
 SDL_Rect gSpriteClips[4];
 SDL_Rect gSpriteClips1[4];
+SDL_Rect gDotRect[5];
+std::stringstream high_Score;

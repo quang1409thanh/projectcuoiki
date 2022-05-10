@@ -1,6 +1,6 @@
 void init()
 {
-		gWindow = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
+		gWindow = SDL_CreateWindow( "Break Brick Game	", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
 			gRenderer = SDL_CreateRenderer( gWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 
@@ -13,7 +13,6 @@ void init()
 
 void loadMedia()    
 {
-	gDotTexture.loadFromFile( "media/medialec27/dot.bmp" );
 	gPaddleTexture.loadFromFile("source1/img/paddle/paddlelarge.png");
 	gBricksTextureBlue.loadFromFile("source1/img/bricks/blue.png");
 	gBricksTextureRed.loadFromFile("source1/img/bricks/red.png");
@@ -26,11 +25,14 @@ void loadMedia()
 	gBricksTextureViolet.loadFromFile("source1/img/bricks/violet.png");
 	gBricksTextureYellow.loadFromFile("source1/img/bricks/yellow.png");
 	gGameOverTexture.loadFromFile("gameover.png");
+	gBgTexture.loadFromFile("bgr.jpg");
 	gGameWin.loadFromFile("win.png");
     ballcollision=Mix_LoadWAV("source1/audio/sfx/ballcollision.wav");
     brickcollision=Mix_LoadWAV("source1/audio/sfx/brickcollision.wav");
 	gFont= TTF_OpenFont( "font (2).ttf", 28 );
-	
+	for(int i=0;i<5;i++){
+	dot.set_gDot_Texture("source1/img/anim/ballanim.png",i);
+	}
 	for(int i=0;i<4;i++){
 	gButtonAbout.set_texture("source1/img/buttons/aboutbutton.png",i);
 	}
@@ -72,18 +74,31 @@ void loadMedia()
 
 void close()
 {
-	//Free loaded images
-	gDotTexture.free();
-	gPaddleTexture.free();
-	gBricksTextureBlue.free();
-    //Free loaded images
-    gTextTexture.free();
-	// //Free loaded images
-	gFPSTextTexture.free();
+
     //Free global font
     TTF_CloseFont( gFont );
     gFont = NULL;
+	gDotTexture.free();
+	gPaddleTexture.free();
+	gBricksTextureBlue.free();
+	gBricksTextureRed.free();
+	gBricksTextureGreen.free();
+	gBricksTexturDearkgreen.free();
+	gBricksTextureIndigo.free();
+	gBricksTextureOrange.free();
+	gBricksTexturePink.free();
+	gBricksTextureSolid.free();
+	gBricksTextureViolet.free();
+	gBricksTextureYellow.free();
+	//Rendered texture
+	gTextTexture.free();
 
+	//Scene textures
+	gFPSTextTexture.free();
+	gGameOverTexture.free();
+	gGameWin.free();
+	ghigh_Score.free();
+	gBgTexture.free();
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyWindow( gWindow );
