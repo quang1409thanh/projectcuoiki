@@ -313,6 +313,7 @@ void playlv1() {
 			break;
 		}
 		if(count_Broken_Bricks==TOTAL_BRICKSLV1*50){
+			quit = true;
 			SDL_Delay(100);
 			dot.reset();
 			playlv2();

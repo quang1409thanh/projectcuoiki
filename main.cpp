@@ -20,11 +20,12 @@ and may not be redistributed without written permission.*/
 #include"LButton1.h"
 #include"var_Lbutton1.h"
 
-#include"Paddle.h"
-Paddle paddle;
 #include"Brick.h"
+
+#include"Paddle.h"
+
 #include"Dot.h"
-Dot dot;
+
 #include"fun_common.h"
 #include"play.h"
 #include"TheGame.h"

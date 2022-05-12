@@ -25,6 +25,8 @@ class Paddle
 		int getPosYP();
 		int getVelXP();
 		int getVelYP();
+		int setPosXP(int& x);
+		int setPosYP(int& y);
 		SDL_Rect getColliderP();
     private:
 		//The X and Y offsets of the dot
@@ -49,6 +51,12 @@ int Paddle::getVelXP(){
 }
 int Paddle::getVelYP(){
 	return mVelYP;
+}
+int Paddle::setPosXP(int& x){
+	mPosXP = x;
+}
+int Paddle::setPosYP(int& y){
+	mPosYP = y;
 }
 SDL_Rect Paddle::getColliderP(){
 	return mPaddle;
@@ -93,7 +101,8 @@ void Paddle::moveP(){
     //Move the dot left or right
     mPosXP += mVelXP;
 	mPaddle.x = mPosXP;
-
+	// dot.setPosX(mPosXP+PADDLE_WIDTH/2-dot.DOT_WIDTH/2);
+	// dot.setPosY(SCREEN_HEIGHT-SCREEN_BOTTOM- dot.DOT_HEIGHT-PADDLE_HEIGHT);
     //If the dot collided or went too far to the left or right
 			if( ( mPosXP < SCREEN_LEFT)   )
 				{
@@ -127,3 +136,4 @@ void Paddle::renderP(){
 	//Render paddle
 	gPaddleTexture.render(mPosXP, mPosYP);
 }
+Paddle paddle;

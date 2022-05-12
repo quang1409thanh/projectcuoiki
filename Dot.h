@@ -1,3 +1,4 @@
+
 struct Circle
 {
 	int x, y;
@@ -34,6 +35,8 @@ class Dot
 		void restart();
         int getX();
         int getY();
+		int setPosX(int x);
+		int setPosY(int y);
     private:
 		//The X and Y offsets of the dot
 		int mPosX, mPosY;
@@ -48,7 +51,7 @@ class Dot
 
         LTexture gDot[5];
 };
-
+Dot dot;
 double distanceSquared( int x1, int y1, int x2, int y2 )
 {
 	int deltaX = x2 - x1;
@@ -98,7 +101,12 @@ bool checkCollision( Circle& a, Brick& b )
     //If the shapes have not collided
     return false;
 }
-
+int Dot::setPosX(int x){
+    mPosX = x;
+}
+int Dot::setPosY(int y){
+    mPosY = y;
+}
 Dot::Dot()
 {
     //Initialize the offsets
@@ -130,8 +138,14 @@ void Dot::handleEvent( SDL_Event& e )
         switch( e.key.keysym.sym )
         {
 			case SDLK_1: {
-				mVelX=-DOT_VEL;
-				mVelY=-DOT_VEL;
+                if(paddle.getPosXP()+paddle.PADDLE_WIDTH/2<SCREEN_WIDTH/2){
+                    mVelX=DOT_VEL;
+                    mVelY=-DOT_VEL;
+                }
+                else if(paddle.getPosXP()+paddle.PADDLE_WIDTH/2>=SCREEN_WIDTH/2){
+                    mVelX=-DOT_VEL;
+                    mVelY=-DOT_VEL;
+                }
 			}
         }
     }
@@ -142,8 +156,14 @@ void Dot::handleEvent( SDL_Event& e )
         switch( e.key.keysym.sym )
         {
 			case SDLK_1: {
-				mVelX=-DOT_VEL;
-				mVelY=-DOT_VEL;
+				if(paddle.getPosXP()+paddle.PADDLE_WIDTH/2<SCREEN_WIDTH/2){
+                    mVelX=DOT_VEL;
+                    mVelY=-DOT_VEL;
+                }
+                else if(paddle.getPosXP()+paddle.PADDLE_WIDTH/2>=SCREEN_WIDTH/2){
+                    mVelX=-DOT_VEL;
+                    mVelY=-DOT_VEL;
+                }
 			}
         }
     }
@@ -165,10 +185,14 @@ void Dot::ball_brick_collision(Brick brick[],int n){
         }
 }
 void Dot::move(Brick brick[],int n ){
-	int PADDLE_HEIGHT=paddle.PADDLE_HEIGHT;
-	int PADDLE_WIDTH=paddle.PADDLE_WIDTH;
-	int batx=paddle.getPosXP();
-	int baty=paddle.getPosYP();
+    // dành cho trường hợp là dot đang ở trên paddle
+    if(mVelX==0&&mVelY==0){
+        mPosX=paddle.getPosXP()+paddle.PADDLE_WIDTH/2-DOT_WIDTH/2;
+        mPosY=SCREEN_HEIGHT-SCREEN_BOTTOM- DOT_HEIGHT-paddle.PADDLE_HEIGHT;
+        std::cout<<mPosX<<"Yes"<<std::endl;
+    }
+    
+    std::cout<<mPosX<<"No"<<std::endl;
     //Move the dot left or right
 
     //If the dot collided or went too far to the left or right
@@ -263,7 +287,7 @@ void Dot::move(Brick brick[],int n ){
 		COUNT_DIES--;
 	}
     // va chạm với paddle
-    if(mPosY+DOT_HEIGHT>=paddle.getPosYP()&&mPosX>=paddle.getPosXP()&&mPosX<=paddle.getPosXP()+PADDLE_WIDTH){
+    if(mPosY+DOT_HEIGHT>=paddle.getPosYP()&&mPosX>=paddle.getPosXP()&&mPosX<=paddle.getPosXP()+paddle.PADDLE_WIDTH){
         mPosY=paddle.getPosYP()-DOT_HEIGHT;// chỗ này khá hay để tránh tình trạng lỗi chạy trên thanh paddle, chưa hiểu nguyên nhân tại sao
         mVelY*=-1;
         std::cout<<": up1"<<std::endl;
