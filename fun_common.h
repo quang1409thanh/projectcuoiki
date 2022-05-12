@@ -13,7 +13,7 @@ void init()
 
 void loadMedia()    
 {
-	gPaddleTexture.loadFromFile("source1/img/paddle/paddlelarge.png");
+	gPaddleTexture.loadFromFile("source1/img/paddle/paddlemedium.png");
 	gBricksTextureBlue.loadFromFile("source1/img/bricks/blue.png");
 	gBricksTextureRed.loadFromFile("source1/img/bricks/red.png");
 	gBricksTextureGreen.loadFromFile("source1/img/bricks/green.png");
@@ -27,49 +27,65 @@ void loadMedia()
 	gGameOverTexture.loadFromFile("gameover.png");
 	gBgTexture.loadFromFile("bgr.jpg");
 	gGameWin.loadFromFile("win.png");
+	gBg_Mainmenu.loadFromFile("main_menu.jpg");
+	gBgTexturelv2.loadFromFile("bglv2.jpg");
+	gBgLv1.loadFromFile("source1/img/bg.png");
+	gTextbox.loadFromFile("source1/img/textbox.png");
+	music_Menu=Mix_LoadMUS("source1/audio/music/menu_bg.ogg");
+	music_Play=Mix_LoadMUS("source1/audio/music/play_bg.ogg");
+	music_GameOver=Mix_LoadMUS("source1/audio/music/gameover_bg.ogg");
+	music_GameWin=Mix_LoadMUS("source1/audio/music/gamewinning_bg.ogg");
     ballcollision=Mix_LoadWAV("source1/audio/sfx/ballcollision.wav");
     brickcollision=Mix_LoadWAV("source1/audio/sfx/brickcollision.wav");
-	gFont= TTF_OpenFont( "font (2).ttf", 28 );
+	gFont= TTF_OpenFont( "source1/font/font_02/Roboto-Medium.ttf", 40 );
+	gFont_HighScore=TTF_OpenFont("source1/font/font_01/DoppioOne-Regular.ttf",23);
 	for(int i=0;i<5;i++){
 	dot.set_gDot_Texture("source1/img/anim/ballanim.png",i);
 	}
 	for(int i=0;i<4;i++){
-	gButtonAbout.set_texture("source1/img/buttons/aboutbutton.png",i);
+	gButton[ABOUT].set_texture("source1/img/buttons/aboutbutton.png",i);
 	}
-	gButtonAbout.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 2*SCREEN_HEIGHT/4 - 2*BUTTON_HEIGHT/4);
+	gButton[ABOUT].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 2*SCREEN_HEIGHT/4 - 2*BUTTON_HEIGHT/4);
 	for(int i=0;i<4;i++){
-	gButtonPlay.set_texture("source1/img/buttons/playbutton.png",i);
+	gButton[GAME_PLAY].set_texture("source1/img/buttons/playbutton.png",i);
 	}
-	gButtonPlay.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT/4  - BUTTON_HEIGHT/4);
+	gButton[GAME_PLAY].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT/4  - BUTTON_HEIGHT/4);
 		for(int i=0;i<4;i++){
-	gButtonExit.set_texture("source1/img/buttons/exitbutton.png",i);
+	gButton[EXIT].set_texture("source1/img/buttons/exitbutton.png",i);
 	}
-	gButtonExit.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 4*SCREEN_HEIGHT/4 -40 - 4*BUTTON_HEIGHT/4 );
+	gButton[EXIT].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 4*SCREEN_HEIGHT/4 -40 - 4*BUTTON_HEIGHT/4 );
 		for(int i=0;i<4;i++){
-	gButtonSound.set_texture("source1/img/buttons/soundbutton.png",i);
+	gButton[SOUND].set_texture("source1/img/buttons/soundbutton.png",i);
 	}
-	gButtonSound.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4  - 3*BUTTON_HEIGHT/4);
+	gButton[SOUND].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4  - 3*BUTTON_HEIGHT/4);
 	for(int i=0;i<4;i++){
 	gButton1_Pause.set_texture("source1/img/buttons/pausebutton.png",i);
 	}
-	gButton1_Pause.setPosition(SCREEN_WIDTH-85, SCREEN_HEIGHT-70);
+	gButton1_Pause.setPosition(SCREEN_WIDTH-SCREEN_RIGHT-BUTTON_WIDTH1-BUTTON_WIDTH1-2, 544);
 	for(int i=0;i<4;i++){
 	gButton1_Reset.set_texture("source1/img/buttons/resetbutton.png",i);
 	}
-	gButton1_Reset.setPosition(SCREEN_WIDTH-43, SCREEN_HEIGHT-70);
+	gButton1_Reset.setPosition(SCREEN_WIDTH-SCREEN_RIGHT-BUTTON_WIDTH1-1, 544);
 	for(int i=0;i<4;i++){
 	gButton1_Back.set_texture("source1/img/buttons/backbutton.png",i);
 	}
 	gButton1_Back.setPosition(80, 100);
 	for(int i=0;i<4;i++){
-	gButtonRestart.set_texture("source1/img/buttons/restartbutton.png",i);
+	gButton[RESTART].set_texture("source1/img/buttons/restartbutton.png",i);
 	}
-	gButtonRestart.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 2*SCREEN_HEIGHT/4+40 - 2*BUTTON_HEIGHT/4);
+	gButton[RESTART].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 2*SCREEN_HEIGHT/4+40 - 2*BUTTON_HEIGHT/4);
 		for(int i=0;i<4;i++){
-	gButtonMainmenu.set_texture("source1/img/buttons/mainmenubutton.png",i);
+	gButton[MAIN_MENU].set_texture("source1/img/buttons/mainmenubutton.png",i);
 	}
-	gButtonMainmenu.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4 - 3*BUTTON_HEIGHT/4);
-	
+	gButton[MAIN_MENU].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4 - 3*BUTTON_HEIGHT/4);
+	for(int i=0;i<4;i++){
+	gButtonSfxoff.set_texture("source1/img/buttons/sfxoffbutton.png",i);
+	}
+	gButtonSfxoff.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4 - 3*BUTTON_HEIGHT/4);
+	for(int i=0;i<4;i++){
+	gButtonSfxon.set_texture("source1/img/buttons/sfxonbutton.png",i);
+	}
+	gButtonSfxon.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4 - 3*BUTTON_HEIGHT/4);
 }
 
 void close()
@@ -99,6 +115,7 @@ void close()
 	gGameWin.free();
 	ghigh_Score.free();
 	gBgTexture.free();
+	//Free music
 	//Destroy window	
 	SDL_DestroyRenderer( gRenderer );
 	SDL_DestroyWindow( gWindow );

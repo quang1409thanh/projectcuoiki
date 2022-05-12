@@ -20,3 +20,8 @@ LTexture gGameOverTexture;
 LTexture gGameWin;
 LTexture ghigh_Score;
 LTexture gBgTexture;
+LTexture gBgTexturelv2;
+LTexture gBg_Mainmenu;
+LTexture gAbout[10];
+LTexture gBgLv1;
+LTexture gTextbox;

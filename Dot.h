@@ -22,6 +22,7 @@ class Dot
 
 		//Moves the dot and checks collision
 		void move( Brick brick[],int n);
+        void move1();
 
 		//Shows the dot on the screen
 		void render(char color);
@@ -102,7 +103,7 @@ Dot::Dot()
 {
     //Initialize the offsets
     mPosX = paddle.getPosXP()+paddle.PADDLE_WIDTH/2-DOT_WIDTH/2;
-    mPosY = SCREEN_HEIGHT-100 - DOT_HEIGHT-paddle.PADDLE_HEIGHT;
+    mPosY = SCREEN_HEIGHT-SCREEN_BOTTOM- DOT_HEIGHT-paddle.PADDLE_HEIGHT;// THAT ĐỔI VỊ TRÍ MỚI CỦA DOT
 
 	//Set collision box dimension
 	mCollider.r = DOT_WIDTH/2;
@@ -154,7 +155,10 @@ void Dot::ball_brick_collision(Brick brick[],int n){
             if(a==true){
             brick[i]=brick[i].setBrick_mPosXB(30000);
             //delete_brick_count++;
-            Mix_PlayChannel( -1, brickcollision, 0 );
+            if(sfx)
+            {
+                Mix_PlayChannel( -1, brickcollision, 0 );
+            }
             count_Broken_Bricks++;
             }
             a=false;
@@ -178,32 +182,49 @@ void Dot::move(Brick brick[],int n ){
     {
         //Move back
         mVelX*=-1;
-        mVelY*=-1;
-        bool a=checkCollision(mCollider,brick[i]);
-        if(a==true){
+		shiftColliders();
         brick[i]=brick[i].setBrick_mPosXB(30000);
         //delete_brick_count++;
-        Mix_PlayChannel( -1, brickcollision, 0 );
-        count_Broken_Bricks++;
+        if(sfx)
+        {
+            Mix_PlayChannel( -1, brickcollision, 0 );
         }
-		shiftColliders();
+        count_Broken_Bricks=count_Broken_Bricks+50;
+        
         std::cout<<count_Broken_Bricks;
 		std::cout<<": lr"<<std::endl;
     }
     }
     // va chạm với cạnh bên trái và cạnh bên phải
-    if( ( mPosX < 0 )  ) {
+    if( ( mPosX <= SCREEN_LEFT )  ) {
+        mPosX = SCREEN_LEFT;
         mVelX *= -1;
+        if(sfx){
         Mix_PlayChannel(-1,ballcollision,0);
+        }
     }
-    if(( mPosX + DOT_WIDTH > SCREEN_WIDTH )){
+    if(( mPosX + DOT_WIDTH >= (SCREEN_WIDTH-SCREEN_RIGHT) ) ) {
+        mPosX = SCREEN_WIDTH-SCREEN_RIGHT-DOT_WIDTH;
         mVelX *= -1;
+        if(sfx){
         Mix_PlayChannel(-1,ballcollision,0);
+        }
     }
-
-    if((mPosY>=baty)&&(mPosX==batx-DOT_WIDTH||mPosX==batx+PADDLE_WIDTH)){
-        mVelX*=-1;
-    }
+    // if(mPosX>=paddle.getPosXP()&&mPosY+DOT_HEIGHT>=paddle.getPosYP()){
+        
+    //     mPosX=paddle.getPosXP();
+    //     //mVelX*=-1;
+    // }
+    // if(mPosX<=paddle.getPosXP()+paddle.PADDLE_WIDTH&&mPosY+DOT_HEIGHT>=paddle.getPosYP()){
+    //     mPosX=paddle.getPosXP()+paddle.PADDLE_WIDTH;
+    //     //mVelX*=-1;
+    // }
+    // if(mPosY+DOT_HEIGHT>=paddle.getPosYP()&&mPosX>=paddle.getPosXP()&&mPosX<=paddle.getPosXP()+PADDLE_WIDTH){
+    //     //mVelX*=-1;
+    //     //std::cout<<": lr1"<<std::endl;
+    //     mPosX=
+	// 	//Mix_PlayChannel(-1,ballcollision,0);
+    // }
     //Move the dot up or down
     mPosY += mVelY;
 	shiftColliders();
@@ -215,37 +236,44 @@ void Dot::move(Brick brick[],int n ){
         //Move back
         mVelY*=-1;
 		shiftColliders();
-        bool a=checkCollision(mCollider,brick[i]);
-        if(a==true){
         brick[i]=brick[i].setBrick_mPosXB(30000);
         //delete_brick_count++;
-        Mix_PlayChannel( -1, brickcollision, 0 );
-        count_Broken_Bricks++;
+        if(sfx)
+        {
+            Mix_PlayChannel( -1, brickcollision, 0 );
         }
+        count_Broken_Bricks=count_Broken_Bricks+50;
+        
         std::cout<<count_Broken_Bricks;
 		std::cout<<": ud"<<std::endl;
     }
     }
     
     // va chạm với cạnh trên
-    if( mPosY < 0 ) {
+    if( mPosY <= (SCREEN_TOP) ) {
+        mPosY = SCREEN_TOP;
         mVelY *= -1;
         //Mix_PlayChannel(-1,ballcollision,0);
     }
     // va chạm với cạnh dưới
-	if(mPosY + DOT_HEIGHT > (SCREEN_HEIGHT-100) ){
+	if(mPosY + DOT_HEIGHT >= (SCREEN_HEIGHT-SCREEN_BOTTOM) ){
         
 		reset();
 		SDL_Delay(50);
 		COUNT_DIES--;
 	}
     // va chạm với paddle
-    if(mPosY+DOT_HEIGHT>=baty&&mPosX>=batx&&mPosX<=batx+PADDLE_WIDTH){
+    if(mPosY+DOT_HEIGHT>=paddle.getPosYP()&&mPosX>=paddle.getPosXP()&&mPosX<=paddle.getPosXP()+PADDLE_WIDTH){
+        mPosY=paddle.getPosYP()-DOT_HEIGHT;// chỗ này khá hay để tránh tình trạng lỗi chạy trên thanh paddle, chưa hiểu nguyên nhân tại sao
         mVelY*=-1;
+        std::cout<<": up1"<<std::endl;
+        std::cout<<mVelX<<std::endl;
+        std::cout<<mVelY<<std::endl;
 		//Mix_PlayChannel(-1,ballcollision,0);
     }
     
 }
+
 void Dot::render(char color)
 {
     switch(color){
@@ -281,7 +309,7 @@ int Dot::getY() {
 void Dot:: reset(){
         //Initialize the offsets
     mPosX = paddle.getPosXP()+paddle.PADDLE_WIDTH/2-DOT_WIDTH/2;
-    mPosY = SCREEN_HEIGHT-100 - DOT_HEIGHT-paddle.PADDLE_HEIGHT;
+    mPosY = SCREEN_HEIGHT-SCREEN_BOTTOM- DOT_HEIGHT-paddle.PADDLE_HEIGHT;// THAT ĐỔI VỊ TRÍ MỚI CỦA DOT
 
 	//Set collision box dimension
 	mCollider.r = DOT_WIDTH/2;
@@ -292,3 +320,5 @@ void Dot:: reset(){
 
     shiftColliders();
 }
+
+// còn 2 lỗi chưa fix được là va chạm với thành trái và va chạm với paddle

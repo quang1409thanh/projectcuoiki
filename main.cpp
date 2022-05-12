@@ -11,7 +11,7 @@ and may not be redistributed without written permission.*/
 #include <sstream>
 #include <iostream>
 #include "var_common.h"
-
+#include "setup_Sound.h"
 #include"LTexture.h"
 #include"var_texture.h"
 #include"LTimer.h"
@@ -27,40 +27,16 @@ Paddle paddle;
 Dot dot;
 #include"fun_common.h"
 #include"play.h"
+#include"TheGame.h"
 int main(int argc, char* args[])
 {
 	init();
 
 	loadMedia();
-	//gameloop
-	bool isRestart=false;
-	do {
-		if(!isRestart){
-			main_menu();
-			if(gButtonExit.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
-			{
-				break;
-			}
-		}
-		playlv1();
-		if(gButtonRestart.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
-		{
-			isRestart=true;
-		}
-		else isRestart=false;
-
-		if(gButtonExit.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
-		{
-			isRestart=false;
-		}
-		reset();
-		gButtonExit.freeStatus();
-		gButtonRestart.freeStatus();
-		gButtonMainmenu.freeStatus();
-		gButtonPlay.freeStatus();
-	}
-	while (isRestart);
-	std::cout << COUNT_DIES << std::endl;
+    playlv1();
+   
 	close();
+
+    // tại sao ấn vào play lại mất màn hình chứ :?
 	return 0;
 }

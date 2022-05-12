@@ -1,11 +1,15 @@
 //Screen dimension constants
 const int SCREEN_WIDTH = 400;
-const int SCREEN_HEIGHT = 650;
+const int SCREEN_HEIGHT = 600;
+const int SCREEN_LEFT=20;
+const int SCREEN_RIGHT=20;
+const int SCREEN_TOP=59;
+const int SCREEN_BOTTOM=70;
 
 const int BRICK_ROWS = 5;
 const int BRICK_COLUMNS= 5;
 const int TOTAL_BRICKSLV1 =40;
-const int TOTAL_BRICKSLV2 = 30;
+const int TOTAL_BRICKSLV2 = 35;
 const int TOTAL_BRICKSLV3 =34;
 const int TOTAL_BRICKSLV4 = 30;
 const int TOTAL_BRICKSLV5 =34;
@@ -27,8 +31,13 @@ SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 Mix_Chunk *ballcollision=NULL;
 Mix_Chunk *brickcollision=NULL;
+Mix_Music *music_Menu=NULL;
+Mix_Music *music_Play=NULL;
+Mix_Music *music_GameWin=NULL;
+Mix_Music *music_GameOver=NULL;
 //Globally used font
 TTF_Font *gFont = NULL;
+TTF_Font *gFont_HighScore = NULL;
 
 int count_Broken_Bricks=0;
 //Button constants
@@ -48,9 +57,32 @@ enum LButtonSprite
     BUTTON_SPRITE_MOUSE_UP = 3,
     BUTTON_SPRITE_TOTAL = 4
 };
+enum Status {
+	MAIN_MENU = 0,
+	GAME_PLAY = 1,
+    ABOUT=2,
+    SOUND=3,
+	WIN = 4,
+	LOSE = 5,
+	PAUSE = 6,
+    RESTART = 7,
+	EXIT = 8,
+    TOTAL_STATUS = 9
+};
 
 //Mouse button sprites
 SDL_Rect gSpriteClips[4];
 SDL_Rect gSpriteClips1[4];
 SDL_Rect gDotRect[5];
 std::stringstream high_Score;
+const SDL_Color CYAN_COLOR = {0, 255, 255};
+const SDL_Color BLUE_COLOR = {0, 0, 255};
+const SDL_Color ORANGE_COLOR = {255, 165, 0};
+const SDL_Color YELLOW_COLOR = {255, 255, 0};
+const SDL_Color LIME_COLOR = {0, 255, 0};
+const SDL_Color PURPLE_COLOR = {128, 0, 128};
+const SDL_Color RED_COLOR = {255, 0, 0};
+const SDL_Color WHITE_COLOR = {255, 255, 255};
+const SDL_Color BLACK_COLOR = {0, 0, 0};
+const SDL_Color GREEN_COLOR = {0, 128, 0};
+const SDL_Color DEFAULT_COLOR = BLACK_COLOR;

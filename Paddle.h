@@ -3,8 +3,8 @@ class Paddle
 {
     public:
 		//The dimensions of the dot
-		static const int PADDLE_WIDTH = 128;
-		static const int PADDLE_HEIGHT = 21;
+		static const int PADDLE_WIDTH = 90;
+		static const int PADDLE_HEIGHT = 20;
 
 		//Maximum axis velocity of the dot
 		static const int PADDLE_VEL = 10;
@@ -54,8 +54,8 @@ SDL_Rect Paddle::getColliderP(){
 	return mPaddle;
 }
 Paddle::Paddle(){
-	mPosXP = SCREEN_WIDTH/2 - PADDLE_WIDTH/2;
-	mPosYP = (SCREEN_HEIGHT-100) - PADDLE_HEIGHT;
+	mPosXP = (SCREEN_WIDTH)/2 - PADDLE_WIDTH/2;
+	mPosYP = (SCREEN_HEIGHT-SCREEN_BOTTOM) - PADDLE_HEIGHT;
 	mVelXP = 0;
 	mVelYP = 0;
 	mPaddle.w = PADDLE_WIDTH;
@@ -95,25 +95,32 @@ void Paddle::moveP(){
 	mPaddle.x = mPosXP;
 
     //If the dot collided or went too far to the left or right
-			if( ( mPosXP < 0 ) || ( mPosXP + PADDLE_WIDTH > SCREEN_WIDTH )  )
+			if( ( mPosXP < SCREEN_LEFT)   )
 				{
 					//Move back
-					mPosXP -= mVelXP;
+					mPosXP = SCREEN_LEFT;
 					mPaddle.x = mPosXP;
+					// std::cout<<PADDLE_WIDTH<<std::endl;
+					// std::cout<<mPosXP<<std::endl;
 					}
+			if(( mPosXP > SCREEN_WIDTH-SCREEN_LEFT-PADDLE_WIDTH))
+			{
+				mPosXP = SCREEN_WIDTH-SCREEN_LEFT-PADDLE_WIDTH;
+				mPaddle.x = mPosXP;
+			}
 
-    //Move the dot up or down
-    mPosYP += mVelYP;
-	mPaddle.y = mPosYP;
+    // //Move the dot up or down
+    // mPosYP += mVelYP;
+	// mPaddle.y = mPosYP;
 
     //If the dot collided or went too far up or down
 	
-			 if( ( mPosYP < 0 ) || ( mPosYP + PADDLE_HEIGHT > (SCREEN_HEIGHT-100) ) )
-				{
-					//Move back
-					mPosYP -= mVelYP;
-					mPaddle.y = mPosYP;
-					}
+			//  if( ( mPosYP < 0 ) || ( mPosYP + PADDLE_HEIGHT > (SCREEN_HEIGHT-100) ) )
+			// 	{
+			// 		//Move back
+			// 		mPosYP -= mVelYP;
+			// 		mPaddle.y = mPosYP;
+			// 		}
 }
 //Starts up SDL and creates window
 void Paddle::renderP(){

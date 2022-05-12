@@ -7,7 +7,6 @@ and may not be redistributed without written permission.*/
 #include <stdio.h>
 #include <string>
 #include<iostream>
-using namespace std;
 
 //Screen dimension constants
 const int SCREEN_WIDTH = 640;
@@ -84,7 +83,7 @@ class Dot
 		void handleEvent( SDL_Event& e );
 
 		//Moves the dot and checks collision
-		void move( SDL_Rect& square, Circle& circle );
+		void move( SDL_Rect& square );
 
 		//Shows the dot on the screen
 		void render();
@@ -326,35 +325,33 @@ void Dot::handleEvent( SDL_Event& e )
     }
 }
 
-void Dot::move( SDL_Rect& square, Circle& circle )
+void Dot::move( SDL_Rect& square)
 {
-    //Move the dot up or down
-    mPosY += mVelY;
+    //Move the dot left or right
+    mPosX += mVelX;
 	shiftColliders();
 
     //If the dot collided or went too far to the left or right
-	if( checkCollision( mCollider, square )  )
+	if( ( mPosX - mCollider.r < 0 ) || ( mPosX + mCollider.r > SCREEN_WIDTH ) || checkCollision( mCollider, square ) )
     {
         //Move back
         mPosX -= mVelX;
 		shiftColliders();
-		cout<<"lr"<<endl;
+		std::cout<<"lr"<<std::endl;
     }
 
-    
-//Move the dot left or right
-    mPosX += mVelX;
+    //Move the dot up or down
+    mPosY += mVelY;
 	shiftColliders();
+
     //If the dot collided or went too far up or down
-    if( checkCollision( mCollider, square )  )
+    if( ( mPosY - mCollider.r < 0 ) || ( mPosY + mCollider.r > SCREEN_HEIGHT ) || checkCollision( mCollider,square ) )
     {
         //Move back
         mPosY -= mVelY;
 		shiftColliders();
-		cout<<"ud"<<endl;
+		std::cout<<"up"<<std::endl;
     }
-	// hay nhất chỗ cộng trừ x y sẽ biết được va chạm xảy ra ở đâu
-	// chỗ này vẫn không hiểu tại sao lại phân biệt được left right với up down nữanữa
 }
 
 void Dot::render()
@@ -578,7 +575,7 @@ int main( int argc, char* args[] )
 				}
 
 				//Move the dot and check collision
-				dot.move( wall, otherDot.getCollider() );
+				dot.move( wall);
 
 				//Clear screen
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
