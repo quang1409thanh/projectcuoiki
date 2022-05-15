@@ -1,52 +1,89 @@
 class TheGame{
-public:
-    Status status;
-    TheGame(Status _status= ABOUT){
-        // Initialize the game
-        this->status=_status;
+
+    int status;
+    std::string status_next;
+    public:
+    TheGame(){
+    // Initialize the game
+    this->status=MAIN_MENU;
+    this->status_next="menu";
     }
-    void getStatusGame(){
-        if(gButton[GAME_PLAY].getStatus()==BUTTON_SPRITE_MOUSE_UP){
-            this->status=GAME_PLAY ;
-            std::cout<<status<<std::endl;
+    int get_Char(){
+        return this->status;
+    }
+    
+    void update_Status_Game(){
+        if(this->status_next=="playlv1"){
+            if(this->status==MAIN_MENU){
+                this->status=GAME_PLAY;
+            }
+            return;
         }
-        if(gButton[ABOUT].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
-            this->status=ABOUT;
-            std::cout<<status<<std::endl;
+        if(this->status_next=="about"){
+            if(this->status==MAIN_MENU){
+                this->status=ABOUT;
+            }
+            return;
         }
-        else if(gButton[SOUND].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
-            this->status=SOUND;
-            std::cout<<status<<std::endl;
+        if(this->status_next=="sound"){
+            if(this->status==MAIN_MENU){
+                this->status=SOUND;
+            }
+            return;
         }
-        else if(gButton[RESTART].getStatus()==BUTTON_SPRITE_MOUSE_DOWN||gButton1_Back.getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
-            this->status=MAIN_MENU;
-            std::cout<<status<<std::endl;
-        } 
-        else if(gButton[EXIT].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
-            this->status=EXIT;
-            std::cout<<status<<std::endl;
+        if(this->status_next=="quit"){
+            if(this->status==MAIN_MENU||this->status==GAME_PLAY||this->status==ABOUT||this->status==SOUND||this->status==WIN||this->status==LOSE){
+                this->status=EXIT;
+            }
+        }
+        if(this->status_next=="menu"){
+            if(this->status==ABOUT){
+                this->status=MAIN_MENU;
+            }
+            if(this->status==SOUND){
+                this->status=MAIN_MENU;
+            }
+            if(this->status==GAME_PLAY){
+                this->status=MAIN_MENU;
+            }
+            if(this->status==LOSE){
+                this->status=MAIN_MENU;
+            }
+            return;
+        }
+        if(this->status_next=="lose"){
+            if(this->status==GAME_PLAY){
+                this->status=LOSE;
+            }
         }
     }
-    void render(){
-        switch (status)
-        {
-        // case MAIN_MENU:{
-        //     main_menu();
-        //     break; 
-        // }
-        case ABOUT:{
-            about();
-            break;
-        }
-        case GAME_PLAY:{
-            playlv1();
-            break;
-        }
-        
-        case SOUND:{
-            sound();
-            break;
-        }
+    void render_Game(){
+        switch(this->status){
+            case MAIN_MENU:
+            {
+                this->status_next=main_menu();
+                break;
+            }
+            case GAME_PLAY:
+            {
+                this->status_next=playlv1();
+                break;
+            }
+            case ABOUT:
+            {
+                this->status_next=about();
+                break;
+            }
+            case SOUND:
+            {
+                this->status_next=sound();
+                break;
+            }
+            case LOSE :
+            {
+                this->status_next=lose();
+                break;
+            }
         }
     }
 };

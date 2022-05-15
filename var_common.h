@@ -3,7 +3,7 @@ const int SCREEN_WIDTH = 400;
 const int SCREEN_HEIGHT = 600;
 const int SCREEN_LEFT=20;
 const int SCREEN_RIGHT=20;
-const int SCREEN_TOP=59;
+const int SCREEN_TOP=60;
 const int SCREEN_BOTTOM=70;
 
 const int BRICK_ROWS = 5;
@@ -23,7 +23,8 @@ const int TOTAL_BRICKSLV12 = 30;
 const int TOTAL_BRICKSLV13 =34;
 const int TOTAL_BRICKSLV14 = 30;
 const int TOTAL_BRICKSLV15 =34;
-int COUNT_DIES=50;
+const int DIES=2;
+int COUNT_DIES=DIES;
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 
@@ -69,7 +70,14 @@ enum Status {
 	EXIT = 8,
     TOTAL_STATUS = 9
 };
-
+enum color{
+    red=0,
+    pink=1,
+    purple=2,
+    blue=3,
+    green=4,
+    TOTAL_COLOR=5
+};
 //Mouse button sprites
 SDL_Rect gSpriteClips[4];
 SDL_Rect gSpriteClips1[4];

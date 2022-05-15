@@ -2,25 +2,27 @@
 #include"loadhighscore.h"
 #include"Init_Bricklv1.h"
 #include"render_Brick.h"
-void reset(){
+std::string reset(){
 	// dot.restart();
 	// paddle.restart();
 	// init_bricklv1();
 	COUNT_DIES=2;
 	count_Broken_Bricks=0;
 }
-void lose();
-void win();
-void main_menu();
-void sound();
-void about();
-void sound(){
+std::string lose();
+std::string win();
+std::string main_menu();
+std::string sound();
+std::string about();
+std::string sound(){
+	std::cout<<"sound"<<std::endl;
 	bool quit = false;
 
 	//Event handler
 	SDL_Event e;
 	
 	//While application is running
+	
 	while (!quit)
 	{
 		//Handle events on queue
@@ -30,6 +32,7 @@ void sound(){
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
+				return "quit";
 			}
 			//Handle input for the dot
 			dot.handleEvent(e);
@@ -40,18 +43,36 @@ void sound(){
 
 		}
 		//Clear screen
+		
 		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(gRenderer);
 		gButton1_Back.render();
 		//gButtonSfxon.render();
 		gButtonSfxoff.render();
+		if(gButton1_Back.getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
+			gButton1_Back.freeStatus();
+			quit=true;
+			return "menu";
+		}
+		if(gButtonSfxoff.getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
+			quit=true;
+			setup_Sound_Off(music,sfx);
+			gButtonSfxoff.freeStatus();
+			
+		}
+		
+		
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 	}
+			//gButton1_Back.freeStatus();
+			// gButtonSfxon.handleEvent(&e);
+			// gButtonSfxoff.handleEvent(&e);
 }
 
-void win(){
+std::string win(){
     //Main loop flag
+	std::cout<<"win"<<std::endl;
 	bool quit = false;
 
 	//Event handler
@@ -67,6 +88,7 @@ void win(){
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
+				return "quit";
 			}
 			//Handle input for the dot
 			dot.handleEvent(e);
@@ -84,7 +106,7 @@ void win(){
 }
 
 
-void playlv2() {
+std::string playlv2() {
 	//Main loop flag
 	bool quit = false;
 
@@ -127,6 +149,7 @@ void playlv2() {
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
+				return "quit";
 			}
 			//Handle input for the dot
 			dot.handleEvent(e);
@@ -173,7 +196,7 @@ void playlv2() {
 		
 		gBgTexturelv2.render(0, 0);
 		//Render dot
-		dot.render('r');
+		dot.render(purple);
 		paddle.renderP();
 		render_Brick_Lv2(brick2);
 		gButton1_Pause.render();
@@ -198,11 +221,13 @@ void playlv2() {
 			break;
 		}
 	}
+	//return 'b';
 }
-void playlv1() {
+std::string playlv1() {
 	//Main loop flag
+	std::cout<<"playlv1"<<std::endl;
 	bool quit = false;
-
+	COUNT_DIES=DIES;
 	//Event handler
 	SDL_Event e;
 
@@ -214,7 +239,7 @@ void playlv1() {
 
 	//The dot that will be moving around on the screen
 	// Dot dot;
-	SDL_Color textColor = { 0, 0, 0, 255 };
+	SDL_Color textColor = GREEN_COLOR;
 
 	//The frames per second timer
 	LTimer fpsTimer;
@@ -242,6 +267,7 @@ void playlv1() {
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
+				return "quit";
 			}
 			//Handle input for the dot
 			dot.handleEvent(e);
@@ -288,7 +314,7 @@ void playlv1() {
 		
 		gBgTexture.render(0, 0);
 		//Render dot
-		dot.render('t');
+		dot.render(red);
 		paddle.renderP();
 		render_Brick_Lv1(brick1);
 		gButton1_Pause.render();
@@ -308,22 +334,36 @@ void playlv1() {
 		SDL_RenderPresent(gRenderer);
 		++countedFrames;
 		if (COUNT_DIES < 0) {
-			SDL_Delay(100);
-			lose();
-			break;
+			// quit = true;
+			//return "quit";
+			// SDL_Delay(100);
+			// lose();
+			// //COUNT_DIES=DIES;
+			// break;
+			return "lose";
 		}
 		if(count_Broken_Bricks==TOTAL_BRICKSLV1*50){
 			quit = true;
+			//return "quit";
 			SDL_Delay(100);
 			dot.reset();
 			playlv2();
-	}
+		}
+		// if(gButton1_Reset.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
+		// {
+		// 	quit = true;
+		//return "quit";
+		// 	count_Broken_Bricks=0;
+		// 	COUNT_DIES=DIES;
+		// 	dot.reset();
+		// 	playlv1();
+		// }
 }
 }
-void lose() {
+std::string lose() {
+	std::cout<<"lose"<<std::endl;
 	//Main loop flag
 	bool quit = false;
-
 	//Event handler
 	SDL_Event e;
     std::stringstream timeTextLose;
@@ -341,7 +381,9 @@ void lose() {
 			//User requests quit
 			if (e.type == SDL_QUIT)
 			{
+				return "quit";
 				quit = true;
+				
 			}
 			//Handle input for the dot
 			dot.handleEvent(e);
@@ -349,6 +391,7 @@ void lose() {
 			gButton[RESTART].handleEvent(&e);
 			gButton[MAIN_MENU].handleEvent(&e);
 			gButton[EXIT].handleEvent(&e);
+			gButton1_Back.handleEvent(&e);
 		}
         timeTextLose.str("");
 		timeTextLose << "SCORE:: " << count_Broken_Bricks ;
@@ -373,22 +416,51 @@ void lose() {
 		gButton[RESTART].render();
 		gButton[MAIN_MENU].render();
 		gButton[EXIT].render();
+		gButton1_Back.render();
+		if(gButton[RESTART].getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
+		{
+			gButton[RESTART].freeStatus();
+			count_Broken_Bricks=0;
+			quit=true;
+			return "playlv1";
+			
+		}
+		else if(gButton[MAIN_MENU].getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
+		{	
+			gButton[MAIN_MENU].freeStatus();
+			count_Broken_Bricks=0;
+			quit=true;
+			return "menu";
+		}
+		else if(gButton1_Back.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
+		{
+			gButton1_Back.freeStatus();
+			quit=true;
+			return "menu";
+		}
+		else if(gButton[EXIT].getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
+		{
+			gButton[EXIT].freeStatus();
+			quit=true;
+			return "quit";
+		}
 
         gFPSTextTexture.render(0,  20);
 		ghigh_Score.render(0, 50);
-		gGameOverTexture.render(10, 100);
+		//~gGameOverTexture.render(10, 100);
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 }
 }
 
-void main_menu(){
+std::string main_menu(){
+	std::cout<<"main_menu"<<std::endl;
     //Main loop flag
 	bool quit = false;
 
 	//Event handler
 	SDL_Event e;
-	SDL_Color textColor = { 250, 0, 0, 255 };
+	SDL_Color textColor = RED_COLOR;
 	std::stringstream timeText;
 	if(music){
 
@@ -404,6 +476,7 @@ void main_menu(){
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
+				return "quit";
 			}
 			//Handle input for the dot
 			// dot.handleEvent(e);
@@ -414,13 +487,6 @@ void main_menu(){
 			gButton[SOUND].handleEvent(&e);
 		}
 		
-		timeText.str("");
-		timeText<<"BRICKGAME";
-		//Render text
-		if (!gFPSTextTexture.loadFromRenderedText(timeText.str().c_str(), textColor))
-		{
-			printf("Unable to render FPS texture!\n");
-		}
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(gRenderer);
@@ -431,32 +497,48 @@ void main_menu(){
 		gButton[GAME_PLAY].render();
 		gButton[EXIT].render();
 		gButton[SOUND].render();
+		
 
-		gFPSTextTexture.render(0, 50);    
 		if(gButton[GAME_PLAY].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
-        	std::cout<<"GAME_PLAY"<<std::endl;
+        	//std::cout<<"GAME_PLAY"<<std::endl;
+			gButton[GAME_PLAY].freeStatus();
+			quit=true;
+			return "playlv1";
+           
+   			//return "playlv1";
     	}
 		else if(gButton[ABOUT].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
-			std::cout<<"About"<<std::endl;
+			quit=true;
+			gButton[ABOUT].freeStatus();
+			return "about";
 		}
 		else if(gButton[SOUND].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
-			std::cout<<"Sound"<<std::endl;
+			quit=true;
+			gButton[SOUND].freeStatus();
+			return "sound";
 		}
 		else if(gButton[EXIT].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
 			std::cout<<"Exit"<<std::endl;
+			gButton[EXIT].freeStatus();
+			quit=true;
+			return "quit";
 		}
 		//Update screen
+
 		SDL_RenderPresent(gRenderer);
 }
+
+		return "menu";
 }
-void about(){
+std::string about(){
+	std::cout<<"about"<<std::endl;
     //Main loop flag
 	bool quit = false;
 
 	//Event handler
 	SDL_Event e;
 	//std::stringstream timeText_About;
-	SDL_Color textColor = RED_COLOR;
+	SDL_Color textColor = BLACK_COLOR;
 
 	//While application is running
 	while (!quit)
@@ -468,6 +550,7 @@ void about(){
 			if (e.type == SDL_QUIT)
 			{
 				quit = true;
+				return "quit";
 			}
 			//Handle input for the dot
 			 gButton1_Back.handleEvent(&e);
@@ -477,35 +560,35 @@ void about(){
 		// timeText_About<<"ABOUT"<<std::endl;
 		// timeText_About<<"This game is created by: "<<std::endl;
 		// timeText_About<<"Nguyen Quang Thanh"<<std::endl;
-		if (!gAbout[0].loadFromRenderedText("ABOUT", textColor))
+		if (!gAbout[0].loadFromRenderedText1("ABOUT", textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
-		if (!gAbout[1].loadFromRenderedText("This game is created by:", textColor))
+		if (!gAbout[1].loadFromRenderedText1("This game is created by:", textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
-		if (!gAbout[2].loadFromRenderedText("Nguyen Quang Thanh", textColor))
+		if (!gAbout[2].loadFromRenderedText1("Nguyen Quang Thanh", textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
-		if (!gAbout[3].loadFromRenderedText("Graphics Library used:", textColor))
+		if (!gAbout[3].loadFromRenderedText1("Graphics Library used:", textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
-		if (!gAbout[4].loadFromRenderedText("SDL2_devel", textColor))
+		if (!gAbout[4].loadFromRenderedText1("SDL2_devel", textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
-		if (!gAbout[5].loadFromRenderedText("SDL2_img_devel", textColor))
+		if (!gAbout[5].loadFromRenderedText1("SDL2_img_devel", textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
-		if (!gAbout[6].loadFromRenderedText("SDL2_ttf_devel", textColor))
+		if (!gAbout[6].loadFromRenderedText1("SDL2_ttf_devel", textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
-		if (!gAbout[7].loadFromRenderedText("SDL2_mixer_devel", textColor))
+		if (!gAbout[7].loadFromRenderedText1("SDL2_mixer_devel", textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
@@ -515,14 +598,19 @@ void about(){
 
 		gGameWin.render(10, 150);
 		for(int i=0;i<8;i++){
-		gAbout[i].render(10, 400+30*i);
+		gAbout[i].render(10, 350+30*i);
 		}
 		gButton1_Back.render();
+
+		if(gButton1_Back.getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
+			gButton1_Back.freeStatus();
+			quit=true;
+			return "menu";
+		}
 		//Update screen
 		SDL_RenderPresent(gRenderer);
-
 	}
 }
-// void Exit(&){
+// std::string Exit(&){
 // 	//Main loop flag
 // }

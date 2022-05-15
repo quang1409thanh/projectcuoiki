@@ -26,7 +26,7 @@ class Dot
         void move1();
 
 		//Shows the dot on the screen
-		void render(char color);
+		void render(const int & color);
         void reset();
         void set_gDot_Texture(std::string path,const int &n);
         void ball_brick_collision(Brick brick[],int n);
@@ -168,31 +168,28 @@ void Dot::handleEvent( SDL_Event& e )
         }
     }
 }
-void Dot::ball_brick_collision(Brick brick[],int n){
-    bool a;
-    for(int i=0;i<n;i++){
-            a=checkCollision(mCollider,brick[i]);
-            if(a==true){
-            brick[i]=brick[i].setBrick_mPosXB(30000);
-            //delete_brick_count++;
-            if(sfx)
-            {
-                Mix_PlayChannel( -1, brickcollision, 0 );
-            }
-            count_Broken_Bricks++;
-            }
-            a=false;
-        }
-}
+// void Dot::ball_brick_collision(Brick brick[],int n){
+//     bool a;
+//     for(int i=0;i<n;i++){
+//             a=checkCollision(mCollider,brick[i]);
+//             if(a==true){
+//             brick[i]=brick[i].setBrick_mPosXB(30000);
+//             //delete_brick_count++;
+//             if(sfx)
+//             {
+//                 Mix_PlayChannel( -1, brickcollision, 0 );
+//             }
+//             }
+//             a=false;
+//         }
+// }
 void Dot::move(Brick brick[],int n ){
     // dành cho trường hợp là dot đang ở trên paddle
     if(mVelX==0&&mVelY==0){
         mPosX=paddle.getPosXP()+paddle.PADDLE_WIDTH/2-DOT_WIDTH/2;
         mPosY=SCREEN_HEIGHT-SCREEN_BOTTOM- DOT_HEIGHT-paddle.PADDLE_HEIGHT;
-        std::cout<<mPosX<<"Yes"<<std::endl;
     }
-    
-    std::cout<<mPosX<<"No"<<std::endl;
+
     //Move the dot left or right
 
     //If the dot collided or went too far to the left or right
@@ -214,9 +211,6 @@ void Dot::move(Brick brick[],int n ){
             Mix_PlayChannel( -1, brickcollision, 0 );
         }
         count_Broken_Bricks=count_Broken_Bricks+50;
-        
-        std::cout<<count_Broken_Bricks;
-		std::cout<<": lr"<<std::endl;
     }
     }
     // va chạm với cạnh bên trái và cạnh bên phải
@@ -234,21 +228,6 @@ void Dot::move(Brick brick[],int n ){
         Mix_PlayChannel(-1,ballcollision,0);
         }
     }
-    // if(mPosX>=paddle.getPosXP()&&mPosY+DOT_HEIGHT>=paddle.getPosYP()){
-        
-    //     mPosX=paddle.getPosXP();
-    //     //mVelX*=-1;
-    // }
-    // if(mPosX<=paddle.getPosXP()+paddle.PADDLE_WIDTH&&mPosY+DOT_HEIGHT>=paddle.getPosYP()){
-    //     mPosX=paddle.getPosXP()+paddle.PADDLE_WIDTH;
-    //     //mVelX*=-1;
-    // }
-    // if(mPosY+DOT_HEIGHT>=paddle.getPosYP()&&mPosX>=paddle.getPosXP()&&mPosX<=paddle.getPosXP()+PADDLE_WIDTH){
-    //     //mVelX*=-1;
-    //     //std::cout<<": lr1"<<std::endl;
-    //     mPosX=
-	// 	//Mix_PlayChannel(-1,ballcollision,0);
-    // }
     //Move the dot up or down
     mPosY += mVelY;
 	shiftColliders();
@@ -267,9 +246,6 @@ void Dot::move(Brick brick[],int n ){
             Mix_PlayChannel( -1, brickcollision, 0 );
         }
         count_Broken_Bricks=count_Broken_Bricks+50;
-        
-        std::cout<<count_Broken_Bricks;
-		std::cout<<": ud"<<std::endl;
     }
     }
     
@@ -290,30 +266,27 @@ void Dot::move(Brick brick[],int n ){
     if(mPosY+DOT_HEIGHT>=paddle.getPosYP()&&mPosX>=paddle.getPosXP()&&mPosX<=paddle.getPosXP()+paddle.PADDLE_WIDTH){
         mPosY=paddle.getPosYP()-DOT_HEIGHT;// chỗ này khá hay để tránh tình trạng lỗi chạy trên thanh paddle, chưa hiểu nguyên nhân tại sao
         mVelY*=-1;
-        std::cout<<": up1"<<std::endl;
-        std::cout<<mVelX<<std::endl;
-        std::cout<<mVelY<<std::endl;
 		//Mix_PlayChannel(-1,ballcollision,0);
     }
     
 }
 
-void Dot::render(char color)
+void Dot::render(const int& color)
 {
     switch(color){
-        case 'r':
+        case red:
         gDot[0].render( mPosX, mPosY ,&gDotRect[0]);
         break;
-        case 'p':
+        case pink:
         gDot[1].render( mPosX, mPosY ,&gDotRect[1]);
         break;
-        case 't':
+        case purple:
         gDot[2].render( mPosX, mPosY ,&gDotRect[2]);
         break;
-        case 'b':
+        case blue:
         gDot[3].render( mPosX, mPosY ,&gDotRect[3]);
         break;
-        case 'g':
+        case green:
         gDot[4].render( mPosX, mPosY ,&gDotRect[4]);
         break;
     }

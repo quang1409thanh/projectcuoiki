@@ -26,13 +26,13 @@ void render_Brick_Lv2(Brick brick[]){
 	for(int i=7;i<14;i++){	
 		brick[i].renderB('r');
 	}
-	for(int i=14;i<20;i++){
+	for(int i=14;i<21;i++){
 		brick[i].renderB('g');
 	}
-	for(int i=20;i<25;i++){
+	for(int i=21;i<28;i++){
 		brick[i].renderB('i');
 	}
-	for(int i=25;i<30;i++){
+	for(int i=28;i<35;i++){
 		brick[i].renderB('d');
 	}
 }

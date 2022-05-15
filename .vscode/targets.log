@@ -6,7 +6,7 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May 13 03:02:32 2022
+# Make data base, printed on Mon May 16 01:13:37 2022
 
 # Variables
 
@@ -23,9 +23,10 @@ USERPROFILE = C:\Users\admin
 # environment
 LOCALAPPDATA = C:\Users\admin\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-aa4f2f76-e250-4191-849f-5dd8137ec2cd-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-e3d9e861-4a39-4fda-be9b-35fb7a750ee6-sock
 # environment
-VSCODE_CWD = C:\Users\admin\AppData\Local\Programs\Microsoft VS Code
+VSCODE_CWD = C:\Users\admin\AppData\Local\Programs\Micr 
+osoft VS Code
 # environment
 CHOCOLATEYINSTALL = C:\ProgramData\chocolatey
 # environment
@@ -39,7 +40,7 @@ MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_8344_FBQOUPZWAQDQEQGU
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_9476_MMWHXBKLPGVILOIP
 # environment
 FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
@@ -95,7 +96,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 8344
+VSCODE_PID = 9476
 # environment
 CLION = C:\mingw64\bin;C:\Program Files\JetBrains\CLion 2021.3.3\bin;
 # automatic
@@ -215,7 +216,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 
 # Directories
 
-# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1652383520): 65 files, no impossibilities.
+# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1652638306): 65 files, no impossibilities.
 
 # 65 files, no impossibilities in 1 directories.
 
@@ -228,7 +229,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-01 17:31:18
+#  Last modified 2022-05-16 01:11:41
 #  File has been updated.
 #  Successfully updated.
 
@@ -265,8 +266,6 @@ all:
 # Load=8/32=25%, Rehash=0, Collisions=1/11=9%
 #  recipe to execute (from 'Makefile', line 2):
 	g++ -IE:\software\SDL2-2.0.20\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_image-2.0.5\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_ttf-2.0.18\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_mixer-2.0.4\x86_64-w64-mingw32\include\SDL2 -LE:\software\SDL2-2.0.20\x86_64-w64-mingw32\lib -LE:\software\SDL2_image-2.0.5\x86_64-w64-mingw32\lib -LE:\software\SDL2_ttf-2.0.18\x86_64-w64-mingw32\lib -LE:\software\SDL2_mixer-2.0.4\x86_64-w64-mingw32\lib -o main main.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
-	g++ -IE:\software\SDL2-2.0.20\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_image-2.0.5\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_ttf-2.0.18\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_mixer-2.0.4\x86_64-w64-mingw32\include\SDL2 -LE:\software\SDL2-2.0.20\x86_64-w64-mingw32\lib -LE:\software\SDL2_image-2.0.5\x86_64-w64-mingw32\lib -LE:\software\SDL2_ttf-2.0.18\x86_64-w64-mingw32\lib -LE:\software\SDL2_mixer-2.0.4\x86_64-w64-mingw32\lib -o main1 main1.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
-		g++ -IE:\software\SDL2-2.0.20\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_image-2.0.5\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_ttf-2.0.18\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_mixer-2.0.4\x86_64-w64-mingw32\include\SDL2 -LE:\software\SDL2-2.0.20\x86_64-w64-mingw32\lib -LE:\software\SDL2_image-2.0.5\x86_64-w64-mingw32\lib -LE:\software\SDL2_ttf-2.0.18\x86_64-w64-mingw32\lib -LE:\software\SDL2_mixer-2.0.4\x86_64-w64-mingw32\lib -o main2 main2.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 # Not a target:
 .SUFFIXES:
@@ -288,6 +287,6 @@ all:
 # strcache performance: lookups = 75 / hit rate = 9%
 # hash-table stats:
 # Load=68/8192=1%, Rehash=0, Collisions=1/75=1%
-# Finished Make data base on Fri May 13 03:02:32 2022
+# Finished Make data base on Mon May 16 01:13:37 2022
 
  

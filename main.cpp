@@ -25,7 +25,6 @@ and may not be redistributed without written permission.*/
 #include"Paddle.h"
 
 #include"Dot.h"
-
 #include"fun_common.h"
 #include"play.h"
 #include"TheGame.h"
@@ -34,10 +33,12 @@ int main(int argc, char* args[])
 	init();
 
 	loadMedia();
-    playlv1();
-   
+ 	game.render_Game();
+	while(game.get_Char()!=EXIT){
+		game.update_Status_Game();
+		game.render_Game();
+	}
 	close();
-
-    // tại sao ấn vào play lại mất màn hình chứ :?
+    // tại sao ấn vào play lại mất màn hình chứ :? wtf:>>??
 	return 0;
 }
