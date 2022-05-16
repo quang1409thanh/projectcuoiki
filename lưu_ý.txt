@@ -3,3 +3,4 @@ hàm main1 là hàm chung
 đến đây sẽ bắt đầu làm lv và các button cho đủ hết
 PHIÊN BẢN 1.0.2 : THAY ĐỔI ĐƯỢC MÀU QUẢ BÓNG 1 CÁCH LINH HOẠT RỒI
 chư fix được lỗi va chạm bên trái va chạm phía trên
+ver 1.0.5 làm được các nút rất là oke

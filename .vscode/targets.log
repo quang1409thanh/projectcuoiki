@@ -6,7 +6,7 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon May 16 01:13:37 2022
+# Make data base, printed on Mon May 16 10:16:56 2022
 
 # Variables
 
@@ -23,10 +23,9 @@ USERPROFILE = C:\Users\admin
 # environment
 LOCALAPPDATA = C:\Users\admin\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-e3d9e861-4a39-4fda-be9b-35fb7a750ee6-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-3f50acd3-1d2c-4a6c-b981-ae6697845484-sock
 # environment
-VSCODE_CWD = C:\Users\admin\AppData\Local\Programs\Micr 
-osoft VS Code
+VSCODE_CWD = C:\Users\admin\AppData\Local\Programs\Microsoft VS Code
 # environment
 CHOCOLATEYINSTALL = C:\ProgramData\chocolatey
 # environment
@@ -40,7 +39,7 @@ MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_9476_MMWHXBKLPGVILOIP
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_10688_JSWEHTIDSEBNNUBU
 # environment
 FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
@@ -96,7 +95,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 9476
+VSCODE_PID = 10688
 # environment
 CLION = C:\mingw64\bin;C:\Program Files\JetBrains\CLion 2021.3.3\bin;
 # automatic
@@ -216,9 +215,9 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 
 # Directories
 
-# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1652638306): 65 files, no impossibilities.
+# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1652670446): 67 files, no impossibilities.
 
-# 65 files, no impossibilities in 1 directories.
+# 67 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -281,12 +280,12 @@ all:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 68 / storage = 696 B / avg = 10 B
-# current buf: size = 8174 B / used = 696 B / count = 68 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 70 / storage = 731 B / avg = 10 B
+# current buf: size = 8174 B / used = 731 B / count = 70 / avg = 10 B
 
-# strcache performance: lookups = 75 / hit rate = 9%
+# strcache performance: lookups = 77 / hit rate = 9%
 # hash-table stats:
-# Load=68/8192=1%, Rehash=0, Collisions=1/75=1%
-# Finished Make data base on Mon May 16 01:13:37 2022
+# Load=70/8192=1%, Rehash=0, Collisions=1/77=1%
+# Finished Make data base on Mon May 16 10:16:56 2022
 
  

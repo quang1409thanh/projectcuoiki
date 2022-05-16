@@ -23,7 +23,7 @@ const int TOTAL_BRICKSLV12 = 30;
 const int TOTAL_BRICKSLV13 =34;
 const int TOTAL_BRICKSLV14 = 30;
 const int TOTAL_BRICKSLV15 =34;
-const int DIES=2;
+const int DIES=10;
 int COUNT_DIES=DIES;
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -61,14 +61,15 @@ enum LButtonSprite
 enum Status {
 	MAIN_MENU = 0,
 	GAME_PLAY = 1,
-    ABOUT=2,
-    SOUND=3,
-	WIN = 4,
-	LOSE = 5,
-	PAUSE = 6,
-    RESTART = 7,
-	EXIT = 8,
-    TOTAL_STATUS = 9
+    GAME_PLAY2 = 2,
+    ABOUT=3,
+    SOUND=4,
+	WIN = 5,
+	LOSE = 6,
+	PAUSE = 7,
+    RESTART = 8,
+	EXIT = 9,
+    TOTAL_STATUS = 10
 };
 enum color{
     red=0,

@@ -17,6 +17,22 @@ class TheGame{
             if(this->status==MAIN_MENU){
                 this->status=GAME_PLAY;
             }
+            if(this->status==LOSE){
+                this->status=GAME_PLAY;
+            }
+            if(this->status==GAME_PLAY){
+                this->status=GAME_PLAY;
+                // trường hợp đặc biệt reset lại game cần để ý chỗ này
+            }
+            if(this->status==WIN){
+                this->status=GAME_PLAY;
+            }
+            return;
+        }
+        if(this->status_next=="playlv2"){
+            if(this->status==GAME_PLAY){
+                this->status=GAME_PLAY2;
+            }
             return;
         }
         if(this->status_next=="about"){
@@ -32,7 +48,7 @@ class TheGame{
             return;
         }
         if(this->status_next=="quit"){
-            if(this->status==MAIN_MENU||this->status==GAME_PLAY||this->status==ABOUT||this->status==SOUND||this->status==WIN||this->status==LOSE){
+            if(this->status==MAIN_MENU||this->status==GAME_PLAY2||this->status==GAME_PLAY||this->status==ABOUT||this->status==SOUND||this->status==WIN||this->status==LOSE){
                 this->status=EXIT;
             }
         }
@@ -49,11 +65,23 @@ class TheGame{
             if(this->status==LOSE){
                 this->status=MAIN_MENU;
             }
+            if(this->status==WIN){
+                this->status=MAIN_MENU;
+            }
             return;
         }
         if(this->status_next=="lose"){
             if(this->status==GAME_PLAY){
                 this->status=LOSE;
+            }
+            if(this->status==GAME_PLAY2){
+                this->status=LOSE;
+            }
+            return;
+        }
+        if(this->status_next=="win"){
+            if(this->status==GAME_PLAY2){
+                this->status=WIN;
             }
         }
     }
@@ -82,6 +110,16 @@ class TheGame{
             case LOSE :
             {
                 this->status_next=lose();
+                break;
+            }
+            case GAME_PLAY2 :
+            {
+                this->status_next=playlv2();
+                break;
+            }
+            case WIN :
+            {
+                this->status_next=win();
                 break;
             }
         }
