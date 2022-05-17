@@ -24,13 +24,13 @@ void loadMedia()
 	gBricksTextureSolid.loadFromFile("source1/img/bricks/solid.png");
 	gBricksTextureViolet.loadFromFile("source1/img/bricks/violet.png");
 	gBricksTextureYellow.loadFromFile("source1/img/bricks/yellow.png");
-	gGameOverTexture.loadFromFile("gameover.png");
-	gBgTexture.loadFromFile("bgr.jpg");
-	gGameWin.loadFromFile("win.png");
-	gBg_Mainmenu[0].loadFromFile("bg_main_menu.jpg");
-	gBg_Mainmenu[1].loadFromFile("bg_main_menu1.png");
-	gBg_About.loadFromFile("gBg_About.png");
-	gBgTexturelv2.loadFromFile("bglv2.jpg");
+	gGameOverTexture.loadFromFile("media/gameover.png");
+	gBgTexture.loadFromFile("media/bgr.jpg");
+	gGameWin.loadFromFile("media/win.png");
+	gBg_Mainmenu[0].loadFromFile("media/bg_main_menu.jpg");
+	gBg_Mainmenu[1].loadFromFile("media/bg_main_menu1.png");
+	gBg_About.loadFromFile("media/gBg_About.png");
+	gBgTexturelv2.loadFromFile("media/bglv2.jpg");
 	gBgLv1.loadFromFile("source1/img/bg.png");
 	gTextbox.loadFromFile("source1/img/textbox.png");
 	music_Menu=Mix_LoadMUS("source1/audio/music/menu_bg.ogg");
@@ -80,14 +80,12 @@ void loadMedia()
 	gButton[MAIN_MENU].set_texture("source1/img/buttons/mainmenubutton.png",i);
 	}
 	gButton[MAIN_MENU].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT-70 -BUTTON_HEIGHT- BUTTON_HEIGHT/8);
-	for(int i=0;i<4;i++){
-	gButtonSfxoff.set_texture("source1/img/buttons/sfxoffbutton.png",i);
-	}
-	gButtonSfxoff.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4 - 3*BUTTON_HEIGHT/4);
-	for(int i=0;i<4;i++){
-	gButtonSfxon.set_texture("source1/img/buttons/sfxonbutton.png",i);
-	}
-	gButtonSfxon.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4 - 3*BUTTON_HEIGHT/4);
+
+	gButtonsfx.set_texture("source1/img/buttons/sfxoffbutton.png",0);
+	gButtonsfx.set_texture("source1/img/buttons/sfxoffbutton.png",1);
+	gButtonsfx.set_texture("source1/img/buttons/sfxonbutton.png",2);
+	gButtonsfx.set_texture("source1/img/buttons/sfxonbutton.png",3);
+	gButtonsfx.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, 3*SCREEN_HEIGHT/4 - 3*BUTTON_HEIGHT/4);
 }
 
 void close()

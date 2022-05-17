@@ -1,3 +1,25 @@
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include <SDL_mixer.h>
+#include <stdio.h>
+#include <string>
+#include <sstream>
+#include <iostream>
+#include <cstdlib>
+#include "var_common.h"
+#include "setup_Sound.h"
+#include"LTexture.h"
+#include"var_texture.h"
+#include"LTimer.h"
+#include"LButton.h"
+#include"LButton2.h"
+#include"LButton1.h"
+#include"Brick.h"
+#include"Paddle.h"
+#include"Dot.h"
+#include"fun_common.h"
+#include"play1.h"
 class TheGame{
 
     int status;

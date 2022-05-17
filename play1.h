@@ -49,18 +49,19 @@ std::string sound(){
 		SDL_RenderClear(gRenderer);
 		gButton1_Back.render();
 		//gButtonSfxon.render();
+		gButtonsfx.update_Status();
 		gButtonsfx.render();
 		if(gButton1_Back.getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
 			gButton1_Back.freeStatus();
 			quit=true;
 			return "menu";
 		}
-		if(gButtonSfxoff.getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
-			quit=true;
-			setup_Sound_Off(music,sfx);
-			gButtonSfxoff.freeStatus();
+		// if(gButtonSfxoff.getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
+		// 	quit=true;
+		// 	setup_Sound_Off(music,sfx);
+		// 	gButtonSfxoff.freeStatus();
 			
-		}
+		// }
 		
 		
 		//Update screen
@@ -313,9 +314,10 @@ std::string playlv1() {
    if(music){
    Mix_PlayMusic(music_Play, -1 );
    }
+   int i=0;
 	//While application is running
 	while (!quit)
-	{
+	{   
 		//Handle events on queue
 		while (SDL_PollEvent(&e) != 0)
 		{
@@ -338,7 +340,7 @@ std::string playlv1() {
 		//dot.ball_brick_collision(brick1,TOTAL_BRICKSLV1);
 		paddle.moveP();
 		//Calculate and correct fps
-		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
+		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1.f);
 		if (avgFPS > 2000000)
 		{
 			avgFPS = 0;
@@ -352,7 +354,7 @@ std::string playlv1() {
 		// //Set text to be rendered
 		timeText.str("");
 		timeText << "SCORE:: " << count_Broken_Bricks ;
-        timeText << " Live:: " << COUNT_DIES;
+        timeText << " Live:: " << fpsTimer.getTicks();
 		//Render text
 		if (!gFPSTextTexture.loadFromRenderedText1(timeText.str().c_str(), textColor))
 		{
@@ -370,7 +372,11 @@ std::string playlv1() {
 		
 		gBgTexture.render(0, 0);
 		//Render dot
-		dot.render(0);
+        if(fpsTimer.getTicks()%1000==0){
+            i++;
+            while(i>4) i-=4;
+        }
+		dot.render(i);
 		paddle.renderP();
 		render_Brick_Lv1(brick1);
 		gButton1_Pause.render();
@@ -570,6 +576,7 @@ std::string main_menu(){
 		else if(gButton[SOUND].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
 			quit=true;
 			gButton[SOUND].freeStatus();
+			//music_Menu=NULL;
 			return "sound";
 		}
 		else if(gButton[EXIT].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){

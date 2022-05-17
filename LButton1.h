@@ -1,4 +1,4 @@
-//The mouse button
+// build class button1==========================================================
 class LButton1
 {
     public:
@@ -31,6 +31,13 @@ class LButton1
 		// 2 trang thái của Button	
 		LTexture texture[4];
 };
+
+//====================khai báo các biến sử của LButton1====================
+LButton1 gButton1_Pause;
+LButton1 gButton1_Back;
+LButton1 gButton1_Reset;
+
+//=====================các hàm thành viên của LButton1=====================
 
 LButtonSprite LButton1::getStatus() {
 	return mCurrentSprite;

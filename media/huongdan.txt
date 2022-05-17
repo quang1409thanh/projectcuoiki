@@ -1,2 +1,0 @@
-muốn chạy được chương trình thì phải đổi địa chỉ load file ở trong file main.cpp từ bài 1 đến bài 9 
-từ medialec9 -> media/medialec9

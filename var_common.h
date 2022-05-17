@@ -23,7 +23,7 @@ const int TOTAL_BRICKSLV12 = 30;
 const int TOTAL_BRICKSLV13 =34;
 const int TOTAL_BRICKSLV14 = 30;
 const int TOTAL_BRICKSLV15 =34;
-const int DIES=10;
+const int DIES=2;
 int COUNT_DIES=DIES;
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -49,6 +49,9 @@ const int TOTAL_BUTTONS = 4;
 const int BUTTON_WIDTH1 = 40;
 const int BUTTON_HEIGHT1 = 40;
 const int TOTAL_BUTTONS1 = 4;
+const int BUTTON_WIDTH2 = 179;
+const int BUTTON_HEIGHT2 = 71;
+const int TOTAL_BUTTONS2 = 4;
 
 enum LButtonSprite
 {
@@ -82,6 +85,7 @@ enum color{
 //Mouse button sprites
 SDL_Rect gSpriteClips[4];
 SDL_Rect gSpriteClips1[4];
+SDL_Rect gSpriteClips2[4];
 SDL_Rect gDotRect[5];
 std::stringstream high_Score;
 const SDL_Color CYAN_COLOR = {0, 255, 255};

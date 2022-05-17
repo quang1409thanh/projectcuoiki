@@ -32,6 +32,19 @@ class LButton
 		LTexture texture[4];
 };
 
+//================các biến thuộc button================
+
+LButton gButton[TOTAL_STATUS];
+// LButton gButton[MAIN_MENU];
+// LButton gButton[GAME_PLAY];
+// LButton gButton[ABOUT];
+// LButton gButton[SOUND];
+// LButton gButton[EXIT];
+// LButton gButton[RESTART];
+
+//================các hàm thành viên của button================
+
+
 LButtonSprite LButton::getStatus() {
 	return mCurrentSprite;
 }

@@ -1,3 +1,0 @@
--b1 git add .
--b2 git commit -m ".."
--b3 git push origin main
