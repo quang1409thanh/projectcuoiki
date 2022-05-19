@@ -6,12 +6,10 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed May 18 04:52:14 2022
+# Make data base, printed on Fri May 20 02:45:23 2022
 
 # Variables
 
-# environment
-FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
 SYSTEMDRIVE = C:
 # environment
@@ -23,7 +21,7 @@ USERPROFILE = C:\Users\admin
 # environment
 LOCALAPPDATA = C:\Users\admin\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-17c470e7-a0ad-4dda-8f36-962df0d1ae7e-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-753abfe4-7175-4661-bf0e-bdae61934588-sock
 # environment
 VSCODE_CWD = C:\Users\admin\AppData\Local\Programs\Microsoft VS Code
 # environment
@@ -39,9 +37,7 @@ MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_19980_GKPMCVXDIIOJQDRB
-# environment
-FPS_BROWSER_USER_PROFILE_STRING = Default
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_11724_XNNTERXWILGCFAUW
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
@@ -55,7 +51,7 @@ VSCODE_LOG_STACK = false
 # automatic
 %F = $(notdir $%)
 # environment
-VSCODE_CODE_CACHE_PATH = C:\Users\admin\AppData\Roaming\Code\CachedData\da15b6fd3ef856477bf6f4fb29ba1b7af717770d
+VSCODE_CODE_CACHE_PATH = C:\Users\admin\AppData\Roaming\Code\CachedData\c3511e6c69bb39013c4a4b7b9566ec1ca73fc4d5
 # environment
 LANG = C
 # default
@@ -95,7 +91,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 19980
+VSCODE_PID = 11724
 # environment
 CLION = C:\mingw64\bin;C:\Program Files\JetBrains\CLion 2021.3.3\bin;
 # automatic
@@ -162,6 +158,8 @@ USERDOMAIN = LAPTOP-V4MTQACG
 GNUMAKEFLAGS := 
 # environment
 OS = Windows_NT
+# environment
+__COMPAT_LAYER = DetectorsAppHealth
 # makefile
 .DEFAULT_GOAL := all
 # default
@@ -189,7 +187,7 @@ ELECTRON_RUN_AS_NODE = 1
 # environment
 TEMP = C:\Users\admin\AppData\Local\Temp
 # environment
-VSCODE_IPC_HOOK = \\.\pipe\40c024692924a7e0e09c00bf44e8c2ef-1.67.1-main-sock
+VSCODE_IPC_HOOK = \\.\pipe\40c024692924a7e0e09c00bf44e8c2ef-1.67.2-main-sock
 # default
 .RECIPEPREFIX := 
 # automatic
@@ -207,7 +205,7 @@ PROCESSOR_REVISION = 6801
 # environment
 PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 # variable set hash-table stats:
-# Load=98/1024=10%, Rehash=0, Collisions=11/128=9%
+# Load=97/1024=9%, Rehash=0, Collisions=10/127=8%
 
 # Pattern-specific Variable Values
 
@@ -215,7 +213,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 
 # Directories
 
-# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1652784859): 35 files, no impossibilities.
+# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1652989352): 35 files, no impossibilities.
 
 # 35 files, no impossibilities in 1 directories.
 
@@ -228,7 +226,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-16 01:11:41
+#  Last modified 2022-05-19 21:17:35
 #  File has been updated.
 #  Successfully updated.
 
@@ -280,12 +278,12 @@ all:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 38 / storage = 376 B / avg = 9 B
-# current buf: size = 8174 B / used = 376 B / count = 38 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 38 / storage = 379 B / avg = 9 B
+# current buf: size = 8174 B / used = 379 B / count = 38 / avg = 9 B
 
 # strcache performance: lookups = 45 / hit rate = 15%
 # hash-table stats:
 # Load=38/8192=0%, Rehash=0, Collisions=1/45=2%
-# Finished Make data base on Wed May 18 04:52:14 2022
+# Finished Make data base on Fri May 20 02:45:23 2022
 
  

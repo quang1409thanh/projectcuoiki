@@ -7,6 +7,9 @@
 #include <sstream>
 #include <iostream>
 #include <cstdlib>
+#include <vector>
+#include <fstream>
+using namespace std;
 #include "var_common.h"
 #include "setup_Sound.h"
 #include"LTexture.h"
@@ -20,6 +23,7 @@
 #include"Dot.h"
 #include"fun_common.h"
 #include"play1.h"
+
 class TheGame{
 
     int status;
@@ -131,9 +135,10 @@ class TheGame{
                 this->status_next=main_menu();
                 break;
             }
+            // chỗ này để chạy level thôi :v
             case GAME_PLAY:
             {
-                this->status_next=playlv1();
+                this->status_next=playlv5();
                 break;
             }
             case ABOUT:
@@ -161,11 +166,7 @@ class TheGame{
                 this->status_next=win();
                 break;
             }
-            case PAUSE :
-            {
-                this->status_next=pause1();
-                break;
-            }
+
         }
     }
 };

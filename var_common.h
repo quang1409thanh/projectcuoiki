@@ -8,21 +8,11 @@ const int SCREEN_BOTTOM=70;
 
 const int BRICK_ROWS = 5;
 const int BRICK_COLUMNS= 5;
-const int TOTAL_BRICKSLV1 =40;
-const int TOTAL_BRICKSLV2 = 35;
+const int TOTAL_BRICKSLV1 =49;
+const int TOTAL_BRICKSLV2 = 29;
 const int TOTAL_BRICKSLV3 =34;
-const int TOTAL_BRICKSLV4 = 30;
-const int TOTAL_BRICKSLV5 =34;
-const int TOTAL_BRICKSLV6 = 30;
-const int TOTAL_BRICKSLV7 =34;
-const int TOTAL_BRICKSLV8 = 30;
-const int TOTAL_BRICKSLV9 =34;
-const int TOTAL_BRICKSLV10 = 30;
-const int TOTAL_BRICKSLV11 =34;
-const int TOTAL_BRICKSLV12 = 30;
-const int TOTAL_BRICKSLV13 =34;
-const int TOTAL_BRICKSLV14 = 30;
-const int TOTAL_BRICKSLV15 =34;
+const int TOTAL_BRICKSLV4 = 33;
+const int TOTAL_BRICKSLV5 =28;
 const int DIES=2;
 int COUNT_DIES=DIES;
 //The window we'll be rendering to

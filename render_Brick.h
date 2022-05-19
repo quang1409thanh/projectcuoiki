@@ -1,38 +1,32 @@
-void render_Brick_Lv1(Brick brick[]){
-    for (int i = 0; i < 7; i++){
-        brick[i].renderB('b');
-        }
-	for(int i=7;i<14;i++){	
-		brick[i].renderB('r');
-	}
-    for(int i=14;i<21;i++){
-        brick[i].renderB('g');
-    }
-    for(int i=21;i<28;i++){
-        brick[i].renderB('i');
-    }
-    for(int i=28;i<34;i++){
-        brick[i].renderB('d');
-    }
-    for(int i=34;i<40;i++){
-        brick[i].renderB('o');
-    }
+#include"load_Color.h"
 
+void render_Brick_Lv1(Brick brick[]){
+	vector<char> color1=load_Color("source1/data/lev1C.txt");
+	for(int i=0;i<TOTAL_BRICKSLV1;i++){
+		brick[i].renderB(color1[i]);
+	}
 }
 void render_Brick_Lv2(Brick brick[]){
-    for (int i = 0; i < 7; i++){
-		brick[i].renderB('b');
-	    }
-	for(int i=7;i<14;i++){	
-		brick[i].renderB('r');
+	vector<char> color2=load_Color("source1/data/lev2C.txt");
+	for(int i=0;i<TOTAL_BRICKSLV2;i++){
+		brick[i].renderB(color2[i]);
 	}
-	for(int i=14;i<21;i++){
-		brick[i].renderB('g');
+}
+void render_Brick_Lv3(Brick brick[]){
+	vector<char> color3=load_Color("source1/data/lev3C.txt");
+	for(int i=0;i<TOTAL_BRICKSLV3;i++){
+		brick[i].renderB(color3[i]);
 	}
-	for(int i=21;i<28;i++){
-		brick[i].renderB('i');
+}
+void render_Brick_Lv4(Brick brick[]){
+	vector<char> color4=load_Color("source1/data/lev4C.txt");
+	for(int i=0;i<TOTAL_BRICKSLV4;i++){
+		brick[i].renderB(color4[i]);
 	}
-	for(int i=28;i<35;i++){
-		brick[i].renderB('d');
+}
+void render_Brick_Lv5(Brick brick[]){
+	vector<char> color5=load_Color("source1/data/lev5C.txt");
+	for(int i=0;i<TOTAL_BRICKSLV5;i++){
+		brick[i].renderB(color5[i]);
 	}
 }
