@@ -49,6 +49,9 @@ class TheGame{
             if(this->status==WIN){
                 this->status=GAME_PLAY;
             }
+            if(this->status==PAUSE){
+                this->status=GAME_PLAY;
+            }
             return;
         }
         if(this->status_next=="playlv2"){
@@ -57,6 +60,16 @@ class TheGame{
             }
             return;
         }
+        if(this->status_next=="pause1"){
+            if(this->status==GAME_PLAY){
+                this->status=PAUSE;
+            }
+            if(this->status==GAME_PLAY2){
+                this->status=PAUSE;
+            }
+            return;
+        }
+        
         if(this->status_next=="about"){
             if(this->status==MAIN_MENU){
                 this->status=ABOUT;
@@ -70,7 +83,7 @@ class TheGame{
             return;
         }
         if(this->status_next=="quit"){
-            if(this->status==MAIN_MENU||this->status==GAME_PLAY2||this->status==GAME_PLAY||this->status==ABOUT||this->status==SOUND||this->status==WIN||this->status==LOSE){
+            if(this->status==MAIN_MENU||this->status==GAME_PLAY2||this->status==GAME_PLAY||this->status==ABOUT||this->status==SOUND||this->status==WIN||this->status==LOSE||this->status==PAUSE){
                 this->status=EXIT;
             }
         }
@@ -90,6 +103,10 @@ class TheGame{
             if(this->status==WIN){
                 this->status=MAIN_MENU;
             }
+            if(this->status==PAUSE){
+                this->status=MAIN_MENU;
+            }
+
             return;
         }
         if(this->status_next=="lose"){
@@ -142,6 +159,11 @@ class TheGame{
             case WIN :
             {
                 this->status_next=win();
+                break;
+            }
+            case PAUSE :
+            {
+                this->status_next=pause1();
                 break;
             }
         }

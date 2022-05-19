@@ -1,3 +1,4 @@
+
 class LButton2
 {
     private:
@@ -32,14 +33,22 @@ class LButton2
 
 		void freeStatus();
 
+		bool get_on();
+
+		void set_on(bool b);
 
 };
 
+bool LButton2::get_on() {
+	return on;
+}
 LButtonSprite LButton2::getStatus() {
 	return mCurrentSprite;
 }
 
-
+void LButton2::set_on(bool b) {
+	on = b;
+}
 LButton2::LButton2()
 {
     mPosition.x = 0;
@@ -108,26 +117,19 @@ void LButton2::handleEvent( SDL_Event* e )
         }
     }
 }
-void LButton2::update_Status() {
-		if (mCurrentSprite == BUTTON_SPRITE_MOUSE_DOWN && on) {
-			on = false;
-			freeStatus();
-            music=false;
-            sfx=false;
-            std::cout<<"am thanh da tat"<<music<<sfx<<std::endl;
-            setup_Sound_Off(music,sfx);
+// void LButton2::update_Status() {
+// 		if (mCurrentSprite == BUTTON_SPRITE_MOUSE_DOWN && on) {
+// 			on = false;
+// 			freeStatus();
+//             std::cout<<"am thanh da tat  "<<music<<" "<<sfx<<std::endl;
 
-		}
-		if (mCurrentSprite == BUTTON_SPRITE_MOUSE_DOWN && !on) {
-			on = true;
-			freeStatus();
-            music=true;
-            sfx=true;
-            std::cout<<"am thanh da bat"<<music<<sfx<<std::endl;
-            setup_Sound_Off(music,sfx);
-            
-		}
-	}
+// 		}
+// 		if (mCurrentSprite == BUTTON_SPRITE_MOUSE_DOWN && !on) {
+// 			on = true;
+// 			freeStatus();
+//             std::cout<<"am thanh da bat "<<music<<" "<<sfx<<std::endl;
+// 		}
+// 	}
 void LButton2::render()
 {
    //Show current button sprite
@@ -177,4 +179,6 @@ void LButton2::freeStatus() {
 	mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
 }
 LButton2 gButtonsfx;
+
+LButton2 gButtonmusic;
 // chưa làm được cái button 2 trạng thái nghe mùi toang rồi

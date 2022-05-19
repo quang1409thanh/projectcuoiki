@@ -10,7 +10,7 @@ std::string reset(){
 	count_Broken_Bricks=0;
 }
 std::string lose();
-std::string win();
+std::string pause();
 std::string main_menu();
 std::string sound();
 std::string about();
@@ -41,16 +41,38 @@ std::string sound(){
 			//gButtonSfxon.handleEvent(&e);
 			//gButtonSfxoff.handleEvent(&e);
 			gButtonsfx.handleEvent(&e);
+			gButtonmusic.handleEvent(&e);
 
 		}
+			std::cout<<music<<"  "<<sfx<<std::endl;
 		//Clear screen
 		
 		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(gRenderer);
-		gButton1_Back.render();
-		//gButtonSfxon.render();
-		gButtonsfx.update_Status();
+		if(gButtonmusic.getStatus()==BUTTON_SPRITE_MOUSE_DOWN&&gButtonmusic.get_on()) {
+		music=!music;
+		gButtonmusic.set_on(false);
+		gButtonmusic.freeStatus();
+		}
+		if(gButtonmusic.getStatus()==BUTTON_SPRITE_MOUSE_DOWN&&!gButtonmusic.get_on()) {
+		music=!music;
+		gButtonmusic.set_on(true);
+		gButtonmusic.freeStatus();
+		}
+		if(gButtonsfx.getStatus()==BUTTON_SPRITE_MOUSE_DOWN&&gButtonsfx.get_on()) {
+		sfx=!sfx;
+		gButtonsfx.set_on(false);
+		gButtonsfx.freeStatus();
+		}
+	
+		if(gButtonsfx.getStatus()==BUTTON_SPRITE_MOUSE_DOWN&&!gButtonsfx.get_on()) {
+		sfx=!sfx;
+		gButtonsfx.set_on(true);
+		gButtonsfx.freeStatus();
+		}
 		gButtonsfx.render();
+		gButtonmusic.render();
+		gButton1_Back.render();
 		if(gButton1_Back.getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
 			gButton1_Back.freeStatus();
 			quit=true;
@@ -66,10 +88,8 @@ std::string sound(){
 		
 		//Update screen
 		SDL_RenderPresent(gRenderer);
+
 	}
-			//gButton1_Back.freeStatus();
-			// gButtonSfxon.handleEvent(&e);
-			// gButtonSfxoff.handleEvent(&e);
 }
 
 std::string win(){
@@ -287,9 +307,13 @@ std::string playlv1() {
 	COUNT_DIES=DIES;
 	//Event handler
 	SDL_Event e;
-
+	Brick brick1[TOTAL_BRICKSLV1];
+	Init_Bricklv1(brick1);
 	//Angle of rotation
 	double degrees = 0;
+	if(music){
+		Mix_PlayMusic(music_Play, -1);
+	}
 
 	//Flip type
 	SDL_RendererFlip flipType = SDL_FLIP_NONE;
@@ -309,12 +333,7 @@ std::string playlv1() {
 	int countedFrames = 0;
 	fpsTimer.start();
 
-   Brick brick1[TOTAL_BRICKSLV1];
-   Init_Bricklv1(brick1);
-   if(music){
-   Mix_PlayMusic(music_Play, -1 );
-   }
-   int i=0;
+   	int i=0;
 	//While application is running
 	while (!quit)
 	{   
@@ -331,16 +350,23 @@ std::string playlv1() {
 			dot.handleEvent(e);
 			paddle.handleEventPaddle(e);
 			gButton1_Pause.handleEvent(&e);
-			gButton1_Reset.handleEvent(&e);
+			//gButton1_Reset.handleEvent(&e);
 
-		}
+
+		}	
+		
+		// if(quit){
+		// 	if(music){
+		// 	Mix_PlayMusic(music_Play, -1);
+		// 	}
+		// }
 
 		//Move the dot and check collision
 		dot.move(brick1,TOTAL_BRICKSLV1);
 		//dot.ball_brick_collision(brick1,TOTAL_BRICKSLV1);
 		paddle.moveP();
 		//Calculate and correct fps
-		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1.f);
+		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
 		if (avgFPS > 2000000)
 		{
 			avgFPS = 0;
@@ -372,15 +398,16 @@ std::string playlv1() {
 		
 		gBgTexture.render(0, 0);
 		//Render dot
-        if(fpsTimer.getTicks()%1000==0){
+        if(fpsTimer.getTicks()==500){
             i++;
             while(i>4) i-=4;
+
         }
 		dot.render(i);
 		paddle.renderP();
 		render_Brick_Lv1(brick1);
 		gButton1_Pause.render();
-		gButton1_Reset.render();
+		//gButton1_Reset.render();
 		gBgLv1.render(0, 0);// hiện thị khung để chơi 
 		//gTextbox.render(0, 0);
 		//Draw blue horizontal line- kết xuất màu xanh vào đường ngang
@@ -402,6 +429,7 @@ std::string playlv1() {
 			// lose();
 			// //COUNT_DIES=DIES;
 			// break;
+			Mix_HaltMusic();
 			return "lose";
 		}
 		if(count_Broken_Bricks==TOTAL_BRICKSLV1*50){
@@ -412,14 +440,28 @@ std::string playlv1() {
 			return "playlv2";
 		}
 		if(gButton1_Reset.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
-		{
+		{	
+			gButton1_Reset.freeStatus();
 			quit = true;
 			count_Broken_Bricks=0;
 			dot.reset();
-			return "playlv1";
+
+			return "pause1";
 		}
+		if(gButton1_Pause.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
+		{	
+			velPauseX=dot.getVelX();
+			velPauseY=dot.getVelY();
+			dot.set_mVelX(0);
+			dot.set_mVelY(0);
+			Mix_HaltMusic();
+			gButton1_Pause.freeStatus();
+			pause();
+		}
+		
 }
 }
+
 std::string lose() {
 	std::cout<<"lose"<<std::endl;
 	//Main loop flag
@@ -564,6 +606,7 @@ std::string main_menu(){
         	//std::cout<<"GAME_PLAY"<<std::endl;
 			gButton[GAME_PLAY].freeStatus();
 			quit=true;
+			//Mix_HaltMusic();
 			return "playlv1";
            
    			//return "playlv1";
@@ -571,12 +614,14 @@ std::string main_menu(){
 		else if(gButton[ABOUT].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
 			quit=true;
 			gButton[ABOUT].freeStatus();
+			Mix_HaltMusic();
 			return "about";
 		}
 		else if(gButton[SOUND].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
 			quit=true;
 			gButton[SOUND].freeStatus();
 			//music_Menu=NULL;
+			Mix_HaltMusic();
 			return "sound";
 		}
 		else if(gButton[EXIT].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
@@ -679,3 +724,133 @@ std::string about(){
 // std::string Exit(&){
 // 	//Main loop flag
 // }
+std::string pause(){
+	std::cout<<"pause"<<std::endl;
+	bool quit = false;
+
+	//Event handler
+	SDL_Event e;
+	
+	//While application is running
+	
+	while (!quit)
+	{
+		//Handle events on queue
+		while (SDL_PollEvent(&e) != 0)
+		{
+			//User requests quit
+			if (e.type == SDL_QUIT)
+			{
+				quit = true;
+				return "quit";
+			}
+			//Handle input for the dot
+			dot.handleEvent(e);
+			paddle.handleEventPaddle(e);
+			gButton[RESUME].handleEvent(&e);
+			gButton[SOUND].handleEvent(&e);
+			gButton[MAIN_MENU].handleEvent(&e);
+			gButton[EXIT].handleEvent(&e);
+
+		}
+		//Clear screen
+		
+
+		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
+		//SDL_RenderClear(gRenderer);
+		gButton[RESUME].render();
+		gButton[SOUND].render();
+		gButton[MAIN_MENU].render();
+		gButton[EXIT].render();
+		if(gButton[RESUME].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
+			gButton[RESUME].freeStatus();
+			quit=true;
+			dot.set_mVelX(velPauseX);
+			dot.set_mVelY(velPauseY);
+			if(music){
+				Mix_PlayMusic(music_Play, -1);
+			}
+			
+			return "playlv1";
+		}
+		if(gButton[SOUND].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
+			gButton[SOUND].freeStatus();
+			// quit=true;
+			// return "sound";
+			sound();
+		}
+		//Update screen
+		SDL_RenderPresent(gRenderer);
+	}
+
+}
+std::string pause1(){
+	std::cout<<"pause"<<std::endl;
+	bool quit = false;
+
+	//Event handler
+	SDL_Event e;
+	
+	//While application is running
+	
+	while (!quit)
+	{
+		//Handle events on queue
+		while (SDL_PollEvent(&e) != 0)
+		{
+			//User requests quit
+			if (e.type == SDL_QUIT)
+			{
+				quit = true;
+				return "quit";
+			}
+			//Handle input for the dot
+			dot.handleEvent(e);
+			paddle.handleEventPaddle(e);
+			//gButton[RESUME].handleEvent(&e);
+			//gButtonSfxon.handleEvent(&e);
+			//gButtonSfxoff.handleEvent(&e);
+			gButton[RESTART].handleEvent(&e);
+			gButton[MAIN_MENU].handleEvent(&e);
+			gButton[EXIT].handleEvent(&e);
+
+		}
+		//Clear screen
+		
+		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
+		//SDL_RenderClear(gRenderer);
+		//gButton[RESUME].render();
+		gButton[RESTART].render();
+		gButton[MAIN_MENU].render();
+		gButton[EXIT].render();
+		
+		if(gButton[RESTART].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
+			gButton[RESTART].freeStatus();
+			quit=true;
+			return "playlv1";
+		}
+		else if(gButton[MAIN_MENU].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
+			gButton[MAIN_MENU].freeStatus();
+			quit=true;
+			return "menu";
+		}
+		else if(gButton[EXIT].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
+			gButton[EXIT].freeStatus();
+			quit=true;
+			return "quit";
+		}
+		// if(gButtonSfxoff.getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
+		// 	quit=true;
+		// 	setup_Sound_Off(music,sfx);
+		// 	gButtonSfxoff.freeStatus();
+			
+		// }
+		
+		
+		//Update screen
+		SDL_RenderPresent(gRenderer);
+	}
+			//gButton1_Back.freeStatus();
+			// gButtonSfxon.handleEvent(&e);
+			// gButtonSfxoff.handleEvent(&e);
+}

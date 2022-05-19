@@ -52,7 +52,9 @@ const int TOTAL_BUTTONS1 = 4;
 const int BUTTON_WIDTH2 = 179;
 const int BUTTON_HEIGHT2 = 71;
 const int TOTAL_BUTTONS2 = 4;
-
+// khai báo 2 biến để giữa vel lúc pause
+int velPauseX=0;
+int velPauseY=0;
 enum LButtonSprite
 {
     BUTTON_SPRITE_MOUSE_OUT = 0,
@@ -69,10 +71,11 @@ enum Status {
     SOUND=4,
 	WIN = 5,
 	LOSE = 6,
-	PAUSE = 7,
-    RESTART = 8,
-	EXIT = 9,
-    TOTAL_STATUS = 10
+	RESUME = 7,// DÙNG BUTTON RESUME
+    PAUSE = 8,//  DÙNG CHO MÀN HÌNH PAUSE
+    RESTART = 9,
+	EXIT = 10,
+    TOTAL_STATUS = 11
 };
 enum color{
     red=0,

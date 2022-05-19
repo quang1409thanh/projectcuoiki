@@ -31,7 +31,10 @@ class Dot
         void set_gDot_Texture(std::string path,const int &n);
         void ball_brick_collision(Brick brick[],int n);
 
-        int set_mVelY(int& y);
+        int set_mVelY(int y);
+        int set_mVelX(int x);
+        int getVelX();
+        int getVelY();
 		void restart();
         int getX();
         int getY();
@@ -303,6 +306,12 @@ int Dot :: getX() {
 int Dot::getY() {
     return mPosY;
 }
+int Dot::getVelX() {
+    return mVelX;
+}
+int Dot::getVelY() {
+    return mVelY;
+}
 void Dot:: reset(){
         //Initialize the offsets
     mPosX = paddle.getPosXP()+paddle.PADDLE_WIDTH/2-DOT_WIDTH/2;
@@ -316,6 +325,12 @@ void Dot:: reset(){
     mVelY = 0;
 
     shiftColliders();
+}
+int Dot::set_mVelX(int x) {
+    mVelX = x;
+}
+int Dot::set_mVelY(int y) {
+    mVelY = y;
 }
 
 // còn 2 lỗi chưa fix được là va chạm với thành trái và va chạm với paddle
