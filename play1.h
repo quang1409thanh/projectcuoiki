@@ -193,7 +193,7 @@ std::string playlv5() {
 
 	//The dot that will be moving around on the screen
 	// Dot dot;
-	SDL_Color textColor = DEFAULT_COLOR;
+	SDL_Color textColor = WHITE_COLOR;
 
 	//The frames per second timer
 	LTimer fpsTimer;
@@ -226,7 +226,7 @@ std::string playlv5() {
 
 		}	
 		//Move the dot and check collision
-		dot.move(brick5,TOTAL_BRICKSLV5);
+		dot.move5(brick5,TOTAL_BRICKSLV5);
 		//dot.ball_brick_collision(brick1,TOTAL_BRICKSLV1);
 		paddle.moveP();
 		//Calculate and correct fps
@@ -256,11 +256,11 @@ std::string playlv5() {
 		}
 		
 		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(gRenderer);
 		// Render the bg
 		
-		gBgTexturelv2.render(0, 0);
+		//gBgTexturelv2.render(0, 0);
 		//Render dot
         if(fpsTimer.getTicks()==500){
             i++;

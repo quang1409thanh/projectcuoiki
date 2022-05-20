@@ -23,7 +23,7 @@ class Dot
 
 		//Moves the dot and checks collision
 		void move( Brick brick[],int n);
-        void move1();
+        void move5( Brick brick[],int n);
 
 		//Shows the dot on the screen
 		void render(const int & color);
@@ -171,21 +171,6 @@ void Dot::handleEvent( SDL_Event& e )
         }
     }
 }
-// void Dot::ball_brick_collision(Brick brick[],int n){
-//     bool a;
-//     for(int i=0;i<n;i++){
-//             a=checkCollision(mCollider,brick[i]);
-//             if(a==true){
-//             brick[i]=brick[i].setBrick_mPosXB(30000);
-//             //delete_brick_count++;
-//             if(sfx)
-//             {
-//                 Mix_PlayChannel( -1, brickcollision, 0 );
-//             }
-//             }
-//             a=false;
-//         }
-// }
 void Dot::move(Brick brick[],int n ){
     // dành cho trường hợp là dot đang ở trên paddle
     if(mVelX==0&&mVelY==0){
@@ -252,6 +237,103 @@ void Dot::move(Brick brick[],int n ){
     }
     }
     
+    // va chạm với cạnh trên
+    if( mPosY <= (SCREEN_TOP) ) {
+        mPosY = SCREEN_TOP;
+        mVelY *= -1;
+        //Mix_PlayChannel(-1,ballcollision,0);
+    }
+    // va chạm với cạnh dưới
+	if(mPosY + DOT_HEIGHT >= (SCREEN_HEIGHT-SCREEN_BOTTOM) ){
+        
+		reset();
+		SDL_Delay(50);
+		COUNT_DIES--;
+	}
+    // va chạm với paddle
+    if(mPosY+DOT_HEIGHT>=paddle.getPosYP()&&mPosX>=paddle.getPosXP()&&mPosX<=paddle.getPosXP()+paddle.PADDLE_WIDTH){
+        mPosY=paddle.getPosYP()-DOT_HEIGHT;// chỗ này khá hay để tránh tình trạng lỗi chạy trên thanh paddle, chưa hiểu nguyên nhân tại sao
+        mVelY*=-1;
+		//Mix_PlayChannel(-1,ballcollision,0);
+    }
+    
+}
+void Dot::move5(Brick brick[],int n ){
+    // dành cho trường hợp là dot đang ở trên paddle
+    if(mVelX==0&&mVelY==0){
+        mPosX=paddle.getPosXP()+paddle.PADDLE_WIDTH/2-DOT_WIDTH/2;
+        mPosY=SCREEN_HEIGHT-SCREEN_BOTTOM- DOT_HEIGHT-paddle.PADDLE_HEIGHT;
+    }
+
+    //Move the dot left or right
+
+    //If the dot collided or went too far to the left or right
+    //va chạm với viên gạch
+    mPosX += mVelX;
+	shiftColliders();
+
+    //If the dot collided or went too far to the left or right
+    for(int i=0;i<n;i++){
+	if(  checkCollision( mCollider, brick[i] ) )
+    {   
+        //Move back
+        cout<<"va cham voi vien gach thu "<<i<<endl;
+        if(i<21||i>26){
+        mVelX*=-1;
+		shiftColliders();
+        brick[i]=brick[i].setBrick_mPosXB(30000);
+        count_Broken_Bricks=count_Broken_Bricks+50;
+        if(sfx)
+        {
+                Mix_PlayChannel( -1, brickcollision, 0 );
+            }
+        }
+        //delete_brick_count++;
+    }
+    }
+    // va chạm với cạnh bên trái và cạnh bên phải
+    if( ( mPosX <= SCREEN_LEFT )  ) {
+        mPosX = SCREEN_LEFT;
+        mVelX *= -1;
+        if(sfx){
+        Mix_PlayChannel(-1,ballcollision,0);
+        }
+    }
+    if(( mPosX + DOT_WIDTH >= (SCREEN_WIDTH-SCREEN_RIGHT) ) ) {
+        mPosX = SCREEN_WIDTH-SCREEN_RIGHT-DOT_WIDTH;
+        mVelX *= -1;
+        if(sfx){
+        Mix_PlayChannel(-1,ballcollision,0);
+        }
+    }
+    //Move the dot up or down
+    mPosY += mVelY;
+	shiftColliders();
+
+    //If the dot collided or went too far up or down
+    for(int i=0;i<n;i++){
+    if(  checkCollision( mCollider, brick[i] ) )
+    {
+        //Move back
+
+        if(i<21||i>26){
+        mVelY*=-1;
+		shiftColliders();
+        brick[i]=brick[i].setBrick_mPosXB(30000);
+        count_Broken_Bricks=count_Broken_Bricks+50;
+        if(sfx)
+        {
+            Mix_PlayChannel( -1, brickcollision, 0 );
+        }
+        }
+        else      {
+        mVelY*=-1;
+		shiftColliders();
+        }   //delete_brick_count++;
+
+       
+    }
+    }
     // va chạm với cạnh trên
     if( mPosY <= (SCREEN_TOP) ) {
         mPosY = SCREEN_TOP;

@@ -6,10 +6,12 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Fri May 20 02:45:23 2022
+# Make data base, printed on Sat May 21 01:03:21 2022
 
 # Variables
 
+# environment
+FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
 SYSTEMDRIVE = C:
 # environment
@@ -21,7 +23,7 @@ USERPROFILE = C:\Users\admin
 # environment
 LOCALAPPDATA = C:\Users\admin\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-753abfe4-7175-4661-bf0e-bdae61934588-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-142d9355-5b69-4b3e-96c7-f575e23b90df-sock
 # environment
 VSCODE_CWD = C:\Users\admin\AppData\Local\Programs\Microsoft VS Code
 # environment
@@ -37,7 +39,9 @@ MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_11724_XNNTERXWILGCFAUW
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_5564_VMEKCDQOGHRMSPCR
+# environment
+FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
@@ -91,7 +95,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 11724
+VSCODE_PID = 5564
 # environment
 CLION = C:\mingw64\bin;C:\Program Files\JetBrains\CLion 2021.3.3\bin;
 # automatic
@@ -123,7 +127,7 @@ MAKELEVEL := 0
 # default
 MAKE = $(MAKE_COMMAND)
 # environment
-PATH = E:\software\mingw64\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\ProgramData\chocolatey\bin;C:\Users\admin\Desktop\WebSite\SFML-2.5.1\bin;C:\Program Files\Git\cmd;E:\software\SDL2-2.0.20\x86_64-w64-mingw32\bin;E:\software\SDL2_image-2.0.5\x86_64-w64-mingw32\bin;E:\software\SDL2_ttf-2.0.18\x86_64-w64-mingw32\bin;E:\software\SDL2_mixer-2.0.4\x86_64-w64-mingw32\bin;E:\software\mingw64\bin;C:\MinGW\bin;C:\Users\admin\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\admin\AppData\Local\Programs\Python\Python310\;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;C:\Users\admin\AppData\Local\GitHubDesktop\bin;C:\Users\admin\AppData\Local\Programs\Microsoft VS Code\bin;C:\mingw64\bin;C:\Program Files\JetBrains\CLion 2021.3.3\bin;;E:\software\SDL2-2.0.20\x86_64-w64-mingw32\bin;E:\software\SDL2_ttf-2.0.18\x86_64-w64-mingw32\bin;E:\software\SDL2_mixer-2.0.4\x86_64-w64-mingw32\bin;
+PATH = E:\software\mingw64\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\ProgramData\chocolatey\bin;C:\Users\admin\Desktop\WebSite\SFML-2.5.1\bin;C:\Program Files\Git\cmd;E:\software\mingw64\bin;C:\MinGW\bin;C:\Users\admin\AppData\Local\Programs\Python\Python310\Scripts\;C:\Users\admin\AppData\Local\Programs\Python\Python310\;C:\Users\admin\AppData\Local\Microsoft\WindowsApps;C:\Users\admin\AppData\Local\GitHubDesktop\bin;C:\Users\admin\AppData\Local\Programs\Microsoft VS Code\bin;C:\mingw64\bin;C:\Program Files\JetBrains\CLion 2021.3.3\bin;;
 # environment
 COMPUTERNAME = LAPTOP-V4MTQACG
 # default
@@ -158,8 +162,6 @@ USERDOMAIN = LAPTOP-V4MTQACG
 GNUMAKEFLAGS := 
 # environment
 OS = Windows_NT
-# environment
-__COMPAT_LAYER = DetectorsAppHealth
 # makefile
 .DEFAULT_GOAL := all
 # default
@@ -205,7 +207,7 @@ PROCESSOR_REVISION = 6801
 # environment
 PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 # variable set hash-table stats:
-# Load=97/1024=9%, Rehash=0, Collisions=10/127=8%
+# Load=98/1024=10%, Rehash=0, Collisions=11/128=9%
 
 # Pattern-specific Variable Values
 
@@ -213,9 +215,9 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 
 # Directories
 
-# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1652989352): 35 files, no impossibilities.
+# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1653069439): 32 files, no impossibilities.
 
-# 35 files, no impossibilities in 1 directories.
+# 32 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -226,7 +228,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-19 21:17:35
+#  Last modified 2022-05-21 00:52:28
 #  File has been updated.
 #  Successfully updated.
 
@@ -262,7 +264,7 @@ all:
 # variable set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=1/11=9%
 #  recipe to execute (from 'Makefile', line 2):
-	g++ -IE:\software\SDL2-2.0.20\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_image-2.0.5\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_ttf-2.0.18\x86_64-w64-mingw32\include\SDL2 -IE:\software\SDL2_mixer-2.0.4\x86_64-w64-mingw32\include\SDL2 -LE:\software\SDL2-2.0.20\x86_64-w64-mingw32\lib -LE:\software\SDL2_image-2.0.5\x86_64-w64-mingw32\lib -LE:\software\SDL2_ttf-2.0.18\x86_64-w64-mingw32\lib -LE:\software\SDL2_mixer-2.0.4\x86_64-w64-mingw32\lib -o main main.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+	g++ -Isrc\SDL2\include\SDL2 -Isrc\SDL2_img\include\SDL2 -Isrc\SDL2_ttf\include\SDL2 -Isrc\SDL2_mixer\include\SDL2 -Lsrc\SDL2\lib -Lsrc\SDL2_img\lib -Lsrc\SDL2_ttf\lib -Lsrc\SDL2_mixer\lib -o main main.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 # Not a target:
 .SUFFIXES:
@@ -278,12 +280,12 @@ all:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 38 / storage = 379 B / avg = 9 B
-# current buf: size = 8174 B / used = 379 B / count = 38 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 35 / storage = 333 B / avg = 9 B
+# current buf: size = 8174 B / used = 333 B / count = 35 / avg = 9 B
 
-# strcache performance: lookups = 45 / hit rate = 15%
+# strcache performance: lookups = 42 / hit rate = 16%
 # hash-table stats:
-# Load=38/8192=0%, Rehash=0, Collisions=1/45=2%
-# Finished Make data base on Fri May 20 02:45:23 2022
+# Load=35/8192=0%, Rehash=0, Collisions=1/42=2%
+# Finished Make data base on Sat May 21 01:03:21 2022
 
  

@@ -13,7 +13,7 @@ const int TOTAL_BRICKSLV2 = 29;
 const int TOTAL_BRICKSLV3 =34;
 const int TOTAL_BRICKSLV4 = 33;
 const int TOTAL_BRICKSLV5 =28;
-const int DIES=2;
+const int DIES=10;
 int COUNT_DIES=DIES;
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
