@@ -289,7 +289,7 @@ std::string playlv5() {
 			Mix_HaltMusic();
 			return "lose";
 		}
-		if(count_Broken_Bricks==(TOTAL_BRICKSLV1+TOTAL_BRICKSLV2+TOTAL_BRICKSLV3+TOTAL_BRICKSLV4+TOTAL_BRICKSLV5)*50){// chú ý sửa chỗ này 
+		if(count_Broken_Bricks==(TOTAL_BRICKSLV1+TOTAL_BRICKSLV2+TOTAL_BRICKSLV3+TOTAL_BRICKSLV4+TOTAL_BRICKSLV5-6)*50){// chú ý sửa chỗ này 
 			quit = true;
 			//return "quit";
 			SDL_Delay(100);
