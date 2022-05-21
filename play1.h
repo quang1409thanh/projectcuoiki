@@ -47,7 +47,7 @@ std::string sound(){
 			std::cout<<music<<"  "<<sfx<<std::endl;
 		//Clear screen
 		
-		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xF0);
 		SDL_RenderClear(gRenderer);
 		if(gButtonmusic.getStatus()==BUTTON_SPRITE_MOUSE_DOWN&&gButtonmusic.get_on()) {
 		music=!music;
@@ -177,7 +177,6 @@ std::string playlv5() {
 	//Main loop flag
 	std::cout<<"playlv5"<<std::endl;
 	bool quit = false;
-	COUNT_DIES=DIES;
 	//Event handler
 	SDL_Event e;
 	Brick brick5[TOTAL_BRICKSLV5];
@@ -208,6 +207,7 @@ std::string playlv5() {
 
    	int i=0;
 	//While application is running
+	
 	while (!quit)
 	{   
 		//Handle events on queue
@@ -256,20 +256,25 @@ std::string playlv5() {
 		}
 		
 		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0x00);
 		SDL_RenderClear(gRenderer);
 		// Render the bg
 		
 		//gBgTexturelv2.render(0, 0);
 		//Render dot
-        if(fpsTimer.getTicks()==500){
-            i++;
-            while(i>4) i-=4;
+        // if(fpsTimer.getTicks()==500){
+        //     i++;
+        //     while(i>4) i-=4;
 
-        }
-		dot.render(i);
+        // }
+		dot.render(1);
 		paddle.renderP();
+		i++;
+		// gPowerC.render(i);
+		
+		// gPowerS.render(i);
 		render_Brick_Lv5(brick5);
+		while(i>4) i-=4;
 		gButton1_Pause.render();
 		gBgLv1.render(0, 0);// hiện thị khung để chơi 
 		//Render current frame
@@ -308,7 +313,6 @@ std::string playlv4() {
 	//Main loop flag
 	std::cout<<"playlv4"<<std::endl;
 	bool quit = false;
-	COUNT_DIES=DIES;
 	//Event handler
 	SDL_Event e;
 	Brick brick4[TOTAL_BRICKSLV4];
@@ -324,7 +328,7 @@ std::string playlv4() {
 
 	//The dot that will be moving around on the screen
 	// Dot dot;
-	SDL_Color textColor = DEFAULT_COLOR;
+	SDL_Color textColor = WHITE_COLOR;
 
 	//The frames per second timer
 	LTimer fpsTimer;
@@ -387,11 +391,11 @@ std::string playlv4() {
 		}
 		
 		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(gRenderer);
 		// Render the bg
 		
-		gBgTexturelv2.render(0, 0);
+		//gBgTexturelv2.render(0, 0);
 		//Render dot
         if(fpsTimer.getTicks()==500){
             i++;
@@ -415,7 +419,7 @@ std::string playlv4() {
 			Mix_HaltMusic();
 			return "lose";
 		}
-		if(count_Broken_Bricks==(TOTAL_BRICKSLV1+TOTAL_BRICKSLV2+TOTAL_BRICKSLV3+TOTAL_BRICKSLV5)*50){// chú ý sửa chỗ này 
+		if(count_Broken_Bricks==(TOTAL_BRICKSLV1+TOTAL_BRICKSLV2+TOTAL_BRICKSLV3+TOTAL_BRICKSLV4)*50){// chú ý sửa chỗ này 
 			quit = true;
 			//return "quit";
 			SDL_Delay(100);
@@ -439,7 +443,6 @@ std::string playlv3() {
 	//Main loop flag
 	std::cout<<"playlv3"<<std::endl;
 	bool quit = false;
-	COUNT_DIES=DIES;
 	//Event handler
 	SDL_Event e;
 	Brick brick3[TOTAL_BRICKSLV3];
@@ -455,7 +458,7 @@ std::string playlv3() {
 
 	//The dot that will be moving around on the screen
 	// Dot dot;
-	SDL_Color textColor = DEFAULT_COLOR;
+	SDL_Color textColor = WHITE_COLOR;
 
 	//The frames per second timer
 	LTimer fpsTimer;
@@ -518,11 +521,11 @@ std::string playlv3() {
 		}
 		
 		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(gRenderer);
 		// Render the bg
 		
-		gBgTexturelv2.render(0, 0);
+		//gBgTexturelv2.render(0, 0);
 		//Render dot
         if(fpsTimer.getTicks()==500){
             i++;
@@ -571,7 +574,6 @@ std::string playlv2() {
 	//Main loop flag
 	std::cout<<"playlv2"<<std::endl;
 	bool quit = false;
-	COUNT_DIES=DIES;
 	//Event handler
 	SDL_Event e;
 	Brick brick2[TOTAL_BRICKSLV2];
@@ -587,7 +589,7 @@ std::string playlv2() {
 
 	//The dot that will be moving around on the screen
 	// Dot dot;
-	SDL_Color textColor = DEFAULT_COLOR;
+	SDL_Color textColor = WHITE_COLOR;
 
 	//The frames per second timer
 	LTimer fpsTimer;
@@ -650,11 +652,11 @@ std::string playlv2() {
 		}
 		
 		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(gRenderer);
 		// Render the bg
 		
-		gBgTexturelv2.render(0, 0);
+		//gBgTexturelv2.render(0, 0);
 		//Render dot
         if(fpsTimer.getTicks()==500){
             i++;
@@ -719,7 +721,7 @@ std::string playlv1() {
 
 	//The dot that will be moving around on the screen
 	// Dot dot;
-	SDL_Color textColor = DEFAULT_COLOR;
+	SDL_Color textColor = WHITE_COLOR;
 
 	//The frames per second timer
 	LTimer fpsTimer;
@@ -782,11 +784,11 @@ std::string playlv1() {
 		}
 		
 		//Clear screen
-		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(gRenderer);
 		// Render the bg
 		
-		gBgTexture.render(0, 0);
+		//gBgTexture.render(0, 0);
 		//Render dot
         if(fpsTimer.getTicks()==500){
             i++;
@@ -826,6 +828,7 @@ std::string playlv1() {
 			Mix_HaltMusic();
 			gButton1_Pause.freeStatus();
 			pause();
+			//return "pause";
 		}
 		
 }
@@ -1078,19 +1081,19 @@ std::string pause(){
 			paddle.handleEventPaddle(e);
 			gButton[RESUME].handleEvent(&e);
 			gButton[SOUND].handleEvent(&e);
-			gButton[MAIN_MENU].handleEvent(&e);
-			gButton[EXIT].handleEvent(&e);
+			//gButton[MAIN_MENU].handleEvent(&e);
+			//gButton[EXIT].handleEvent(&e);
 
 		}
 		//Clear screen
 		
 
-		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
+		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
 		//SDL_RenderClear(gRenderer);
 		gButton[RESUME].render();
 		gButton[SOUND].render();
-		gButton[MAIN_MENU].render();
-		gButton[EXIT].render();
+		//gButton[MAIN_MENU].render();
+		//gButton[EXIT].render();
 		if(gButton[RESUME].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
 			gButton[RESUME].freeStatus();
 			quit=true;
@@ -1108,6 +1111,11 @@ std::string pause(){
 			// return "sound";
 			sound();
 		}
+		// if(gButton[EXIT].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
+		// 	gButton[EXIT].freeStatus();
+		// 	quit=true;
+		// 	return "quit";
+		// }
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 	}

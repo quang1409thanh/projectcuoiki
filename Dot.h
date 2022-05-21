@@ -13,7 +13,7 @@ class Dot
 		static const int DOT_HEIGHT = 21;
 
 		//Maximum axis velocity of the dot
-		static const int DOT_VEL = 6;
+		static const int DOT_VEL =4;
 
 		//Initializes the variables
 		Dot();
@@ -128,8 +128,8 @@ Dot::Dot()
 void Dot::shiftColliders()
 {
 	//Align collider to center of dot
-	mCollider.x = mPosX;
-	mCollider.y = mPosY;
+	mCollider.x = mPosX+DOT_WIDTH/2;
+	mCollider.y = mPosY+DOT_HEIGHT/2;
 }
 
 void Dot::handleEvent( SDL_Event& e )
@@ -288,6 +288,14 @@ void Dot::move5(Brick brick[],int n ){
                 Mix_PlayChannel( -1, brickcollision, 0 );
             }
         }
+        else {
+        mPosX-=mVelX;
+        //mVelX*=-1;// có 1 bug là khi va chạm thì sẽ bị lỗi va chạm với viên gạch 26 theo hướng x nên chưa biết cách fix như nào chữa cháy bằng cách này thôi
+		shiftColliders();
+        if(sfx){
+        Mix_PlayChannel(-1,ballcollision,0);
+        }
+        }  
         //delete_brick_count++;
     }
     }
@@ -327,8 +335,12 @@ void Dot::move5(Brick brick[],int n ){
         }
         }
         else      {
+        mPosY-=mVelY;
         mVelY*=-1;
 		shiftColliders();
+        if(sfx){
+        Mix_PlayChannel(-1,ballcollision,0);
+        }
         }   //delete_brick_count++;
 
        

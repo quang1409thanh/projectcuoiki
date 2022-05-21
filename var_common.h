@@ -13,7 +13,7 @@ const int TOTAL_BRICKSLV2 = 29;
 const int TOTAL_BRICKSLV3 =34;
 const int TOTAL_BRICKSLV4 = 33;
 const int TOTAL_BRICKSLV5 =28;
-const int DIES=10;
+const int DIES=100;
 int COUNT_DIES=DIES;
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -61,11 +61,14 @@ enum Status {
     SOUND=4,
 	WIN = 5,
 	LOSE = 6,
-	RESUME = 7,// DÙNG BUTTON RESUME
-    PAUSE = 8,//  DÙNG CHO MÀN HÌNH PAUSE
+	RESUME = 7,
+    PAUSE = 8,
     RESTART = 9,
 	EXIT = 10,
-    TOTAL_STATUS = 11
+    GAME_PLAY3=11,
+    GAME_PLAY4=12,
+    GAME_PLAY5=13,
+    TOTAL_STATUS = 14
 };
 enum color{
     red=0,
@@ -80,6 +83,7 @@ SDL_Rect gSpriteClips[4];
 SDL_Rect gSpriteClips1[4];
 SDL_Rect gSpriteClips2[4];
 SDL_Rect gDotRect[5];
+SDL_Rect gPowerRect[4];
 std::stringstream high_Score;
 const SDL_Color CYAN_COLOR = {0, 255, 255};
 const SDL_Color BLUE_COLOR = {0, 0, 255};

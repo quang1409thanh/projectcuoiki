@@ -18,6 +18,7 @@ using namespace std;
 #include"LButton.h"
 #include"LButton2.h"
 #include"LButton1.h"
+#include"Power.h"
 #include"Brick.h"
 #include"Paddle.h"
 #include"Dot.h"
@@ -64,11 +65,26 @@ class TheGame{
             }
             return;
         }
-        if(this->status_next=="pause1"){
-            if(this->status==GAME_PLAY){
-                this->status=PAUSE;
-            }
+        if(this->status_next=="playlv3"){
             if(this->status==GAME_PLAY2){
+                this->status=GAME_PLAY3;
+            }
+            return;
+        }
+        if(this->status_next=="playlv4"){
+            if(this->status==GAME_PLAY3){
+                this->status=GAME_PLAY4;
+            }
+            return;
+        }   
+        if(this->status_next=="playlv5"){
+            if(this->status==GAME_PLAY4){
+                this->status=GAME_PLAY5;
+            }
+            return;
+        }
+        if(this->status_next=="pause"){
+            if(this->status==GAME_PLAY){
                 this->status=PAUSE;
             }
             return;
@@ -87,7 +103,7 @@ class TheGame{
             return;
         }
         if(this->status_next=="quit"){
-            if(this->status==MAIN_MENU||this->status==GAME_PLAY2||this->status==GAME_PLAY||this->status==ABOUT||this->status==SOUND||this->status==WIN||this->status==LOSE||this->status==PAUSE){
+            if(this->status==MAIN_MENU||this->status==GAME_PLAY2||this->status==GAME_PLAY||this->status==GAME_PLAY3||this->status==GAME_PLAY4||this->status==GAME_PLAY5||this->status==ABOUT||this->status==SOUND||this->status==WIN||this->status==LOSE||this->status==PAUSE){
                 this->status=EXIT;
             }
         }
@@ -123,7 +139,7 @@ class TheGame{
             return;
         }
         if(this->status_next=="win"){
-            if(this->status==GAME_PLAY2){
+            if(this->status==GAME_PLAY5){
                 this->status=WIN;
             }
         }
@@ -138,7 +154,7 @@ class TheGame{
             // chỗ này để chạy level thôi :v
             case GAME_PLAY:
             {
-                this->status_next=playlv5();
+                this->status_next=playlv1();
                 break;
             }
             case ABOUT:
@@ -161,6 +177,22 @@ class TheGame{
                 this->status_next=playlv2();
                 break;
             }
+            case GAME_PLAY3 :
+            {
+                this->status_next=playlv3();
+                break;
+            }
+            case GAME_PLAY4 :
+            {
+                this->status_next=playlv4();
+                break;
+            }
+            case GAME_PLAY5 :
+            {
+                this->status_next=playlv5();
+                break;
+            }
+
             case WIN :
             {
                 this->status_next=win();

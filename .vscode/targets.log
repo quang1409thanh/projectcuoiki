@@ -6,7 +6,7 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat May 21 01:03:21 2022
+# Make data base, printed on Sat May 21 01:32:04 2022
 
 # Variables
 
@@ -23,7 +23,7 @@ USERPROFILE = C:\Users\admin
 # environment
 LOCALAPPDATA = C:\Users\admin\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-142d9355-5b69-4b3e-96c7-f575e23b90df-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-106e50a9-04ff-4d38-90f6-f9021b21d43c-sock
 # environment
 VSCODE_CWD = C:\Users\admin\AppData\Local\Programs\Microsoft VS Code
 # environment
@@ -39,7 +39,7 @@ MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_5564_VMEKCDQOGHRMSPCR
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_11508_FUSMBVAQJBJGIRWP
 # environment
 FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
@@ -95,7 +95,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 5564
+VSCODE_PID = 11508
 # environment
 CLION = C:\mingw64\bin;C:\Program Files\JetBrains\CLion 2021.3.3\bin;
 # automatic
@@ -205,7 +205,8 @@ SESSIONNAME = Console
 # environment
 PROCESSOR_REVISION = 6801
 # environment
-PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
+PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104  
+Stepping 1, AuthenticAMD
 # variable set hash-table stats:
 # Load=98/1024=10%, Rehash=0, Collisions=11/128=9%
 
@@ -215,9 +216,9 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 
 # Directories
 
-# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1653069439): 32 files, no impossibilities.
+# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1653070392): 49 files, no impossibilities.
 
-# 32 files, no impossibilities in 1 directories.
+# 49 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -280,12 +281,12 @@ all:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 35 / storage = 333 B / avg = 9 B
-# current buf: size = 8174 B / used = 333 B / count = 35 / avg = 9 B
+# strcache buffers: 1 (0) / strings = 52 / storage = 581 B / avg = 11 B
+# current buf: size = 8174 B / used = 581 B / count = 52 / avg = 11 B
 
-# strcache performance: lookups = 42 / hit rate = 16%
+# strcache performance: lookups = 59 / hit rate = 11%
 # hash-table stats:
-# Load=35/8192=0%, Rehash=0, Collisions=1/42=2%
-# Finished Make data base on Sat May 21 01:03:21 2022
+# Load=52/8192=1%, Rehash=0, Collisions=2/59=3%
+# Finished Make data base on Sat May 21 01:32:04 2022
 
  

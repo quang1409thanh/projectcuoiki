@@ -43,7 +43,16 @@ void loadMedia()
 	gFont_HighScore=TTF_OpenFont("Data//font/font_01/DoppioOne-Regular.ttf",23);
 	for(int i=0;i<5;i++){
 	dot.set_gDot_Texture("Data//img/anim/ballanim.png",i);
+	}// load quả bóng
+	// load ảnh power C
+	for(int i=0;i<4;i++){
+		gPowerC.set_gPower_Texture("Data//img/powers/C.png",i);
 	}
+	// load ảnh power B
+	for(int i=0;i<4;i++){
+		gPowerS.set_gPower_Texture("Data//img/powers/S.png",i);
+	}
+	gPowerS.set_POWER(300,200,0);
 	for(int i=0;i<4;i++){
 	gButton[ABOUT].set_texture("Data//img/buttons/aboutbutton.png",i);
 	}
@@ -66,7 +75,7 @@ void loadMedia()
 	for(int i=0;i<4;i++){
 		gButton[RESUME].set_texture("Data//img/buttons/resumebutton.png",i);
 	}
-	gButton[RESUME].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2,SCREEN_HEIGHT-70 -3*BUTTON_HEIGHT- 3*BUTTON_HEIGHT/8);
+	gButton[RESUME].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT-70 -2*BUTTON_HEIGHT- 2*BUTTON_HEIGHT/8);
 	gButton1_Pause.setPosition(SCREEN_WIDTH-SCREEN_RIGHT-BUTTON_WIDTH1-BUTTON_WIDTH1-2, 544);
 	for(int i=0;i<4;i++){
 	gButton1_Reset.set_texture("Data//img/buttons/resetbutton.png",i);

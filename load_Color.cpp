@@ -1,3 +1,4 @@
+#include"load_Color.h"
 #include<vector>
 #include<fstream>
 using namespace std;
