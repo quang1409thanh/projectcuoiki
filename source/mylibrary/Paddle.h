@@ -28,6 +28,7 @@ class Paddle
 		int setPosXP(int& x);
 		int setPosYP(int& y);
 		SDL_Rect getColliderP();
+		void freeP();
     private:
 		//The X and Y offsets of the dot
 		int mPosXP, mPosYP;
@@ -135,5 +136,8 @@ void Paddle::moveP(){
 void Paddle::renderP(){
 	//Render paddle
 	gPaddleTexture.render(mPosXP, mPosYP);
+}
+void Paddle::freeP(){
+	gPaddleTexture.free();
 }
 Paddle paddle;

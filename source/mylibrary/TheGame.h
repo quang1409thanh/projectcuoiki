@@ -83,13 +83,6 @@ class TheGame{
             }
             return;
         }
-        if(this->status_next=="pause"){
-            if(this->status==GAME_PLAY){
-                this->status=PAUSE;
-            }
-            return;
-        }
-        
         if(this->status_next=="about"){
             if(this->status==MAIN_MENU){
                 this->status=ABOUT;
@@ -114,19 +107,12 @@ class TheGame{
             if(this->status==SOUND){
                 this->status=MAIN_MENU;
             }
-            if(this->status==GAME_PLAY){
-                this->status=MAIN_MENU;
-            }
             if(this->status==LOSE){
                 this->status=MAIN_MENU;
             }
             if(this->status==WIN){
                 this->status=MAIN_MENU;
             }
-            if(this->status==PAUSE){
-                this->status=MAIN_MENU;
-            }
-
             return;
         }
         if(this->status_next=="lose"){
@@ -136,12 +122,22 @@ class TheGame{
             if(this->status==GAME_PLAY2){
                 this->status=LOSE;
             }
+            if(this->status==GAME_PLAY3){
+                this->status=LOSE;
+            }
+            if(this->status==GAME_PLAY4){
+                this->status=LOSE;
+            }
+            if(this->status==GAME_PLAY5){
+                this->status=LOSE;
+            }
             return;
         }
         if(this->status_next=="win"){
             if(this->status==GAME_PLAY5){
                 this->status=WIN;
             }
+            return;
         }
     }
     void render_Game(){
@@ -198,7 +194,6 @@ class TheGame{
                 this->status_next=win();
                 break;
             }
-
         }
     }
 };

@@ -24,7 +24,7 @@ class Power{
 		int getVelXPOWER();
 		int getVelYPOWER();
 		
-		SDL_Rect getColliderPOWER();
+		SDL_Rect getColliderPOWER();// muốn phát triển thay đổi kích thước của game 
 		void setPosXPOWER(int& x);
 		void setPosYPOWER(int& y);
 		void setVelXPOWER(int& x);
@@ -49,7 +49,7 @@ class Power{
 		//Dot's collision box
 		//SDL_Rect mPOWER;
 
-        LTexture gPower[4];
+		LTexture gPower[4];
 		
 		//int mR, mG, mB, mA, mS, mT;
 };
@@ -57,7 +57,7 @@ Power::Power(){
 	mPosXPOWER=100;
 	mPosYPOWER=100;
 	mVelXPOWER=0;
-	mVelYPOWER=5;
+	mVelYPOWER=0;
 	//mPOWER={mPosXPOWER,mPosYPOWER,POWER_WIDTH,POWER_HEIGHT};
 }
 int Power::getPosXPOWER(){

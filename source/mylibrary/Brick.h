@@ -15,7 +15,7 @@ class Brick{
 		void handleEventBrick( SDL_Event& e );
 
 		//Moves the dot and checks collision
-		void moveB( Brick **brick );
+		void moveB ();
 
 		//Shows the dot on the screen
 		void renderB(char color);//n lưu ý chõ này ko sử dụng được kiểu string
@@ -24,11 +24,12 @@ class Brick{
 		int getPosYB();
 		int getVelXB();
 		int getVelYB();
+		
 		void free();
 
 		Brick setBrick_mPosXB(int x);
 
-		Brick setBrick(int x, int y, int velx, int vely, int w, int h);
+		Brick setBrick(int x, int y, int velx, int vely);
 
 		LTexture gBricks;
 		SDL_Rect getColliderB();
@@ -39,17 +40,15 @@ class Brick{
 		//The velocity of the dot
 		int mVelXB, mVelYB;
 		
-		//Dot's collision box
-		SDL_Rect mBrick;
-		
-		//int mR, mG, mB, mA, mS, mT;
+		LTexture gBrick_Texture[TOTAL_BRICKS];
+
 };
 Brick::Brick(){
 	mPosXB=-100;
 	mPosYB=-100;
 	mVelXB=-100;
 	mVelYB=-100;
-	mBrick={mPosXB,mPosYB,BRICK_WIDTH,BRICK_HEIGHT};
+	//mBrick={mPosXB,mPosYB,BRICK_WIDTH,BRICK_HEIGHT}; lưu ý nếu muốn phát triển game nếu thay đổi kích thước màn hình của game
 }
 
 int Brick::getPosXB(){
@@ -64,16 +63,16 @@ int Brick::getVelXB(){
 int Brick::getVelYB(){
 	return mVelYB;
 }
-SDL_Rect Brick::getColliderB(){
-	return mBrick;
-}
+// SDL_Rect Brick::getColliderB(){
+// 	return mBrick;
+// }
 
-Brick Brick::setBrick(int x, int y, int velx, int vely, int w, int h){
+Brick Brick::setBrick(int x, int y, int velx, int vely){
 	mPosXB=x;
 	mPosYB=y;
 	mVelXB=velx;
 	mVelYB=vely;
-	mBrick={x,y,w,h};
+	//mBrick={x,y,w,h};
     return *this;
 }
 Brick Brick::setBrick_mPosXB(int x){
@@ -84,41 +83,48 @@ Brick Brick::setBrick_mPosXB(int x){
 void Brick::renderB(char color){
 	switch (color){
 		case 'r':
-			gBricksTextureRed.render(mPosXB,mPosYB);
+			gBricksTexture[RED].render(mPosXB,mPosYB);
 			break;
 		case 'b':
-			gBricksTextureBlue.render(mPosXB,mPosYB);
+			gBricksTexture[BLUE].render(mPosXB,mPosYB);
 			break;
 		case 'g':
-			gBricksTextureGreen.render(mPosXB,mPosYB);
+			gBricksTexture[GREEN].render(mPosXB,mPosYB);
 			break;
 		case 'd':
-			gBricksTexturDearkgreen.render(mPosXB,mPosYB);
+			gBricksTexture[DARK_GREEN].render(mPosXB,mPosYB);
 			break;
 		case 'i':
-			gBricksTextureIndigo.render(mPosXB,mPosYB);
+			gBricksTexture[INDIGO].render(mPosXB,mPosYB);
 			break;
 		case 'o':
-			gBricksTextureOrange.render(mPosXB,mPosYB);
+			gBricksTexture[ORANGE].render(mPosXB,mPosYB);
 			break;
 		case 'p':
-			gBricksTexturePink.render(mPosXB,mPosYB);
+			gBricksTexture[PINK].render(mPosXB,mPosYB);
 			break;
 		case 's':
-			gBricksTextureSolid.render(mPosXB,mPosYB);
+			gBricksTexture[SOLID].render(mPosXB,mPosYB);
 			break;
 		case 'v':
-			gBricksTextureViolet.render(mPosXB,mPosYB);
+			gBricksTexture[VIOLET].render(mPosXB,mPosYB);
 			break;
 		case 'y' :
-			gBricksTextureYellow.render(mPosXB,mPosYB);
+			gBricksTexture[YELLOW].render(mPosXB,mPosYB);
 			break;
 		
 	}
 }
 void Brick::free(){
-
+	gBricksTexture[BLUE].free();
+	gBricksTexture[RED].free();
+	gBricksTexture[GREEN].free();
+	gBricksTexture[DARK_GREEN].free();
+	gBricksTexture[INDIGO].free();
+	gBricksTexture[ORANGE].free();
+	gBricksTexture[PINK].free();
+	gBricksTexture[SOLID].free();
+	gBricksTexture[VIOLET].free();
+	gBricksTexture[YELLOW].free();
+	gGameOverTexture.free();
 }
-// //Box collision detector
-// bool checkCollision( SDL_Rect a, Brick b );
-//The dot that will move around on the screen

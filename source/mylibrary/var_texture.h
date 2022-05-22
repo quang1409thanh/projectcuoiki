@@ -1,16 +1,7 @@
 //Scene textures
 LTexture gDotTexture;
 LTexture gPaddleTexture;
-LTexture gBricksTextureBlue;
-LTexture gBricksTextureRed;
-LTexture gBricksTextureGreen;
-LTexture gBricksTexturDearkgreen;
-LTexture gBricksTextureIndigo;
-LTexture gBricksTextureOrange;
-LTexture gBricksTexturePink;
-LTexture gBricksTextureSolid;
-LTexture gBricksTextureViolet;
-LTexture gBricksTextureYellow;
+LTexture gBricksTexture[TOTAL_BRICKS];
 //Rendered texture
 LTexture gTextTexture;
 

@@ -1,4 +1,4 @@
-#include"TheGame.h"
+#include"source/mylibrary/TheGame.h"
 int main(int argc, char* args[])
 {
 	init();

@@ -40,6 +40,7 @@ class Dot
         int getY();
 		int setPosX(int x);
 		int setPosY(int y);
+        void free();
     private:
 		//The X and Y offsets of the dot
 		int mPosX, mPosY;
@@ -426,5 +427,11 @@ int Dot::set_mVelX(int x) {
 int Dot::set_mVelY(int y) {
     mVelY = y;
 }
-
-// còn 2 lỗi chưa fix được là va chạm với thành trái và va chạm với paddle
+void Dot::free(){
+    gDot[0].free();
+    gDot[1].free();
+    gDot[2].free();
+    gDot[3].free();
+    gDot[4].free();
+    
+}

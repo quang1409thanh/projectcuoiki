@@ -1,2 +1,2 @@
 all:
-	g++ -Isrc\SDL2\include\SDL2 -Isrc\SDL2_img\include\SDL2 -Isrc\SDL2_ttf\include\SDL2 -Isrc\SDL2_mixer\include\SDL2 -Lsrc\SDL2\lib -Lsrc\SDL2_img\lib -Lsrc\SDL2_ttf\lib -Lsrc\SDL2_mixer\lib -o main main.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+	g++ -Isource\src\SDL2\include\SDL2 -Isource\src\SDL2_img\include\SDL2 -Isource\src\SDL2_ttf\include\SDL2 -Isource\src\SDL2_mixer\include\SDL2 -Lsource\src\SDL2\lib -Lsource\src\SDL2_img\lib -Lsource\src\SDL2_ttf\lib -Lsource\src\SDL2_mixer\lib -o main main.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer

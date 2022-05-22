@@ -13,6 +13,7 @@ const int TOTAL_BRICKSLV2 = 29;
 const int TOTAL_BRICKSLV3 =34;
 const int TOTAL_BRICKSLV4 = 33;
 const int TOTAL_BRICKSLV5 =28;
+const int TOTAL_BRICKS = 10;
 const int DIES=100;
 int COUNT_DIES=DIES;
 //The window we'll be rendering to
@@ -45,6 +46,19 @@ const int TOTAL_BUTTONS2 = 4;
 // khai báo 2 biến để giữa vel lúc pause
 int velPauseX=0;
 int velPauseY=0;
+enum bick {
+    RED=0,
+    BLUE=1,
+    GREEN=2,
+    DARK_GREEN=3,
+    INDIGO=4,
+    ORANGE=5,
+    PINK=6,
+    SOLID=7,
+    VIOLET=8,
+    YELLOW=9,
+    TOTAL=10
+};
 enum LButtonSprite
 {
     BUTTON_SPRITE_MOUSE_OUT = 0,

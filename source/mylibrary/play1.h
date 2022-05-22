@@ -38,8 +38,6 @@ std::string sound(){
 			dot.handleEvent(e);
 			paddle.handleEventPaddle(e);
 			gButton1_Back.handleEvent(&e);
-			//gButtonSfxon.handleEvent(&e);
-			//gButtonSfxoff.handleEvent(&e);
 			gButtonsfx.handleEvent(&e);
 			gButtonmusic.handleEvent(&e);
 
@@ -78,14 +76,6 @@ std::string sound(){
 			quit=true;
 			return "menu";
 		}
-		// if(gButtonSfxoff.getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
-		// 	quit=true;
-		// 	setup_Sound_Off(music,sfx);
-		// 	gButtonSfxoff.freeStatus();
-			
-		// }
-		
-		
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 
@@ -96,7 +86,7 @@ std::string win(){
     //Main loop flag
 	std::cout<<"win"<<std::endl;
 	bool quit = false;
-
+	cout<<count_Broken_Bricks;
 	//Event handler
 	SDL_Event e;
     std::stringstream timeTextLose;
@@ -166,7 +156,7 @@ std::string win(){
 			return "quit";
 		}
 		
-        gFPSTextTexture.render(55,10);
+        gFPSTextTexture.render(20,10);
 		ghigh_Score.render(0, 50);
 		//Update screen
 		SDL_RenderPresent(gRenderer);
@@ -751,7 +741,7 @@ std::string playlv1() {
 			dot.handleEvent(e);
 			paddle.handleEventPaddle(e);
 			gButton1_Pause.handleEvent(&e);
-
+			
 		}	
 		//Move the dot and check collision
 		dot.move(brick1,TOTAL_BRICKSLV1);
@@ -817,7 +807,7 @@ std::string playlv1() {
 			//return "quit";
 			SDL_Delay(100);
 			dot.reset();
-			return "playlv2";
+			return "win";
 		}
 		if(gButton1_Pause.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
 		{	
@@ -1082,7 +1072,7 @@ std::string pause(){
 			gButton[RESUME].handleEvent(&e);
 			gButton[SOUND].handleEvent(&e);
 			//gButton[MAIN_MENU].handleEvent(&e);
-			//gButton[EXIT].handleEvent(&e);
+			//gButton[EXIT_PLAY].handleEvent(&e);
 
 		}
 		//Clear screen
@@ -1093,7 +1083,6 @@ std::string pause(){
 		gButton[RESUME].render();
 		gButton[SOUND].render();
 		//gButton[MAIN_MENU].render();
-		//gButton[EXIT].render();
 		if(gButton[RESUME].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
 			gButton[RESUME].freeStatus();
 			quit=true;
@@ -1111,11 +1100,6 @@ std::string pause(){
 			// return "sound";
 			sound();
 		}
-		// if(gButton[EXIT].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
-		// 	gButton[EXIT].freeStatus();
-		// 	quit=true;
-		// 	return "quit";
-		// }
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 	}

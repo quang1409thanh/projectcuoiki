@@ -1,9 +1,9 @@
-// build class button1==========================================================
-class LButton1
+//The mouse button
+class LButton
 {
     public:
         //Initializes internal variables
-        LButton1();
+        LButton();
 
         //Sets top left position
         void setPosition( int x, int y );
@@ -32,19 +32,25 @@ class LButton1
 		LTexture texture[4];
 };
 
-//====================khai báo các biến sử của LButton1====================
-LButton1 gButton1_Pause;
-LButton1 gButton1_Back;
-LButton1 gButton1_Reset;
+//================các biến thuộc button================
 
-//=====================các hàm thành viên của LButton1=====================
+LButton gButton[TOTAL_STATUS];
+// LButton gButton[MAIN_MENU];
+// LButton gButton[GAME_PLAY];
+// LButton gButton[ABOUT];
+// LButton gButton[SOUND];
+// LButton gButton[EXIT];
+// LButton gButton[RESTART];
 
-LButtonSprite LButton1::getStatus() {
+//================các hàm thành viên của button================
+
+
+LButtonSprite LButton::getStatus() {
 	return mCurrentSprite;
 }
 
 
-LButton1::LButton1()
+LButton::LButton()
 {
     mPosition.x = 0;
     mPosition.y = 0;
@@ -52,13 +58,13 @@ LButton1::LButton1()
     mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
 }
 
-void LButton1::setPosition( int x, int y )
+void LButton::setPosition( int x, int y )
 {
     mPosition.x = x;
     mPosition.y = y;
 }
 
-void LButton1::handleEvent( SDL_Event* e )
+void LButton::handleEvent( SDL_Event* e )
 {
     //If mouse event happened
     if( e->type == SDL_MOUSEMOTION || e->type == SDL_MOUSEBUTTONDOWN || e->type == SDL_MOUSEBUTTONUP )
@@ -75,7 +81,7 @@ void LButton1::handleEvent( SDL_Event* e )
             inside = false;
         }
         //Mouse is right of the button
-        else if( x > mPosition.x + BUTTON_WIDTH1 )
+        else if( x > mPosition.x + BUTTON_WIDTH )
         {
             inside = false;
         }
@@ -85,7 +91,7 @@ void LButton1::handleEvent( SDL_Event* e )
             inside = false;
         }
         //Mouse below the button
-        else if( y > mPosition.y + BUTTON_HEIGHT1 )
+        else if( y > mPosition.y + BUTTON_HEIGHT )
         {
             inside = false;
         }
@@ -116,50 +122,56 @@ void LButton1::handleEvent( SDL_Event* e )
     }
 }
 
-void LButton1::render()
+void LButton::render()
 {
    //Show current button sprite
 	switch (mCurrentSprite) {
 	case BUTTON_SPRITE_MOUSE_OUT: {
-		texture[0].render(mPosition.x, mPosition.y,&gSpriteClips1[ mCurrentSprite ] );
+		texture[0].render(mPosition.x, mPosition.y,&gSpriteClips[ mCurrentSprite ] );
 		break;
 	}
 	case BUTTON_SPRITE_MOUSE_OVER_MOTION: {
-		texture[1].render(mPosition.x, mPosition.y,&gSpriteClips1[ mCurrentSprite ] );
+		texture[1].render(mPosition.x, mPosition.y,&gSpriteClips[ mCurrentSprite ] );
 	}
 	case BUTTON_SPRITE_MOUSE_DOWN: {
-		texture[2].render(mPosition.x, mPosition.y,&gSpriteClips1[ mCurrentSprite ] );
+		texture[2].render(mPosition.x, mPosition.y,&gSpriteClips[ mCurrentSprite ] );
 	}
 	case BUTTON_SPRITE_MOUSE_UP: {
-		texture[3].render(mPosition.x, mPosition.y,&gSpriteClips1[ mCurrentSprite ] );
+		texture[3].render(mPosition.x, mPosition.y,&gSpriteClips[ mCurrentSprite ] );
 	}
 	}
 }
 
-void LButton1::set_texture(std::string path,const int &n) {
+void LButton::set_texture(std::string path,const int &n) {
 	texture[n].loadFromFile(path);
-			gSpriteClips1[ 0 ].x = 0;
-			gSpriteClips1[ 0].y = 0;
-			gSpriteClips1[ 0 ].w = BUTTON_WIDTH1;
-			gSpriteClips1[ 0 ].h = BUTTON_HEIGHT1;
+			gSpriteClips[ 0 ].x = 0;
+			gSpriteClips[ 0].y = 0;
+			gSpriteClips[ 0 ].w = BUTTON_WIDTH;
+			gSpriteClips[ 0 ].h = BUTTON_HEIGHT;
 	
-			gSpriteClips1[ 1 ].x = 40;
-			gSpriteClips1[ 1 ].y = 0;
-			gSpriteClips1[ 1 ].w = BUTTON_WIDTH1;
-			gSpriteClips1[ 1 ].h = BUTTON_HEIGHT1;
+			gSpriteClips[ 1 ].x = 179;
+			gSpriteClips[ 1 ].y = 0;
+			gSpriteClips[ 1 ].w = BUTTON_WIDTH;
+			gSpriteClips[ 1 ].h = BUTTON_HEIGHT;
 
-			gSpriteClips1[ 2 ].x = 80;
-			gSpriteClips1[ 2 ].y = 0;
-			gSpriteClips1[ 2 ].w = BUTTON_WIDTH1;
-			gSpriteClips1[ 2 ].h = BUTTON_HEIGHT1;
-			gSpriteClips1[ 3 ].x = 0;
-			gSpriteClips1[ 3 ].y = 0;
-			gSpriteClips1[ 3 ].w = BUTTON_WIDTH1;
-			gSpriteClips1[ 3 ].h = BUTTON_HEIGHT1;
+			gSpriteClips[ 2 ].x = 358;
+			gSpriteClips[ 2 ].y = 0;
+			gSpriteClips[ 2 ].w = BUTTON_WIDTH;
+			gSpriteClips[ 2 ].h = BUTTON_HEIGHT;
+			gSpriteClips[ 3 ].x = 0;
+			gSpriteClips[ 3 ].y = 0;
+			gSpriteClips[ 3 ].w = BUTTON_WIDTH;
+			gSpriteClips[ 3 ].h = BUTTON_HEIGHT;
 }
 
 
 
-void LButton1::freeStatus() {
-	mCurrentSprite = BUTTON_SPRITE_MOUSE_OVER_MOTION;
+void LButton::freeStatus() {
+	mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
+}
+void LButton::freeB(){
+    texture[0].free();
+    texture[1].free();
+    texture[2].free();
+    texture[3].free();
 }

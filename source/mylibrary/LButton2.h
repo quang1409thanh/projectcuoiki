@@ -117,19 +117,7 @@ void LButton2::handleEvent( SDL_Event* e )
         }
     }
 }
-// void LButton2::update_Status() {
-// 		if (mCurrentSprite == BUTTON_SPRITE_MOUSE_DOWN && on) {
-// 			on = false;
-// 			freeStatus();
-//             std::cout<<"am thanh da tat  "<<music<<" "<<sfx<<std::endl;
 
-// 		}
-// 		if (mCurrentSprite == BUTTON_SPRITE_MOUSE_DOWN && !on) {
-// 			on = true;
-// 			freeStatus();
-//             std::cout<<"am thanh da bat "<<music<<" "<<sfx<<std::endl;
-// 		}
-// 	}
 void LButton2::render()
 {
    //Show current button sprite
@@ -177,6 +165,13 @@ void LButton2::set_texture(std::string path,const int &n) {
 
 void LButton2::freeStatus() {
 	mCurrentSprite = BUTTON_SPRITE_MOUSE_OUT;
+}
+
+void LButton2::freeB() {
+    texture[0].free();
+    texture[1].free();
+    texture[2].free();
+    texture[3].free();
 }
 LButton2 gButtonsfx;
 
