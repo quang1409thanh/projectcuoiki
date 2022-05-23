@@ -11,14 +11,10 @@
 #include <fstream>
 using namespace std;
 #include "var_common.h"
-#include "setup_Sound.h"
-#include"LTexture.h"
+#include "LTexture.h"
 #include"var_texture.h"
 #include"LTimer.h"
 #include"LButton.h"
-#include"LButton2.h"
-#include"LButton1.h"
-#include"Power.h"
 #include"Brick.h"
 #include"Paddle.h"
 #include"Dot.h"
@@ -197,4 +193,3 @@ class TheGame{
         }
     }
 };
-TheGame game;

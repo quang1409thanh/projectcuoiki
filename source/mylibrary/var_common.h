@@ -14,7 +14,7 @@ const int TOTAL_BRICKSLV3 =34;
 const int TOTAL_BRICKSLV4 = 33;
 const int TOTAL_BRICKSLV5 =28;
 const int TOTAL_BRICKS = 10;
-const int DIES=100;
+const int DIES=2;
 int COUNT_DIES=DIES;
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -43,10 +43,11 @@ const int TOTAL_BUTTONS1 = 4;
 const int BUTTON_WIDTH2 = 179;
 const int BUTTON_HEIGHT2 = 71;
 const int TOTAL_BUTTONS2 = 4;
+const int TOTAL_COLOR_BRICK = 10;
 // khai báo 2 biến để giữa vel lúc pause
 int velPauseX=0;
 int velPauseY=0;
-enum bick {
+enum Color_Bick {
     RED=0,
     BLUE=1,
     GREEN=2,
@@ -71,17 +72,17 @@ enum Status {
 	MAIN_MENU = 0,
 	GAME_PLAY = 1,
     GAME_PLAY2 = 2,
-    ABOUT=3,
-    SOUND=4,
-	WIN = 5,
-	LOSE = 6,
-	RESUME = 7,
-    PAUSE = 8,
-    RESTART = 9,
-	EXIT = 10,
-    GAME_PLAY3=11,
-    GAME_PLAY4=12,
-    GAME_PLAY5=13,
+    GAME_PLAY3=3,
+    GAME_PLAY4=4,
+    GAME_PLAY5=5,
+    ABOUT=6,
+    SOUND=7,
+	WIN = 8,
+	LOSE = 9,
+	RESUME = 10,
+    PAUSE =11,
+    RESTART = 12,
+	EXIT = 13,
     TOTAL_STATUS = 14
 };
 enum color{
@@ -110,3 +111,6 @@ const SDL_Color WHITE_COLOR = {255, 255, 255};
 const SDL_Color BLACK_COLOR = {0, 0, 0};
 const SDL_Color GREEN_COLOR = {0, 128, 0};
 const SDL_Color DEFAULT_COLOR = BLACK_COLOR;
+
+bool music=true;
+bool sfx=true;

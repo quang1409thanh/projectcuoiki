@@ -1,4 +1,4 @@
-
+// khởi tạo cáu trúc hình tròn cho quả bóng
 struct Circle
 {
 	int x, y;
@@ -28,6 +28,7 @@ class Dot
 		//Shows the dot on the screen
 		void render(const int & color);
         void reset();
+        
         void set_gDot_Texture(std::string path,const int &n);
         void ball_brick_collision(Brick brick[],int n);
 
@@ -35,11 +36,12 @@ class Dot
         int set_mVelX(int x);
         int getVelX();
         int getVelY();
-		void restart();
+
         int getX();
         int getY();
 		int setPosX(int x);
 		int setPosY(int y);
+
         void free();
     private:
 		//The X and Y offsets of the dot
@@ -51,11 +53,12 @@ class Dot
 		//Dot's collision box
 		Circle mCollider;
 
-        void shiftColliders();
+        void shiftColliders();// khởi tạo hình tròn cho quả bóng
 
         LTexture gDot[5];
 };
 Dot dot;
+
 double distanceSquared( int x1, int y1, int x2, int y2 )
 {
 	int deltaX = x2 - x1;
@@ -141,7 +144,7 @@ void Dot::handleEvent( SDL_Event& e )
         //Adjust the velocity
         switch( e.key.keysym.sym )
         {
-			case SDLK_1: {
+			case SDLK_SPACE: {
                 if(paddle.getPosXP()+paddle.PADDLE_WIDTH/2<SCREEN_WIDTH/2){
                     mVelX=DOT_VEL;
                     mVelY=-DOT_VEL;
@@ -159,7 +162,7 @@ void Dot::handleEvent( SDL_Event& e )
         //Adjust the velocity
         switch( e.key.keysym.sym )
         {
-			case SDLK_1: {
+			case SDLK_SPACE: {
 				if(paddle.getPosXP()+paddle.PADDLE_WIDTH/2<SCREEN_WIDTH/2){
                     mVelX=DOT_VEL;
                     mVelY=-DOT_VEL;
@@ -178,11 +181,7 @@ void Dot::move(Brick brick[],int n ){
         mPosX=paddle.getPosXP()+paddle.PADDLE_WIDTH/2-DOT_WIDTH/2;
         mPosY=SCREEN_HEIGHT-SCREEN_BOTTOM- DOT_HEIGHT-paddle.PADDLE_HEIGHT;
     }
-
-    //Move the dot left or right
-
-    //If the dot collided or went too far to the left or right
-    //va chạm với viên gạch
+    // tăng vận tốc x
     mPosX += mVelX;
 	shiftColliders();
 
@@ -433,5 +432,4 @@ void Dot::free(){
     gDot[2].free();
     gDot[3].free();
     gDot[4].free();
-    
 }

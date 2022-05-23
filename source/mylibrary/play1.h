@@ -1,12 +1,6 @@
 #pragma once
-#include"loadhighscore.h"
-#include"Init_Bricklv1.h"
-#include"render_Brick.h"
 std::string reset(){
-	// dot.restart();
-	// paddle.restart();
-	// init_bricklv1();
-	COUNT_DIES=2;
+	COUNT_DIES=DIES;
 	count_Broken_Bricks=0;
 }
 std::string lose();
@@ -42,7 +36,6 @@ std::string sound(){
 			gButtonmusic.handleEvent(&e);
 
 		}
-			std::cout<<music<<"  "<<sfx<<std::endl;
 		//Clear screen
 		
 		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xF0);
@@ -68,14 +61,15 @@ std::string sound(){
 		gButtonsfx.set_on(true);
 		gButtonsfx.freeStatus();
 		}
-		gButtonsfx.render();
-		gButtonmusic.render();
-		gButton1_Back.render();
 		if(gButton1_Back.getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
 			gButton1_Back.freeStatus();
 			quit=true;
 			return "menu";
 		}
+		
+		gButtonsfx.render();
+		gButtonmusic.render();
+		gButton1_Back.render();
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 
@@ -86,13 +80,15 @@ std::string win(){
     //Main loop flag
 	std::cout<<"win"<<std::endl;
 	bool quit = false;
-	cout<<count_Broken_Bricks;
 	//Event handler
 	SDL_Event e;
     std::stringstream timeTextLose;
 	std::stringstream high_Score;
 	SDL_Color textColor = DEFAULT_COLOR;
 	//While application is running
+	if(music){
+		Mix_PlayMusic(music_GameWin, -1);
+	}
 	while (!quit)
 	{
 		//Handle events on queue
@@ -119,7 +115,7 @@ std::string win(){
 		}
 		high_Score.str("");
 		high_Score << "HIGH SCORE:: " << loadhighscore();
-		if (!gFPSTextTexture.loadFromRenderedText(timeTextLose.str().c_str(), textColor))
+		if (!gScoreTexture.loadFromRenderedText(timeTextLose.str().c_str(), textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
@@ -156,7 +152,7 @@ std::string win(){
 			return "quit";
 		}
 		
-        gFPSTextTexture.render(20,10);
+        gScoreTexture.render(20,10);
 		ghigh_Score.render(0, 50);
 		//Update screen
 		SDL_RenderPresent(gRenderer);
@@ -236,7 +232,7 @@ std::string playlv5() {
 		timeText << "SCORE:: " << count_Broken_Bricks ;
         timeText << " Live:: " << COUNT_DIES;
 		//Render text
-		if (!gFPSTextTexture.loadFromRenderedText1(timeText.str().c_str(), textColor))
+		if (!gScoreTexture.loadFromRenderedText1(timeText.str().c_str(), textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
@@ -269,7 +265,7 @@ std::string playlv5() {
 		gBgLv1.render(0, 0);// hiện thị khung để chơi 
 		//Render current frame
 		gTextTexture.render(0, 10);// LV
-		gFPSTextTexture.render(23, 551);// ĐIỂM
+		gScoreTexture.render(23, 551);// ĐIỂM
 		ghigh_Score.render(150,28);
 		//gGameOverTexture.render(10,100);
 		//Update screen
@@ -371,7 +367,7 @@ std::string playlv4() {
 		timeText << "SCORE:: " << count_Broken_Bricks ;
         timeText << " Live:: " << COUNT_DIES;
 		//Render text
-		if (!gFPSTextTexture.loadFromRenderedText1(timeText.str().c_str(), textColor))
+		if (!gScoreTexture.loadFromRenderedText1(timeText.str().c_str(), textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
@@ -399,7 +395,7 @@ std::string playlv4() {
 		gBgLv1.render(0, 0);// hiện thị khung để chơi 
 		//Render current frame
 		gTextTexture.render(0, 10);// LV
-		gFPSTextTexture.render(23, 551);// ĐIỂM
+		gScoreTexture.render(23, 551);// ĐIỂM
 		ghigh_Score.render(150,28);
 		//gGameOverTexture.render(10,100);
 		//Update screen
@@ -501,7 +497,7 @@ std::string playlv3() {
 		timeText << "SCORE:: " << count_Broken_Bricks ;
         timeText << " Live:: " << COUNT_DIES;
 		//Render text
-		if (!gFPSTextTexture.loadFromRenderedText1(timeText.str().c_str(), textColor))
+		if (!gScoreTexture.loadFromRenderedText1(timeText.str().c_str(), textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
@@ -529,7 +525,7 @@ std::string playlv3() {
 		gBgLv1.render(0, 0);// hiện thị khung để chơi 
 		//Render current frame
 		gTextTexture.render(0, 10);// LV
-		gFPSTextTexture.render(23, 551);// ĐIỂM
+		gScoreTexture.render(23, 551);// ĐIỂM
 		ghigh_Score.render(150,28);
 		//gGameOverTexture.render(10,100);
 		//Update screen
@@ -563,6 +559,7 @@ std::string playlv3() {
 std::string playlv2() {
 	//Main loop flag
 	std::cout<<"playlv2"<<std::endl;
+	// 
 	bool quit = false;
 	//Event handler
 	SDL_Event e;
@@ -632,7 +629,7 @@ std::string playlv2() {
 		timeText << "SCORE:: " << count_Broken_Bricks ;
         timeText << " Live:: " << COUNT_DIES;
 		//Render text
-		if (!gFPSTextTexture.loadFromRenderedText1(timeText.str().c_str(), textColor))
+		if (!gScoreTexture.loadFromRenderedText1(timeText.str().c_str(), textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
@@ -660,7 +657,7 @@ std::string playlv2() {
 		gBgLv1.render(0, 0);// hiện thị khung để chơi 
 		//Render current frame
 		gTextTexture.render(0, 10);// LV
-		gFPSTextTexture.render(23, 551);// ĐIỂM
+		gScoreTexture.render(23, 551);// ĐIỂM
 		ghigh_Score.render(150,28);
 		//gGameOverTexture.render(10,100);
 		//Update screen
@@ -764,7 +761,7 @@ std::string playlv1() {
 		timeText << "SCORE:: " << count_Broken_Bricks ;
         timeText << " Live:: " << COUNT_DIES;
 		//Render text
-		if (!gFPSTextTexture.loadFromRenderedText1(timeText.str().c_str(), textColor))
+		if (!gScoreTexture.loadFromRenderedText1(timeText.str().c_str(), textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
@@ -776,11 +773,8 @@ std::string playlv1() {
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(gRenderer);
-		// Render the bg
-		
-		//gBgTexture.render(0, 0);
-		//Render dot
-        if(fpsTimer.getTicks()==500){
+
+        if(fpsTimer.getTicks()%1000==0){
             i++;
             while(i>4) i-=4;
 
@@ -793,7 +787,7 @@ std::string playlv1() {
 		gBgLv1.render(0, 0);// hiện thị khung để chơi 
 		//Render current frame
 		gTextTexture.render(0, 10);// LV
-		gFPSTextTexture.render(23, 551);// ĐIỂM
+		gScoreTexture.render(23, 551);// ĐIỂM
 		ghigh_Score.render(150,28);
 
 		SDL_RenderPresent(gRenderer);
@@ -803,11 +797,12 @@ std::string playlv1() {
 			return "lose";
 		}
 		if(count_Broken_Bricks==TOTAL_BRICKSLV1*50){
+			
 			quit = true;
 			//return "quit";
 			SDL_Delay(100);
 			dot.reset();
-			return "win";
+			return "playlv2";
 		}
 		if(gButton1_Pause.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
 		{	
@@ -855,7 +850,6 @@ std::string lose() {
 			gButton[RESTART].handleEvent(&e);
 			gButton[MAIN_MENU].handleEvent(&e);
 			gButton[EXIT].handleEvent(&e);
-			gButton1_Back.handleEvent(&e);
 		}
         timeTextLose.str("");
 		timeTextLose << "YOU_SCORE:: " << count_Broken_Bricks ;
@@ -864,7 +858,7 @@ std::string lose() {
 		}
 		high_Score.str("");
 		high_Score << "HIGH SCORE:: " << loadhighscore();
-		if (!gFPSTextTexture.loadFromRenderedText(timeTextLose.str().c_str(), textColor))
+		if (!gScoreTexture.loadFromRenderedText(timeTextLose.str().c_str(), textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
@@ -880,7 +874,6 @@ std::string lose() {
 		gButton[RESTART].render();
 		gButton[MAIN_MENU].render();
 		gButton[EXIT].render();
-		gButton1_Back.render();
 		if(gButton[RESTART].getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
 		{
 			gButton[RESTART].freeStatus();
@@ -896,12 +889,6 @@ std::string lose() {
 			quit=true;
 			return "menu";
 		}
-		else if(gButton1_Back.getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
-		{
-			gButton1_Back.freeStatus();
-			quit=true;
-			return "menu";
-		}
 		else if(gButton[EXIT].getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
 		{
 			gButton[EXIT].freeStatus();
@@ -909,9 +896,9 @@ std::string lose() {
 			return "quit";
 		}
 
-        gFPSTextTexture.render(55,10);
-		ghigh_Score.render(0, 50);
-		gGameOverTexture.render(10, 100);
+        gScoreTexture.render(0,50);
+		ghigh_Score.render(0, 90);
+		gGameOverTexture.render(00, 150);
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 }
@@ -942,9 +929,6 @@ std::string main_menu(){
 				quit = true;
 				return "quit";
 			}
-			//Handle input for the dot
-			// dot.handleEvent(e);
-			// paddle.handleEventPaddle(e);
 			gButton[ABOUT].handleEvent(&e);
 			gButton[GAME_PLAY].handleEvent(&e);
 			gButton[EXIT].handleEvent(&e);
@@ -965,14 +949,12 @@ std::string main_menu(){
 		
 
 		if(gButton[GAME_PLAY].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
-        	//std::cout<<"GAME_PLAY"<<std::endl;
+        	
 			gButton[GAME_PLAY].freeStatus();
 			quit=true;
-			//Mix_HaltMusic();
-			// chỗ này chỉ để test level thôi
+
 			return "playlv1";
            
-   			//return "playlv1";
     	}
 		else if(gButton[ABOUT].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
 			quit=true;
@@ -983,7 +965,7 @@ std::string main_menu(){
 		else if(gButton[SOUND].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
 			quit=true;
 			gButton[SOUND].freeStatus();
-			//music_Menu=NULL;
+
 			Mix_HaltMusic();
 			return "sound";
 		}
@@ -998,7 +980,6 @@ std::string main_menu(){
 		SDL_RenderPresent(gRenderer);
 	}
 		close();
-		return "menu";
 
 }
 std::string about(){
@@ -1043,9 +1024,7 @@ std::string about(){
 		SDL_RenderPresent(gRenderer);
 	}
 }
-// std::string Exit(&){
-// 	//Main loop flag
-// }
+
 std::string pause(){
 	std::cout<<"pause"<<std::endl;
 	bool quit = false;
@@ -1071,8 +1050,6 @@ std::string pause(){
 			paddle.handleEventPaddle(e);
 			gButton[RESUME].handleEvent(&e);
 			gButton[SOUND].handleEvent(&e);
-			//gButton[MAIN_MENU].handleEvent(&e);
-			//gButton[EXIT_PLAY].handleEvent(&e);
 
 		}
 		//Clear screen
@@ -1082,7 +1059,6 @@ std::string pause(){
 		//SDL_RenderClear(gRenderer);
 		gButton[RESUME].render();
 		gButton[SOUND].render();
-		//gButton[MAIN_MENU].render();
 		if(gButton[RESUME].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
 			gButton[RESUME].freeStatus();
 			quit=true;

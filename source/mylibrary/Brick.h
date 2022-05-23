@@ -1,24 +1,19 @@
 
 class Brick{
 	public:
-		//The dimensions of the dot
+
 		static const int BRICK_WIDTH = 50;
 		static const int BRICK_HEIGHT = 22;
 
-		//Maximum axis velocity of the dot
 		static const int BRICK_VEL = 0;
 
-		//Initializes the variables
 		Brick();
 
-		//Takes key presses and adjusts the dot's velocity
 		void handleEventBrick( SDL_Event& e );
 
-		//Moves the dot and checks collision
 		void moveB ();
 
-		//Shows the dot on the screen
-		void renderB(char color);//n lưu ý chõ này ko sử dụng được kiểu string
+		void renderB(char color);
 
 		int getPosXB();
 		int getPosYB();
@@ -31,13 +26,11 @@ class Brick{
 
 		Brick setBrick(int x, int y, int velx, int vely);
 
-		LTexture gBricks;
-		SDL_Rect getColliderB();
+
 	private:
-		//The X and Y offsets of the dot
+
 		int mPosXB, mPosYB;
 
-		//The velocity of the dot
 		int mVelXB, mVelYB;
 		
 		LTexture gBrick_Texture[TOTAL_BRICKS];
@@ -48,7 +41,6 @@ Brick::Brick(){
 	mPosYB=-100;
 	mVelXB=-100;
 	mVelYB=-100;
-	//mBrick={mPosXB,mPosYB,BRICK_WIDTH,BRICK_HEIGHT}; lưu ý nếu muốn phát triển game nếu thay đổi kích thước màn hình của game
 }
 
 int Brick::getPosXB(){
@@ -63,16 +55,12 @@ int Brick::getVelXB(){
 int Brick::getVelYB(){
 	return mVelYB;
 }
-// SDL_Rect Brick::getColliderB(){
-// 	return mBrick;
-// }
 
 Brick Brick::setBrick(int x, int y, int velx, int vely){
 	mPosXB=x;
 	mPosYB=y;
 	mVelXB=velx;
 	mVelYB=vely;
-	//mBrick={x,y,w,h};
     return *this;
 }
 Brick Brick::setBrick_mPosXB(int x){
@@ -126,5 +114,4 @@ void Brick::free(){
 	gBricksTexture[SOLID].free();
 	gBricksTexture[VIOLET].free();
 	gBricksTexture[YELLOW].free();
-	gGameOverTexture.free();
 }
