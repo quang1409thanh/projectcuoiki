@@ -567,6 +567,7 @@ std::string playlv2() {
 	Init_Bricklv2(brick2);
 	//Angle of rotation
 	double degrees = 0;
+
 	if(music){
 		Mix_PlayMusic(music_Play, -1);
 	}
@@ -578,16 +579,10 @@ std::string playlv2() {
 	// Dot dot;
 	SDL_Color textColor = WHITE_COLOR;
 
-	//The frames per second timer
-	LTimer fpsTimer;
 
 	//In memory text stream
 	std::stringstream timeText;
 	
-
-	//Start counting frames per second
-	int countedFrames = 0;
-	fpsTimer.start();
 
    	int i=0;
 	//While application is running
@@ -613,11 +608,7 @@ std::string playlv2() {
 		//dot.ball_brick_collision(brick1,TOTAL_BRICKSLV1);
 		paddle.moveP();
 		//Calculate and correct fps
-		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
-		if (avgFPS > 2000000)
-		{
-			avgFPS = 0;
-		}
+		
 		if(count_Broken_Bricks>loadhighscore()){
 			sethighscore(count_Broken_Bricks);
 		}
@@ -642,14 +633,7 @@ std::string playlv2() {
 		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(gRenderer);
 		// Render the bg
-		
-		//gBgTexturelv2.render(0, 0);
 		//Render dot
-        if(fpsTimer.getTicks()==500){
-            i++;
-            while(i>4) i-=4;
-
-        }
 		dot.render(i);
 		paddle.renderP();
 		render_Brick_Lv2(brick2);
@@ -662,7 +646,7 @@ std::string playlv2() {
 		//gGameOverTexture.render(10,100);
 		//Update screen
 		SDL_RenderPresent(gRenderer);
-		++countedFrames;
+
 		if (COUNT_DIES < 0) {
 			Mix_HaltMusic();
 			return "lose";
