@@ -277,7 +277,6 @@ void Dot::move5(Brick brick[],int n ){
 	if(  checkCollision( mCollider, brick[i] ) )
     {   
         //Move back
-        cout<<"va cham voi vien gach thu "<<i<<endl;
         if(i<21||i>26){
         mVelX*=-1;
 		shiftColliders();

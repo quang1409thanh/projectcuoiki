@@ -811,7 +811,7 @@ std::string lose() {
 	SDL_Event e;
     std::stringstream timeTextLose;
 	std::stringstream high_Score;
-	SDL_Color textColor = DEFAULT_COLOR;
+	SDL_Color textColor = GREEN_COLOR;
 	//While application is running
 	if(music){
 	Mix_PlayMusic(music_GameOver, -1 );
