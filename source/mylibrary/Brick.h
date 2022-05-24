@@ -100,7 +100,6 @@ void Brick::renderB(char color){
 		case 'y' :
 			gBricksTexture[YELLOW].render(mPosXB,mPosYB);
 			break;
-		
 	}
 }
 void Brick::free(){

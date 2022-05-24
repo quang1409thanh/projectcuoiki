@@ -206,7 +206,9 @@ std::string playlv5() {
 				return "quit";
 			}
 			//Handle input for the dot
-			dot.handleEvent(e);
+			if(dot.getVelX()==0&&dot.getVelY()==0){
+				dot.handleEvent(e);
+			}
 			paddle.handleEventPaddle(e);
 			gButton1_Pause.handleEvent(&e);
 
@@ -341,7 +343,9 @@ std::string playlv4() {
 				return "quit";
 			}
 			//Handle input for the dot
-			dot.handleEvent(e);
+			if(dot.getVelX()==0&&dot.getVelY()==0){
+				dot.handleEvent(e);
+			}
 			paddle.handleEventPaddle(e);
 			gButton1_Pause.handleEvent(&e);
 
@@ -471,7 +475,9 @@ std::string playlv3() {
 				return "quit";
 			}
 			//Handle input for the dot
-			dot.handleEvent(e);
+			if(dot.getVelX()==0&&dot.getVelY()==0){
+				dot.handleEvent(e);
+			}
 			paddle.handleEventPaddle(e);
 			gButton1_Pause.handleEvent(&e);
 
@@ -598,7 +604,9 @@ std::string playlv2() {
 				return "quit";
 			}
 			//Handle input for the dot
-			dot.handleEvent(e);
+			if(dot.getVelX()==0&&dot.getVelY()==0){
+				dot.handleEvent(e);
+			}
 			paddle.handleEventPaddle(e);
 			gButton1_Pause.handleEvent(&e);
 
@@ -719,7 +727,9 @@ std::string playlv1() {
 				return "quit";
 			}
 			//Handle input for the dot
+			if(dot.getVelX()==0&&dot.getVelY()==0){
 			dot.handleEvent(e);
+			}
 			paddle.handleEventPaddle(e);
 			gButton1_Pause.handleEvent(&e);
 			
