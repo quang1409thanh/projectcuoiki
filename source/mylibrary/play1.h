@@ -1080,6 +1080,7 @@ std::string pause(){
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);
+		
 	}
 
 }

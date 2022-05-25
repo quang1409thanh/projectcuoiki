@@ -154,3 +154,5 @@ const SDL_Color DEFAULT_COLOR = BLACK_COLOR;
 // biến để lưu trạng thái của âm thanh
 bool music=true;
 bool sfx=true;
+
+int FPS=60;
