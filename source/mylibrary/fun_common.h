@@ -26,7 +26,7 @@ void render_Brick_lv3(Brick brick[]);
 void render_Brick_lv4(Brick brick[]);
 void render_Brick_lv5(Brick brick[]);
 
-
+// khởi tạo 1 cấu trúc toạ độ x y
 struct Point{
     int x;
     int y;
@@ -40,6 +40,7 @@ struct Point{
     }
 };
 
+// load 1 vector từ file
 vector<Point> load_Vector(std::string s){
     ifstream in(s);
     int n;
@@ -53,6 +54,7 @@ vector<Point> load_Vector(std::string s){
     return v;
 }
 
+// load 1 vector char từ file
 vector<char> load_Color(string s){
     ifstream in(s);
     int n;
@@ -67,6 +69,8 @@ vector<char> load_Color(string s){
  }
 
 
+// hàm khởi tạo sdl
+
 void init()
 {
 		gWindow = SDL_CreateWindow( "Break Brick Game	", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN );
@@ -80,6 +84,7 @@ void init()
 				TTF_Init();
 }
 
+// hàm load các texture từ hình ảnh
 void loadMedia()    
 {
 	// load các brick
@@ -105,7 +110,7 @@ void loadMedia()
 
 	// load background 
 	gGameOverTexture.loadFromFile("source/Data/img/bg/gameover.png");
-	gBgTexture.loadFromFile("source/Data/img/bg/bgr.jpg");
+	
 	gGameWin.loadFromFile("source/Data/img/bg/win.png");
 	gBg_Mainmenu[0].loadFromFile("source/Data/img/bg/bg_main_menu.jpg");
 	gBg_Mainmenu[1].loadFromFile("source/Data/img/bg/bg_main_menu1.png");

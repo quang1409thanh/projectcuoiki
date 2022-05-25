@@ -1,13 +1,12 @@
 #pragma once
-std::string reset(){
-	COUNT_DIES=DIES;
-	count_Broken_Bricks=0;
-}
+
 std::string lose();
 std::string pause();
 std::string main_menu();
 std::string sound();
 std::string about();
+
+//==== hàm hiện thị màn hình âm thanh
 std::string sound(){
 	std::cout<<"sound"<<std::endl;
 	bool quit = false;
@@ -40,6 +39,7 @@ std::string sound(){
 		
 		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xF0);
 		SDL_RenderClear(gRenderer);
+
 		if(gButtonmusic.getStatus()==BUTTON_SPRITE_MOUSE_DOWN&&gButtonmusic.get_on()) {
 		music=!music;
 		gButtonmusic.set_on(false);
@@ -67,6 +67,8 @@ std::string sound(){
 			return "menu";
 		}
 		
+
+		//Render objects
 		gButtonsfx.render();
 		gButtonmusic.render();
 		gButton1_Back.render();
@@ -76,19 +78,31 @@ std::string sound(){
 	}
 }
 
+// hiện thị màn hình khi thắng
+
 std::string win(){
     //Main loop flag
 	std::cout<<"win"<<std::endl;
 	bool quit = false;
 	//Event handler
 	SDL_Event e;
-    std::stringstream timeTextLose;
+
+	// hiện thị điểm khi thua
+    std::stringstream timeTextWin;
+
+	// hiện thị điểm cao
 	std::stringstream high_Score;
+
+	// màu sắc của các texture load từ chữ
 	SDL_Color textColor = DEFAULT_COLOR;
-	//While application is running
+	
+
+	// điều kiện để có âm thanh 
 	if(music){
 		Mix_PlayMusic(music_GameWin, -1);
 	}
+	
+	//While application is running
 	while (!quit)
 	{
 		//Handle events on queue
@@ -100,22 +114,23 @@ std::string win(){
 				quit = true;
 				return "quit";
 			}
-			//Handle input for the dot
-			dot.handleEvent(e);
-			paddle.handleEventPaddle(e);
 			gButton[RESTART].handleEvent(&e);
 			gButton[MAIN_MENU].handleEvent(&e);
 			gButton[EXIT].handleEvent(&e);
 			
 		}
-		timeTextLose.str("");
-		timeTextLose << "YOU_SCORE:: " << count_Broken_Bricks ;
-		if(count_Broken_Bricks>loadhighscore()){
-			sethighscore(count_Broken_Bricks);
-		}
+
+		// điểm khi ở màn hình thắng
+		timeTextWin.str("");
+		timeTextWin << "YOU_SCORE:: " << count_Broken_Bricks ;
+
+		// điểm cao 
+
 		high_Score.str("");
 		high_Score << "HIGH SCORE:: " << loadhighscore();
-		if (!gScoreTexture.loadFromRenderedText(timeTextLose.str().c_str(), textColor))
+
+		// load texture từ chữ
+		if (!gScoreTexture.loadFromRenderedText(timeTextWin.str().c_str(), textColor))
 		{
 			printf("Unable to render FPS texture!\n");
 		}
@@ -123,13 +138,21 @@ std::string win(){
 		{
 			printf("Unable to render FPS texture!\n");
 		}
+
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(gRenderer);
+
+		//Render objects
 		gButton[RESTART].render();
 		gButton[MAIN_MENU].render();
 		gButton[EXIT].render();
 		gGameWin.render(10, 100);
+		
+        gScoreTexture.render(20,10);
+		ghigh_Score.render(0, 50);
+
+
 		if(gButton[RESTART].getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
 		{
 			gButton[RESTART].freeStatus();
@@ -152,8 +175,6 @@ std::string win(){
 			return "quit";
 		}
 		
-        gScoreTexture.render(20,10);
-		ghigh_Score.render(0, 50);
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 	}
@@ -165,10 +186,14 @@ std::string playlv5() {
 	bool quit = false;
 	//Event handler
 	SDL_Event e;
+
+	// khởi tạo brick
 	Brick brick5[TOTAL_BRICKSLV5];
 	Init_Bricklv5(brick5);
+	
 	//Angle of rotation
 	double degrees = 0;
+
 	if(music){
 		Mix_PlayMusic(music_Play, -1);
 	}
@@ -176,22 +201,13 @@ std::string playlv5() {
 	//Flip type
 	SDL_RendererFlip flipType = SDL_FLIP_NONE;
 
-	//The dot that will be moving around on the screen
-	// Dot dot;
 	SDL_Color textColor = WHITE_COLOR;
 
-	//The frames per second timer
-	LTimer fpsTimer;
 
 	//In memory text stream
 	std::stringstream timeText;
 	
 
-	//Start counting frames per second
-	int countedFrames = 0;
-	fpsTimer.start();
-
-   	int i=0;
 	//While application is running
 	
 	while (!quit)
@@ -214,15 +230,9 @@ std::string playlv5() {
 
 		}	
 		//Move the dot and check collision
-		dot.move5(brick5,TOTAL_BRICKSLV5);
-		//dot.ball_brick_collision(brick1,TOTAL_BRICKSLV1);
+		dot.move5(brick5,TOTAL_BRICKSLV5); 
 		paddle.moveP();
-		//Calculate and correct fps
-		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
-		if (avgFPS > 2000000)
-		{
-			avgFPS = 0;
-		}
+
 		if(count_Broken_Bricks>loadhighscore()){
 			sethighscore(count_Broken_Bricks);
 		}
@@ -246,33 +256,23 @@ std::string playlv5() {
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0x00);
 		SDL_RenderClear(gRenderer);
-		// Render the bg
-		
-		//gBgTexturelv2.render(0, 0);
-		//Render dot
-        // if(fpsTimer.getTicks()==500){
-        //     i++;
-        //     while(i>4) i-=4;
 
-        // }
+		// Render objects
 		dot.render(1);
 		paddle.renderP();
-		i++;
-		// gPowerC.render(i);
 		
-		// gPowerS.render(i);
 		render_Brick_Lv5(brick5);
-		while(i>4) i-=4;
+		
 		gButton1_Pause.render();
 		gBgLv1.render(0, 0);// hiện thị khung để chơi 
 		//Render current frame
 		gTextTexture.render(0, 10);// LV
 		gScoreTexture.render(23, 551);// ĐIỂM
-		ghigh_Score.render(150,28);
-		//gGameOverTexture.render(10,100);
+		ghigh_Score.render(150,28);// ĐIỂM CAO
+
 		//Update screen
 		SDL_RenderPresent(gRenderer);
-		++countedFrames;
+		
 		if (COUNT_DIES < 0) {
 			Mix_HaltMusic();
 			return "lose";
@@ -301,10 +301,14 @@ std::string playlv4() {
 	//Main loop flag
 	std::cout<<"playlv4"<<std::endl;
 	bool quit = false;
+
 	//Event handler
 	SDL_Event e;
+
+	// khởi tạo brick 
 	Brick brick4[TOTAL_BRICKSLV4];
 	Init_Bricklv4(brick4);
+
 	//Angle of rotation
 	double degrees = 0;
 	if(music){
@@ -314,8 +318,7 @@ std::string playlv4() {
 	//Flip type
 	SDL_RendererFlip flipType = SDL_FLIP_NONE;
 
-	//The dot that will be moving around on the screen
-	// Dot dot;
+	// màu của font chữ 
 	SDL_Color textColor = WHITE_COLOR;
 
 	//The frames per second timer
@@ -324,9 +327,6 @@ std::string playlv4() {
 	//In memory text stream
 	std::stringstream timeText;
 	
-
-	//Start counting frames per second
-	int countedFrames = 0;
 	fpsTimer.start();
 
    	int i=0;
@@ -351,15 +351,10 @@ std::string playlv4() {
 
 		}	
 		//Move the dot and check collision
-		dot.move(brick4,TOTAL_BRICKSLV4);
-		//dot.ball_brick_collision(brick1,TOTAL_BRICKSLV1);
+		dot.move(brick4,TOTAL_BRICKSLV4); 
 		paddle.moveP();
-		//Calculate and correct fps
-		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
-		if (avgFPS > 2000000)
-		{
-			avgFPS = 0;
-		}
+
+
 		if(count_Broken_Bricks>loadhighscore()){
 			sethighscore(count_Broken_Bricks);
 		}
@@ -383,11 +378,10 @@ std::string playlv4() {
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(gRenderer);
-		// Render the bg
-		
-		//gBgTexturelv2.render(0, 0);
+
+		// render object
 		//Render dot
-        if(fpsTimer.getTicks()==500){
+        if(fpsTimer.getTicks()%1000==0){
             i++;
             while(i>4) i-=4;
 
@@ -397,14 +391,13 @@ std::string playlv4() {
 		render_Brick_Lv4(brick4);
 		gButton1_Pause.render();
 		gBgLv1.render(0, 0);// hiện thị khung để chơi 
-		//Render current frame
 		gTextTexture.render(0, 10);// LV
 		gScoreTexture.render(23, 551);// ĐIỂM
-		ghigh_Score.render(150,28);
-		//gGameOverTexture.render(10,100);
+		ghigh_Score.render(150,28);// điểm cao 
+
 		//Update screen
 		SDL_RenderPresent(gRenderer);
-		++countedFrames;
+		
 		if (COUNT_DIES < 0) {
 			Mix_HaltMusic();
 			return "lose";
@@ -433,10 +426,14 @@ std::string playlv3() {
 	//Main loop flag
 	std::cout<<"playlv3"<<std::endl;
 	bool quit = false;
+
 	//Event handler
 	SDL_Event e;
+
+	//khởi tạo brick
 	Brick brick3[TOTAL_BRICKSLV3];
 	Init_Bricklv3(brick3);
+
 	//Angle of rotation
 	double degrees = 0;
 	if(music){
@@ -446,8 +443,7 @@ std::string playlv3() {
 	//Flip type
 	SDL_RendererFlip flipType = SDL_FLIP_NONE;
 
-	//The dot that will be moving around on the screen
-	// Dot dot;
+
 	SDL_Color textColor = WHITE_COLOR;
 
 	//The frames per second timer
@@ -457,9 +453,6 @@ std::string playlv3() {
 	std::stringstream timeText;
 	
 
-	//Start counting frames per second
-	int countedFrames = 0;
-	fpsTimer.start();
 
    	int i=0;
 	//While application is running
@@ -484,24 +477,23 @@ std::string playlv3() {
 		}	
 		//Move the dot and check collision
 		dot.move(brick3,TOTAL_BRICKSLV3);
-		//dot.ball_brick_collision(brick1,TOTAL_BRICKSLV1);
+		
 		paddle.moveP();
-		//Calculate and correct fps
-		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
-		if (avgFPS > 2000000)
-		{
-			avgFPS = 0;
-		}
+
 		if(count_Broken_Bricks>loadhighscore()){
 			sethighscore(count_Broken_Bricks);
 		}
+
+		// điểm cao 
 		high_Score.str("");
 		high_Score << "HIGH_SCORE:: " << loadhighscore();
 		gTextTexture.loadFromRenderedText( "Level 3 ", textColor );
-		// //Set text to be rendered
+		
+		// điểm và lượt chơi còn lại 
 		timeText.str("");
 		timeText << "SCORE:: " << count_Broken_Bricks ;
         timeText << " Live:: " << COUNT_DIES;
+
 		//Render text
 		if (!gScoreTexture.loadFromRenderedText1(timeText.str().c_str(), textColor))
 		{
@@ -515,11 +507,10 @@ std::string playlv3() {
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(gRenderer);
-		// Render the bg
-		
-		//gBgTexturelv2.render(0, 0);
-		//Render dot
-        if(fpsTimer.getTicks()==500){
+
+		//Render objects
+		// thay đổi màu quả bóng được
+        if(fpsTimer.getTicks()%1000==0){
             i++;
             while(i>4) i-=4;
 
@@ -529,14 +520,14 @@ std::string playlv3() {
 		render_Brick_Lv3(brick3);
 		gButton1_Pause.render();
 		gBgLv1.render(0, 0);// hiện thị khung để chơi 
-		//Render current frame
+
 		gTextTexture.render(0, 10);// LV
 		gScoreTexture.render(23, 551);// ĐIỂM
-		ghigh_Score.render(150,28);
-		//gGameOverTexture.render(10,100);
+		ghigh_Score.render(150,28);// điểm cao 
+		
 		//Update screen
 		SDL_RenderPresent(gRenderer);
-		++countedFrames;
+
 		if (COUNT_DIES < 0) {
 			Mix_HaltMusic();
 			return "lose";
@@ -569,8 +560,11 @@ std::string playlv2() {
 	bool quit = false;
 	//Event handler
 	SDL_Event e;
+
+	// khởi tạo brick
 	Brick brick2[TOTAL_BRICKSLV2];
 	Init_Bricklv2(brick2);
+
 	//Angle of rotation
 	double degrees = 0;
 
@@ -581,8 +575,7 @@ std::string playlv2() {
 	//Flip type
 	SDL_RendererFlip flipType = SDL_FLIP_NONE;
 
-	//The dot that will be moving around on the screen
-	// Dot dot;
+
 	SDL_Color textColor = WHITE_COLOR;
 
 
@@ -613,9 +606,7 @@ std::string playlv2() {
 		}	
 		//Move the dot and check collision
 		dot.move(brick2,TOTAL_BRICKSLV2);
-		//dot.ball_brick_collision(brick1,TOTAL_BRICKSLV1);
 		paddle.moveP();
-		//Calculate and correct fps
 		
 		if(count_Broken_Bricks>loadhighscore()){
 			sethighscore(count_Broken_Bricks);
@@ -640,18 +631,18 @@ std::string playlv2() {
 		//Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(gRenderer);
-		// Render the bg
-		//Render dot
+
+		//Render objects
 		dot.render(i);
 		paddle.renderP();
 		render_Brick_Lv2(brick2);
 		gButton1_Pause.render();
 		gBgLv1.render(0, 0);// hiện thị khung để chơi 
-		//Render current frame
+
 		gTextTexture.render(0, 10);// LV
 		gScoreTexture.render(23, 551);// ĐIỂM
-		ghigh_Score.render(150,28);
-		//gGameOverTexture.render(10,100);
+		ghigh_Score.render(150,28);// điểm cao
+
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 
@@ -684,13 +675,21 @@ std::string playlv1() {
 	//Main loop flag
 	std::cout<<"playlv1"<<std::endl;
 	bool quit = false;
+
+	// số lượt chơi còn lại
 	COUNT_DIES=DIES;
 	//Event handler
 	SDL_Event e;
+
+	// khởi tạo các viên gạch 
 	Brick brick1[TOTAL_BRICKSLV1];
 	Init_Bricklv1(brick1);
+
 	//Angle of rotation
 	double degrees = 0;
+
+	// điều kiện để có âm thanh khi chơi
+
 	if(music){
 		Mix_PlayMusic(music_Play, -1);
 	}
@@ -698,8 +697,6 @@ std::string playlv1() {
 	//Flip type
 	SDL_RendererFlip flipType = SDL_FLIP_NONE;
 
-	//The dot that will be moving around on the screen
-	// Dot dot;
 	SDL_Color textColor = WHITE_COLOR;
 
 	//The frames per second timer
@@ -708,9 +705,6 @@ std::string playlv1() {
 	//In memory text stream
 	std::stringstream timeText;
 	
-
-	//Start counting frames per second
-	int countedFrames = 0;
 	fpsTimer.start();
 
    	int i=0;
@@ -735,25 +729,25 @@ std::string playlv1() {
 			
 		}	
 		//Move the dot and check collision
-		dot.move(brick1,TOTAL_BRICKSLV1);
-		//dot.ball_brick_collision(brick1,TOTAL_BRICKSLV1);
+		dot.move(brick1,TOTAL_BRICKSLV1); 
 		paddle.moveP();
-		//Calculate and correct fps
-		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
-		if (avgFPS > 2000000)
-		{
-			avgFPS = 0;
-		}
+
 		if(count_Broken_Bricks>loadhighscore()){
 			sethighscore(count_Broken_Bricks);
 		}
+
+		// điểm cao 
 		high_Score.str("");
 		high_Score << "HIGH_SCORE:: " << loadhighscore();
 		gTextTexture.loadFromRenderedText( "Level 1 ", textColor );
-		// //Set text to be rendered
+		
+		// điểm
 		timeText.str("");
 		timeText << "SCORE:: " << count_Broken_Bricks ;
+
+		// số lượt chơi còn lại 
         timeText << " Live:: " << COUNT_DIES;
+
 		//Render text
 		if (!gScoreTexture.loadFromRenderedText1(timeText.str().c_str(), textColor))
 		{
@@ -771,21 +765,23 @@ std::string playlv1() {
         if(fpsTimer.getTicks()%1000==0){
             i++;
             while(i>4) i-=4;
-
         }
+	
+		// render object
+		// thay đổi màu của quả bóng theo thời gian 
 		dot.render(i);
 		paddle.renderP();
 		render_Brick_Lv1(brick1);
 		gButton1_Pause.render();
-		//gButton1_Reset.render();
 		gBgLv1.render(0, 0);// hiện thị khung để chơi 
-		//Render current frame
+
 		gTextTexture.render(0, 10);// LV
 		gScoreTexture.render(23, 551);// ĐIỂM
-		ghigh_Score.render(150,28);
+		ghigh_Score.render(150,28);// điểm cao 
 
+		//update screen
 		SDL_RenderPresent(gRenderer);
-		++countedFrames;
+
 		if (COUNT_DIES < 0) {
 			Mix_HaltMusic();
 			return "lose";
@@ -793,7 +789,6 @@ std::string playlv1() {
 		if(count_Broken_Bricks==TOTAL_BRICKSLV1*50){
 			
 			quit = true;
-			//return "quit";
 			SDL_Delay(100);
 			dot.reset();
 			return "playlv2";
@@ -807,7 +802,6 @@ std::string playlv1() {
 			Mix_HaltMusic();
 			gButton1_Pause.freeStatus();
 			pause();
-			//return "pause";
 		}
 		
 }
@@ -819,13 +813,22 @@ std::string lose() {
 	bool quit = false;
 	//Event handler
 	SDL_Event e;
+
+	// hiện thị điểm thua
     std::stringstream timeTextLose;
+
+	// hiện thị điểm cao 
 	std::stringstream high_Score;
+
+	// màu phông chữ 
 	SDL_Color textColor = GREEN_COLOR;
-	//While application is running
+
+	// điểu kiện để bật âm thanh game thua
 	if(music){
 	Mix_PlayMusic(music_GameOver, -1 );
 	}
+	
+	//While application is running
 	while (!quit)
 	{
 		//Handle events on queue
@@ -838,20 +841,20 @@ std::string lose() {
 				quit = true;
 				
 			}
-			//Handle input for the dot
-			dot.handleEvent(e);
-			paddle.handleEventPaddle(e);
 			gButton[RESTART].handleEvent(&e);
 			gButton[MAIN_MENU].handleEvent(&e);
 			gButton[EXIT].handleEvent(&e);
 		}
+
+		// điểm khi thua 
         timeTextLose.str("");
 		timeTextLose << "YOU_SCORE:: " << count_Broken_Bricks ;
-		if(count_Broken_Bricks>loadhighscore()){
-			sethighscore(count_Broken_Bricks);
-		}
+
+		// điểm cao 
 		high_Score.str("");
 		high_Score << "HIGH SCORE:: " << loadhighscore();
+
+		// load texture từ chữ
 		if (!gScoreTexture.loadFromRenderedText(timeTextLose.str().c_str(), textColor))
 		{
 			printf("Unable to render FPS texture!\n");
@@ -864,10 +867,15 @@ std::string lose() {
 		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(gRenderer);
 		
-		
+		//render objects
 		gButton[RESTART].render();
 		gButton[MAIN_MENU].render();
 		gButton[EXIT].render();
+        gScoreTexture.render(0,50);
+		ghigh_Score.render(0, 90);
+		gGameOverTexture.render(00, 150);
+
+
 		if(gButton[RESTART].getStatus()==BUTTON_SPRITE_MOUSE_DOWN)
 		{
 			gButton[RESTART].freeStatus();
@@ -890,9 +898,7 @@ std::string lose() {
 			return "quit";
 		}
 
-        gScoreTexture.render(0,50);
-		ghigh_Score.render(0, 90);
-		gGameOverTexture.render(00, 150);
+
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 }
@@ -905,8 +911,8 @@ std::string main_menu(){
 
 	//Event handler
 	SDL_Event e;
-	SDL_Color textColor = RED_COLOR;
-	std::stringstream timeText;
+
+
 	if(music){
 
 	Mix_PlayMusic(music_Menu, -1 );
@@ -933,7 +939,7 @@ std::string main_menu(){
 		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(gRenderer);
 		
-
+		//render objects
 		gBg_Mainmenu[0].render(0, 0);
 		gBg_Mainmenu[1].render(0, 0);
 		gButton[ABOUT].render();
@@ -969,12 +975,10 @@ std::string main_menu(){
 			quit=true;
 			return "quit";
 		}
-		//Update screen
 
+		//Update screen
 		SDL_RenderPresent(gRenderer);
 	}
-		close();
-
 }
 std::string about(){
 	std::cout<<"about"<<std::endl;
@@ -998,13 +1002,14 @@ std::string about(){
 				quit = true;
 				return "quit";
 			}
-			//Handle input for the dot
 			 gButton1_Back.handleEvent(&e);
 
 		}
 		// //Clear screen
 		SDL_SetRenderDrawColor(gRenderer, 0x0F, 0xFF, 0xFF, 0xFF);
 		SDL_RenderClear(gRenderer);
+
+		//render objects
 		gBg_Mainmenu[1].render(0, 0);
 		gBg_About.render(0, 300);
 		gButton1_Back.render();
@@ -1046,13 +1051,15 @@ std::string pause(){
 			gButton[SOUND].handleEvent(&e);
 
 		}
-		//Clear screen
-		
 
 		SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0x00);
 		//SDL_RenderClear(gRenderer);
+
+		//render objects
 		gButton[RESUME].render();
 		gButton[SOUND].render();
+
+
 		if(gButton[RESUME].getStatus()==BUTTON_SPRITE_MOUSE_DOWN){
 			gButton[RESUME].freeStatus();
 			quit=true;
@@ -1070,6 +1077,7 @@ std::string pause(){
 			// return "sound";
 			sound();
 		}
+
 		//Update screen
 		SDL_RenderPresent(gRenderer);
 	}

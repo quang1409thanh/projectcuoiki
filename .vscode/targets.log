@@ -6,7 +6,7 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue May 24 18:24:18 2022
+# Make data base, printed on Wed May 25 15:22:19 2022
 
 # Variables
 
@@ -23,7 +23,7 @@ USERPROFILE = C:\Users\admin
 # environment
 LOCALAPPDATA = C:\Users\admin\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-e6302f08-42fe-4f80-a87b-e99b419606f6-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-c07c898e-e598-4455-abed-1b15ad0ea415-sock
 # environment
 VSCODE_CWD = C:\Users\admin\AppData\Local\Programs\Microsoft VS Code
 # environment
@@ -39,7 +39,7 @@ MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_11032_MHZXKAYOLYBVFAQG
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_57220_ZIGYSRJMWDLFOTNL
 # environment
 FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
@@ -95,7 +95,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 11032
+VSCODE_PID = 57220
 # environment
 CLION = C:\mingw64\bin;C:\Program Files\JetBrains\CLion 2021.3.3\bin;
 # automatic
@@ -215,7 +215,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 
 # Directories
 
-# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1653291100): 27 files, no impossibilities.
+# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1653406489): 27 files, no impossibilities.
 
 # 27 files, no impossibilities in 1 directories.
 
@@ -286,6 +286,6 @@ all:
 # strcache performance: lookups = 37 / hit rate = 18%
 # hash-table stats:
 # Load=30/8192=0%, Rehash=0, Collisions=1/37=3%
-# Finished Make data base on Tue May 24 18:24:18 2022
+# Finished Make data base on Wed May 25 15:22:19 2022
 
  

@@ -1,4 +1,4 @@
-
+// khởi tạo class brick để chơi tạo ra các viên gạch
 class Brick{
 	public:
 
@@ -33,9 +33,11 @@ class Brick{
 
 		int mVelXB, mVelYB;
 		
-		LTexture gBrick_Texture[TOTAL_BRICKS];
+		LTexture gBrick_Texture[ TOTAL_COLOR_BRICK];
 
 };
+
+///== các hàm thành viên thuộc class này
 Brick::Brick(){
 	mPosXB=-100;
 	mPosYB=-100;

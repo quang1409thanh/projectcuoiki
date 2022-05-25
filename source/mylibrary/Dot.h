@@ -5,6 +5,8 @@ struct Circle
 	int r;
 };
 
+// khởi tạo class cho đối tượng quả bóng
+
 class Dot
 {
     public:
@@ -65,6 +67,8 @@ double distanceSquared( int x1, int y1, int x2, int y2 )
 	int deltaY = y2 - y1;
 	return deltaX*deltaX + deltaY*deltaY;
 }
+
+// hàm check va chạm giữa quả bóng và viên gạch
 bool checkCollision( Circle& a, Brick& b )
 {
     //Closest point on collision box
@@ -108,12 +112,7 @@ bool checkCollision( Circle& a, Brick& b )
     //If the shapes have not collided
     return false;
 }
-int Dot::setPosX(int x){
-    mPosX = x;
-}
-int Dot::setPosY(int y){
-    mPosY = y;
-}
+// các hàm thành viên của class này
 Dot::Dot()
 {
     //Initialize the offsets
@@ -136,6 +135,12 @@ void Dot::shiftColliders()
 	mCollider.y = mPosY+DOT_HEIGHT/2;
 }
 
+int Dot::setPosX(int x){
+    mPosX = x;
+}
+int Dot::setPosY(int y){
+    mPosY = y;
+}
 void Dot::handleEvent( SDL_Event& e )
 {
     //If a key was pressed
@@ -192,8 +197,10 @@ void Dot::move(Brick brick[],int n ){
         //Move back
         mVelX*=-1;
 		shiftColliders();
+
+        // render hình ảnh quả bóng này ở chỗ khác ngoài màn hình ( không thể giải phóng vì nếu giải phóng thì LTexutre có màu giống viên gạch này cũng sẽ free())
         brick[i]=brick[i].setBrick_mPosXB(30000);
-        //delete_brick_count++;
+        
         if(sfx)
         {
             Mix_PlayChannel( -1, brickcollision, 0 );
@@ -201,6 +208,7 @@ void Dot::move(Brick brick[],int n ){
         count_Broken_Bricks=count_Broken_Bricks+50;
     }
     }
+
     // va chạm với cạnh bên trái và cạnh bên phải
     if( ( mPosX <= SCREEN_LEFT )  ) {
         mPosX = SCREEN_LEFT;
@@ -209,6 +217,7 @@ void Dot::move(Brick brick[],int n ){
         Mix_PlayChannel(-1,ballcollision,0);
         }
     }
+    
     if(( mPosX + DOT_WIDTH >= (SCREEN_WIDTH-SCREEN_RIGHT) ) ) {
         mPosX = SCREEN_WIDTH-SCREEN_RIGHT-DOT_WIDTH;
         mVelX *= -1;
@@ -216,6 +225,8 @@ void Dot::move(Brick brick[],int n ){
         Mix_PlayChannel(-1,ballcollision,0);
         }
     }
+
+
     //Move the dot up or down
     mPosY += mVelY;
 	shiftColliders();
@@ -227,8 +238,10 @@ void Dot::move(Brick brick[],int n ){
         //Move back
         mVelY*=-1;
 		shiftColliders();
+
+        // render hình ảnh quả bóng này ở chỗ khác ngoài màn hình ( không thể giải phóng vì nếu giải phóng thì LTexutre có màu giống viên gạch này cũng sẽ free())
         brick[i]=brick[i].setBrick_mPosXB(30000);
-        //delete_brick_count++;
+
         if(sfx)
         {
             Mix_PlayChannel( -1, brickcollision, 0 );
@@ -241,7 +254,7 @@ void Dot::move(Brick brick[],int n ){
     if( mPosY <= (SCREEN_TOP) ) {
         mPosY = SCREEN_TOP;
         mVelY *= -1;
-        //Mix_PlayChannel(-1,ballcollision,0);
+        Mix_PlayChannel(-1,ballcollision,0);
     }
     // va chạm với cạnh dưới
 	if(mPosY + DOT_HEIGHT >= (SCREEN_HEIGHT-SCREEN_BOTTOM) ){
@@ -254,7 +267,7 @@ void Dot::move(Brick brick[],int n ){
     if(mPosY+DOT_HEIGHT>=paddle.getPosYP()&&mPosX>=paddle.getPosXP()&&mPosX<=paddle.getPosXP()+paddle.PADDLE_WIDTH){
         mPosY=paddle.getPosYP()-DOT_HEIGHT;// chỗ này khá hay để tránh tình trạng lỗi chạy trên thanh paddle, chưa hiểu nguyên nhân tại sao
         mVelY*=-1;
-		//Mix_PlayChannel(-1,ballcollision,0);
+
     }
     
 }
@@ -268,6 +281,7 @@ void Dot::move5(Brick brick[],int n ){
     //Move the dot left or right
 
     //If the dot collided or went too far to the left or right
+
     //va chạm với viên gạch
     mPosX += mVelX;
 	shiftColliders();
@@ -280,7 +294,9 @@ void Dot::move5(Brick brick[],int n ){
         if(i<21||i>26){
         mVelX*=-1;
 		shiftColliders();
+
         brick[i]=brick[i].setBrick_mPosXB(30000);
+
         count_Broken_Bricks=count_Broken_Bricks+50;
         if(sfx)
         {
@@ -288,6 +304,7 @@ void Dot::move5(Brick brick[],int n ){
             }
         }
         else {
+
         mPosX-=mVelX;
         //mVelX*=-1;// có 1 bug là khi va chạm thì sẽ bị lỗi va chạm với viên gạch 26 theo hướng x nên chưa biết cách fix như nào chữa cháy bằng cách này thôi
 		shiftColliders();
@@ -298,6 +315,7 @@ void Dot::move5(Brick brick[],int n ){
         //delete_brick_count++;
     }
     }
+
     // va chạm với cạnh bên trái và cạnh bên phải
     if( ( mPosX <= SCREEN_LEFT )  ) {
         mPosX = SCREEN_LEFT;
@@ -313,6 +331,8 @@ void Dot::move5(Brick brick[],int n ){
         Mix_PlayChannel(-1,ballcollision,0);
         }
     }
+
+
     //Move the dot up or down
     mPosY += mVelY;
 	shiftColliders();
@@ -340,16 +360,17 @@ void Dot::move5(Brick brick[],int n ){
         if(sfx){
         Mix_PlayChannel(-1,ballcollision,0);
         }
-        }   //delete_brick_count++;
+        }   
 
        
     }
     }
+
     // va chạm với cạnh trên
     if( mPosY <= (SCREEN_TOP) ) {
         mPosY = SCREEN_TOP;
         mVelY *= -1;
-        //Mix_PlayChannel(-1,ballcollision,0);
+        Mix_PlayChannel(-1,ballcollision,0);
     }
     // va chạm với cạnh dưới
 	if(mPosY + DOT_HEIGHT >= (SCREEN_HEIGHT-SCREEN_BOTTOM) ){
@@ -406,7 +427,7 @@ int Dot::getVelY() {
     return mVelY;
 }
 void Dot:: reset(){
-        //Initialize the offsets
+    //Initialize the offsets
     mPosX = paddle.getPosXP()+paddle.PADDLE_WIDTH/2-DOT_WIDTH/2;
     mPosY = SCREEN_HEIGHT-SCREEN_BOTTOM- DOT_HEIGHT-paddle.PADDLE_HEIGHT;// THAT ĐỔI VỊ TRÍ MỚI CỦA DOT
 

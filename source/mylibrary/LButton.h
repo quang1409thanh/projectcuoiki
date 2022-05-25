@@ -35,6 +35,7 @@ class LButton
 //================các biến thuộc button================
 
 LButton gButton[TOTAL_STATUS];
+
 //================các hàm thành viên của button================
 
 
@@ -521,7 +522,7 @@ void LButton2::freeB() {
     texture[2].free();
     texture[3].free();
 }
-LButton2 gButtonsfx;
 
+//====khai báo biến thuộc button này====
+LButton2 gButtonsfx;
 LButton2 gButtonmusic;
-// chưa làm được cái button 2 trạng thái nghe mùi toang rồi

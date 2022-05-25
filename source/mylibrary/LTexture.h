@@ -1,3 +1,4 @@
+// bài học được sử dụng từ nguồn lazyfoo.net và có chỉnh sửa
 //Texture wrapper class
 
 class LTexture
