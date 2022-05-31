@@ -188,7 +188,7 @@ void Dot::move(Brick brick[],int n ){
     }
     // tăng vận tốc x
     mPosX += mVelX;
-	shiftColliders();
+	shiftColliders();   
 
     //If the dot collided or went too far to the left or right
     for(int i=0;i<n;i++){

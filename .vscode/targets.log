@@ -6,7 +6,7 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed May 25 18:48:27 2022
+# Make data base, printed on Tue May 31 20:11:06 2022
 
 # Variables
 
@@ -23,9 +23,9 @@ USERPROFILE = C:\Users\admin
 # environment
 LOCALAPPDATA = C:\Users\admin\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-d410a964-1d59-42d2-9169-a1fd6ae8e6b5-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-c00223e1-dbbf-44e0-a956-c51d23d19633-sock
 # environment
-VSCODE_CWD = C:\Users\admin\AppData\Local\Programs\Microsoft VS Code
+VSCODE_CWD = C:\Users\admin\Desktop
 # environment
 CHOCOLATEYINSTALL = C:\ProgramData\chocolatey
 # environment
@@ -39,9 +39,10 @@ MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_36412_PWJUQORCDKWACCTE
-# environm 
-ent
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_16168_QDTYZTJBLNTBCNYN
+# environment
+ONEDRIVECOMMERCIAL = C:\Users\admin\OneDrive - vnu.edu.vn
+# environment
 FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
@@ -96,7 +97,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 36412
+VSCODE_PID = 16168
 # environment
 CLION = C:\mingw64\bin;C:\Program Files\JetBrains\CLion 2021.3.3\bin;
 # automatic
@@ -208,7 +209,7 @@ PROCESSOR_REVISION = 6801
 # environment
 PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 # variable set hash-table stats:
-# Load=98/1024=10%, Rehash=0, Collisions=11/128=9%
+# Load=99/1024=10%, Rehash=0, Collisions=11/129=9%
 
 # Pattern-specific Variable Values
 
@@ -216,7 +217,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 
 # Directories
 
-# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1653476828): 27 files, no impossibilities.
+# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1653920757): 27 files, no impossibilities.
 
 # 27 files, no impossibilities in 1 directories.
 
@@ -287,6 +288,6 @@ all:
 # strcache performance: lookups = 37 / hit rate = 18%
 # hash-table stats:
 # Load=30/8192=0%, Rehash=0, Collisions=1/37=3%
-# Finished Make data base on Wed May 25 18:48:27 2022
+# Finished Make data base on Tue May 31 20:11:06 2022
 
  

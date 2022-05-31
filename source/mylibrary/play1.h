@@ -74,6 +74,7 @@ std::string sound(){
 		gButton1_Back.render();
 		//Update screen
 		SDL_RenderPresent(gRenderer);
+		SDL_Delay(1000/FPS);
 
 	}
 }
@@ -177,6 +178,7 @@ std::string win(){
 		
 		//Update screen
 		SDL_RenderPresent(gRenderer);
+		SDL_Delay(1000/FPS);
 	}
 }
 
@@ -272,6 +274,7 @@ std::string playlv5() {
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);
+		SDL_Delay(1000/FPS);
 		
 		if (COUNT_DIES < 0) {
 			Mix_HaltMusic();
@@ -397,6 +400,7 @@ std::string playlv4() {
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);
+		SDL_Delay(1000/FPS);
 		
 		if (COUNT_DIES < 0) {
 			Mix_HaltMusic();
@@ -527,6 +531,7 @@ std::string playlv3() {
 		
 		//Update screen
 		SDL_RenderPresent(gRenderer);
+		SDL_Delay(1000/FPS);
 
 		if (COUNT_DIES < 0) {
 			Mix_HaltMusic();
@@ -645,6 +650,7 @@ std::string playlv2() {
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);
+		SDL_Delay(1000/FPS);
 
 		if (COUNT_DIES < 0) {
 			Mix_HaltMusic();
@@ -781,6 +787,7 @@ std::string playlv1() {
 
 		//update screen
 		SDL_RenderPresent(gRenderer);
+		SDL_Delay(1000/FPS);
 
 		if (COUNT_DIES < 0) {
 			Mix_HaltMusic();
@@ -901,6 +908,7 @@ std::string lose() {
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);
+		SDL_Delay(1000/FPS);
 }
 }
 
@@ -978,6 +986,7 @@ std::string main_menu(){
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);
+		SDL_Delay(1000/FPS);
 	}
 }
 std::string about(){
@@ -1021,6 +1030,7 @@ std::string about(){
 		}
 		//Update screen
 		SDL_RenderPresent(gRenderer);
+		SDL_Delay(1000/FPS);
 	}
 }
 
@@ -1080,6 +1090,7 @@ std::string pause(){
 
 		//Update screen
 		SDL_RenderPresent(gRenderer);
+		SDL_Delay(1000/FPS);
 		
 	}
 
