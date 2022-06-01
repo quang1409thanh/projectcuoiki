@@ -6,12 +6,10 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Wed Jun 01 16:09:59 2022
+# Make data base, printed on Wed Jun 01 17:37:42 2022
 
 # Variables
 
-# environment
-FPS_BROWSER_APP_PROFILE_STRING = Internet Explorer
 # environment
 SYSTEMDRIVE = C:
 # environment
@@ -23,7 +21,7 @@ USERPROFILE = C:\Users\admin
 # environment
 LOCALAPPDATA = C:\Users\admin\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-4fc37c84-b45c-47e1-af2e-e45bc8d15e0c-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-87265cd8-f4d4-4719-801c-50e0cb8d8b24-sock
 # environment
 VSCODE_CWD = C:\Users\admin\AppData\Local\Programs\Microsoft VS Code
 # environment
@@ -39,11 +37,9 @@ MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_28792_FPMCVKZUKYTCYDAS
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_15424_XZOFQEBZKCGDZKSI
 # environment
 ONEDRIVECOMMERCIAL = C:\Users\admin\OneDrive - vnu.edu.vn
-# environment
-FPS_BROWSER_USER_PROFILE_STRING = Default
 # environment
 VSCODE_HANDLES_UNCAUGHT_ERRORS = true
 # default
@@ -97,7 +93,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 28792
+VSCODE_PID = 15424
 # environment
 CLION = C:\mingw64\bin;C:\Program Files\JetBrains\CLion 2021.3.3\bin;
 # automatic
@@ -209,7 +205,7 @@ PROCESSOR_REVISION = 6801
 # environment
 PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 # variable set hash-table stats:
-# Load=99/1024=10%, Rehash=0, Collisions=11/129=9%
+# Load=97/1024=9%, Rehash=0, Collisions=10/127=8%
 
 # Pattern-specific Variable Values
 
@@ -217,7 +213,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 
 # Directories
 
-# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1654073213): 26 files, no impossibilities.
+# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1654079787): 26 files, no impossibilities.
 
 # 26 files, no impossibilities in 1 directories.
 
@@ -230,11 +226,12 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-06-01 04:47:57
+#  Last modified 2022-06-01 17:36:15
 #  File has been updated.
 #  Successfully updated.
 
-# Not a target:
+# Not a tar 
+get:
 .DEFAULT:
 #  Implicit rule search has not been done.
 #  Modification time never checked.
@@ -266,7 +263,7 @@ all:
 # variable set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=1/11=9%
 #  recipe to execute (from 'Makefile', line 2):
-	g++ -Isource\src\SDL2\include\SDL2 -Isource\src\SDL2_img\include\SDL2 -Isource\src\SDL2_ttf\include\SDL2 -Isource\src\SDL2_mixer\include\SDL2 -Lsource\src\SDL2\lib -Lsource\src\SDL2_img\lib -Lsource\src\SDL2_ttf\lib -Lsource\src\SDL2_mixer\lib -o main  source/mysource/main1.cpp source/mysource/LTexture.cpp source/mysource/LTime.cpp source/mysource/LButton.cpp  source/mysource/Brick.cpp source/mysource/Paddle.cpp source/mysource/Dot.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+	g++ -Isource\src\SDL2\include\SDL2 -Isource\src\SDL2_img\include\SDL2 -Isource\src\SDL2_ttf\include\SDL2 -Isource\src\SDL2_mixer\include\SDL2 -Lsource\src\SDL2\lib -Lsource\src\SDL2_img\lib -Lsource\src\SDL2_ttf\lib -Lsource\src\SDL2_mixer\lib -o main source/mysource/main1.cpp source/mysource/LTexture.cpp source/mysource/LTimer.cpp  source/mysource/LButton.cpp source/mysource/Brick.cpp source/mysource/Paddle.cpp source/mysource/Dot.cpp  -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 # Not a target:
 .SUFFIXES:
@@ -288,6 +285,6 @@ all:
 # strcache performance: lookups = 36 / hit rate = 19%
 # hash-table stats:
 # Load=29/8192=0%, Rehash=0, Collisions=1/36=3%
-# Finished Make data base on Wed Jun 01 16:09:59 2022
+# Finished Make data base on Wed Jun 01 17:37:42 2022
 
  

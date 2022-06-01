@@ -36,14 +36,14 @@ class Brick{
 
 		void moveB ();
 
-		void renderB(char color,LTexture gBricksTexture[ 10],SDL_Renderer*& gRenderer);
+		void renderB(char color,LTexture gBricksTexture[ TOTAL],SDL_Renderer*& gRenderer);
 
 		int getPosXB();
 		int getPosYB();
 		int getVelXB();
 		int getVelYB();
 		
-		void free(LTexture gBricksTexture[10]);
+		void free(LTexture gBricksTexture[TOTAL]);
 
 		Brick setBrick_mPosXB(int x);
 

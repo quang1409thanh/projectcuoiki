@@ -899,9 +899,6 @@ std::string lose() {
         {
             printf("Unable to render FPS texture!\n");
         }
-		{
-			printf("Unable to render FPS texture!\n");
-		}
 		if (!ghigh_Score.loadFromRenderedText(high_Score.str().c_str(), textColor,gRenderer,gFont))
 		{
 			printf("Unable to render FPS texture!\n");

@@ -4,7 +4,7 @@
 #include<SDL_ttf.h>
 #include<SDL_mixer.h>
 #include "LTexture.h"
-// trạng thái của game
+
 // trạng thái của chuột
 enum LButtonSprite
 {
@@ -14,7 +14,7 @@ enum LButtonSprite
     BUTTON_SPRITE_MOUSE_UP = 3,
     BUTTON_SPRITE_TOTAL = 4
 };
-
+// trạng thái của game
 enum Status {
 	MAIN_MENU = 0,
 	GAME_PLAY = 1,

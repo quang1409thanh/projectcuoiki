@@ -11,7 +11,6 @@ const int TOTAL_BRICKSLV5 =28;
 const int DIES=2;
 int COUNT_DIES=DIES;
 
-
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 
@@ -39,8 +38,6 @@ const int TOTAL_COLOR_BRICK = 10;
 // khai báo 2 biến để giữa vel lúc pause
 int velPauseX=0;
 int velPauseY=0;
-
-
 
 // điểm cao 
 std::stringstream high_Score;
@@ -103,7 +100,7 @@ LTexture gBgLv1;// khung chơi
 
 //================các biến thuộc button================
 
-LButton gButton[14];
+LButton gButton[TOTAL_STATUS];
 
 
 //====================khai báo các biến sử của LButton1====================
@@ -114,7 +111,7 @@ LButton1 gButton1_Back;
 LButton2 gButtonsfx;
 LButton2 gButtonmusic;
 
-
+//==== khai báo biến paddle và dot ====
 
 Paddle paddle;
 
