@@ -6,7 +6,7 @@ make.exe all --print-data-base --no-builtin-variables --no-builtin-rules --quest
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Tue May 31 20:11:06 2022
+# Make data base, printed on Wed Jun 01 16:09:59 2022
 
 # Variables
 
@@ -23,9 +23,9 @@ USERPROFILE = C:\Users\admin
 # environment
 LOCALAPPDATA = C:\Users\admin\AppData\Local
 # environment
-VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-c00223e1-dbbf-44e0-a956-c51d23d19633-sock
+VSCODE_IPC_HOOK_EXTHOST = \\.\pipe\vscode-ipc-4fc37c84-b45c-47e1-af2e-e45bc8d15e0c-sock
 # environment
-VSCODE_CWD = C:\Users\admin\Desktop
+VSCODE_CWD = C:\Users\admin\AppData\Local\Programs\Microsoft VS Code
 # environment
 CHOCOLATEYINSTALL = C:\ProgramData\chocolatey
 # environment
@@ -39,7 +39,7 @@ MAKE_COMMAND := C:/ProgramData/chocolatey/lib/make/tools/install/bin/make.exe
 # automatic
 @D = $(patsubst %/,%,$(patsubst %\,%,$(dir $@)))
 # environment
-CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_16168_QDTYZTJBLNTBCNYN
+CHROME_CRASHPAD_PIPE_NAME = \\.\pipe\crashpad_28792_FPMCVKZUKYTCYDAS
 # environment
 ONEDRIVECOMMERCIAL = C:\Users\admin\OneDrive - vnu.edu.vn
 # environment
@@ -97,7 +97,7 @@ MAKEFILE_LIST := Makefile
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 16168
+VSCODE_PID = 28792
 # environment
 CLION = C:\mingw64\bin;C:\Program Files\JetBrains\CLion 2021.3.3\bin;
 # automatic
@@ -217,9 +217,9 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 
 # Directories
 
-# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1653920757): 27 files, no impossibilities.
+# . (key c:/Users/admin/Desktop/projectcuoiki, mtime 1654073213): 26 files, no impossibilities.
 
-# 27 files, no impossibilities in 1 directories.
+# 26 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -230,7 +230,7 @@ PROCESSOR_IDENTIFIER = AMD64 Family 23 Model 104 Stepping 1, AuthenticAMD
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-22 18:14:35
+#  Last modified 2022-06-01 04:47:57
 #  File has been updated.
 #  Successfully updated.
 
@@ -266,7 +266,7 @@ all:
 # variable set hash-table stats:
 # Load=8/32=25%, Rehash=0, Collisions=1/11=9%
 #  recipe to execute (from 'Makefile', line 2):
-	g++ -Isource\src\SDL2\include\SDL2 -Isource\src\SDL2_img\include\SDL2 -Isource\src\SDL2_ttf\include\SDL2 -Isource\src\SDL2_mixer\include\SDL2 -Lsource\src\SDL2\lib -Lsource\src\SDL2_img\lib -Lsource\src\SDL2_ttf\lib -Lsource\src\SDL2_mixer\lib -o main main.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+	g++ -Isource\src\SDL2\include\SDL2 -Isource\src\SDL2_img\include\SDL2 -Isource\src\SDL2_ttf\include\SDL2 -Isource\src\SDL2_mixer\include\SDL2 -Lsource\src\SDL2\lib -Lsource\src\SDL2_img\lib -Lsource\src\SDL2_ttf\lib -Lsource\src\SDL2_mixer\lib -o main  source/mysource/main1.cpp source/mysource/LTexture.cpp source/mysource/LTime.cpp source/mysource/LButton.cpp  source/mysource/Brick.cpp source/mysource/Paddle.cpp source/mysource/Dot.cpp -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 # Not a target:
 .SUFFIXES:
@@ -282,12 +282,12 @@ all:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 30 / storage = 337 B / avg = 11 B
-# current buf: size = 8174 B / used = 337 B / count = 30 / avg = 11 B
+# strcache buffers: 1 (0) / strings = 29 / storage = 328 B / avg = 11 B
+# current buf: size = 8174 B / used = 328 B / count = 29 / avg = 11 B
 
-# strcache performance: lookups = 37 / hit rate = 18%
+# strcache performance: lookups = 36 / hit rate = 19%
 # hash-table stats:
-# Load=30/8192=0%, Rehash=0, Collisions=1/37=3%
-# Finished Make data base on Tue May 31 20:11:06 2022
+# Load=29/8192=0%, Rehash=0, Collisions=1/36=3%
+# Finished Make data base on Wed Jun 01 16:09:59 2022
 
  

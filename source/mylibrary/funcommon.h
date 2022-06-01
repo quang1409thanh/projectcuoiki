@@ -1,3 +1,4 @@
+#pragma once
 // các hàm chung
 void init();
 void loadMedia();
@@ -88,35 +89,35 @@ void init()
 void loadMedia()    
 {
 	// load các brick
-	gBricksTexture[BLUE].loadFromFile("source/Data/img/bricks/blue.png");
-	gBricksTexture[RED].loadFromFile("source/Data/img/bricks/red.png");
-	gBricksTexture[GREEN].loadFromFile("source/Data/img/bricks/green.png");
-	gBricksTexture[DARK_GREEN].loadFromFile("source/Data/img/bricks/darkgreen.png");
-	gBricksTexture[INDIGO].loadFromFile("source/Data/img/bricks/indigo.png");
-	gBricksTexture[ORANGE].loadFromFile("source/Data/img/bricks/orange.png");
-	gBricksTexture[PINK].loadFromFile("source/Data/img/bricks/pink.png");
-	gBricksTexture[SOLID].loadFromFile("source/Data/img/bricks/solid.png");
-	gBricksTexture[VIOLET].loadFromFile("source/Data/img/bricks/violet.png");
-	gBricksTexture[YELLOW].loadFromFile("source/Data/img/bricks/yellow.png");
+	gBricksTexture[BLUE].loadFromFile("source/Data/img/bricks/blue.png",gRenderer);
+	gBricksTexture[RED].loadFromFile("source/Data/img/bricks/red.png",gRenderer);
+	gBricksTexture[GREEN].loadFromFile("source/Data/img/bricks/green.png",gRenderer);
+	gBricksTexture[DARK_GREEN].loadFromFile("source/Data/img/bricks/darkgreen.png",gRenderer);
+	gBricksTexture[INDIGO].loadFromFile("source/Data/img/bricks/indigo.png",gRenderer);
+	gBricksTexture[ORANGE].loadFromFile("source/Data/img/bricks/orange.png",gRenderer);
+	gBricksTexture[PINK].loadFromFile("source/Data/img/bricks/pink.png",gRenderer);
+	gBricksTexture[SOLID].loadFromFile("source/Data/img/bricks/solid.png",gRenderer);
+	gBricksTexture[VIOLET].loadFromFile("source/Data/img/bricks/violet.png",gRenderer);
+	gBricksTexture[YELLOW].loadFromFile("source/Data/img/bricks/yellow.png",gRenderer);
 
 	// load mái chéo paddle
-	gPaddleTexture.loadFromFile("source/Data/img/paddle/paddlemedium.png");
+	gPaddleTexture.loadFromFile("source/Data/img/paddle/paddlemedium.png",gRenderer);
 	
 	// load hình ảnh quả bóng
 
 	for(int i=0;i<5;i++){
-	dot.set_gDot_Texture("source/Data/img/anim/ballanim.png",i);
+	dot.set_gDot_Texture("source/Data/img/anim/ballanim.png",i,gRenderer);
 	}
 
 	// load background 
-	gGameOverTexture.loadFromFile("source/Data/img/bg/gameover.png");
+	gGameOverTexture.loadFromFile("source/Data/img/bg/gameover.png",gRenderer);
 	
-	gGameWin.loadFromFile("source/Data/img/bg/win.png");
-	gBg_Mainmenu[0].loadFromFile("source/Data/img/bg/bg_main_menu.jpg");
-	gBg_Mainmenu[1].loadFromFile("source/Data/img/bg/bg_main_menu1.png");
-	gBg_About.loadFromFile("source/Data/img/bg/gBg_About.png");
+	gGameWin.loadFromFile("source/Data/img/bg/win.png",gRenderer);
+	gBg_Mainmenu[0].loadFromFile("source/Data/img/bg/bg_main_menu.jpg",gRenderer);
+	gBg_Mainmenu[1].loadFromFile("source/Data/img/bg/bg_main_menu1.png",gRenderer);
+	gBg_About.loadFromFile("source/Data/img/bg/gBg_About.png",gRenderer);
 
-	gBgLv1.loadFromFile("source/Data/img/bg.png");
+	gBgLv1.loadFromFile("source/Data/img/bg.png",gRenderer);
 
 	// load music
 
@@ -133,62 +134,62 @@ void loadMedia()
 
 	// load button1 
 	for(int i=0;i<4;i++){
-	gButton[ABOUT].set_texture("source/Data/img/buttons/aboutbutton.png",i);
+	gButton[ABOUT].set_texture("source/Data/img/buttons/aboutbutton.png",i,gRenderer);
 	}
 	gButton[ABOUT].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT-70 -2*BUTTON_HEIGHT- 2*BUTTON_HEIGHT/8);
 
 	for(int i=0;i<4;i++){
-	gButton[GAME_PLAY].set_texture("source/Data/img/buttons/playbutton.png",i);
+	gButton[GAME_PLAY].set_texture("source/Data/img/buttons/playbutton.png",i,gRenderer);
 	}
 	gButton[GAME_PLAY].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2,SCREEN_HEIGHT-70 -3*BUTTON_HEIGHT- 3*BUTTON_HEIGHT/8);
 
 	for(int i=0;i<4;i++){
-	gButton[EXIT].set_texture("source/Data/img/buttons/exitbutton.png",i);
+	gButton[EXIT].set_texture("source/Data/img/buttons/exitbutton.png",i,gRenderer);
 	}
 	gButton[EXIT].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT -70 );
 
 	for(int i=0;i<4;i++){
-	gButton[SOUND].set_texture("source/Data/img/buttons/soundbutton.png",i);
+	gButton[SOUND].set_texture("source/Data/img/buttons/soundbutton.png",i,gRenderer);
 	}
 	gButton[SOUND].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT-70 -BUTTON_HEIGHT- BUTTON_HEIGHT/8);
 
 	for(int i=0;i<4;i++){
-		gButton[RESUME].set_texture("source/Data/img/buttons/resumebutton.png",i);
+		gButton[RESUME].set_texture("source/Data/img/buttons/resumebutton.png",i,gRenderer);
 	}
 	gButton[RESUME].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT-70 -2*BUTTON_HEIGHT- 2*BUTTON_HEIGHT/8);
 
 	for(int i=0;i<4;i++){
-	gButton[RESTART].set_texture("source/Data/img/buttons/restartbutton.png",i);
+	gButton[RESTART].set_texture("source/Data/img/buttons/restartbutton.png",i,gRenderer);
 	}
 	gButton[RESTART].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2,SCREEN_HEIGHT-70 -BUTTON_HEIGHT- BUTTON_HEIGHT/8);
 
 	for(int i=0;i<4;i++){
-	gButton[MAIN_MENU].set_texture("source/Data/img/buttons/mainmenubutton.png",i);
+	gButton[MAIN_MENU].set_texture("source/Data/img/buttons/mainmenubutton.png",i,gRenderer);
 	}
 	gButton[MAIN_MENU].setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT-70 -2*BUTTON_HEIGHT- 2*BUTTON_HEIGHT/8);
 
 	// load button1
 	for(int i=0;i<4;i++){
-	gButton1_Pause.set_texture("source/Data/img/buttons/pausebutton.png",i);
+	gButton1_Pause.set_texture("source/Data/img/buttons/pausebutton.png",i,gRenderer);
 	}
 	gButton1_Pause.setPosition(SCREEN_WIDTH-SCREEN_RIGHT-BUTTON_WIDTH1-BUTTON_WIDTH1-2, 544);
 
 	for(int i=0;i<4;i++){
-	gButton1_Back.set_texture("source/Data/img/buttons/backbutton.png",i);
+	gButton1_Back.set_texture("source/Data/img/buttons/backbutton.png",i,gRenderer);
 	}
 	gButton1_Back.setPosition(8, 12);
 
 
 	// load button2
-	gButtonsfx.set_texture("source/Data/img/buttons/sfxoffbutton.png",0);
-	gButtonsfx.set_texture("source/Data/img/buttons/sfxoffbutton.png",1);
-	gButtonsfx.set_texture("source/Data/img/buttons/sfxonbutton.png",2);
-	gButtonsfx.set_texture("source/Data/img/buttons/sfxonbutton.png",3);
+	gButtonsfx.set_texture("source/Data/img/buttons/sfxoffbutton.png",0,gRenderer);
+	gButtonsfx.set_texture("source/Data/img/buttons/sfxoffbutton.png",1,gRenderer);
+	gButtonsfx.set_texture("source/Data/img/buttons/sfxonbutton.png",2,gRenderer);
+	gButtonsfx.set_texture("source/Data/img/buttons/sfxonbutton.png",3,gRenderer);
 	gButtonsfx.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT-70 -BUTTON_HEIGHT- BUTTON_HEIGHT/8);
-	gButtonmusic.set_texture("source/Data/img/buttons/musicoffbutton.png",0);
-	gButtonmusic.set_texture("source/Data/img/buttons/musicoffbutton.png",1);
-	gButtonmusic.set_texture("source/Data/img/buttons/musiconbutton.png",2);
-	gButtonmusic.set_texture("source/Data/img/buttons/musiconbutton.png",3);
+	gButtonmusic.set_texture("source/Data/img/buttons/musicoffbutton.png",0,gRenderer);
+	gButtonmusic.set_texture("source/Data/img/buttons/musicoffbutton.png",1,gRenderer);
+	gButtonmusic.set_texture("source/Data/img/buttons/musiconbutton.png",2,gRenderer);
+	gButtonmusic.set_texture("source/Data/img/buttons/musiconbutton.png",3,gRenderer);
 	gButtonmusic.setPosition(SCREEN_WIDTH/2 - BUTTON_WIDTH/2, SCREEN_HEIGHT-70 -2*BUTTON_HEIGHT- 2*BUTTON_HEIGHT/8);
 }
 
@@ -226,7 +227,7 @@ void freeDot(){
 }
 
 void freePaddle(){
-	paddle.freeP();
+	paddle.freeP( gPaddleTexture);
 }
 
 void freeBrick(){
@@ -330,30 +331,35 @@ void Init_Bricklv5(Brick brick[]){
 void render_Brick_Lv1(Brick brick[]){
 	vector<char> color1=load_Color("source/Data/data_txt/lev1C.txt");
 	for(int i=0;i<TOTAL_BRICKSLV1;i++){
-		brick[i].renderB(color1[i]);
+		brick[i].renderB(color1[i],gBricksTexture,gRenderer);
 	}
 }
 void render_Brick_Lv2(Brick brick[]){
 	vector<char> color2=load_Color("source/Data/data_txt/lev2C.txt");
 	for(int i=0;i<TOTAL_BRICKSLV2;i++){
-		brick[i].renderB(color2[i]);
+		brick[i].renderB(color2[i],gBricksTexture,gRenderer);
 	}
 }
 void render_Brick_Lv3(Brick brick[]){
 	vector<char> color3=load_Color("source/Data/data_txt/lev3C.txt");
 	for(int i=0;i<TOTAL_BRICKSLV3;i++){
-		brick[i].renderB(color3[i]);
+		brick[i].renderB(color3[i],gBricksTexture,gRenderer);
 	}
 }
 void render_Brick_Lv4(Brick brick[]){
 	vector<char> color4=load_Color("source/Data/data_txt/lev4C.txt");
 	for(int i=0;i<TOTAL_BRICKSLV4;i++){
-		brick[i].renderB(color4[i]);
+		brick[i].renderB(color4[i],gBricksTexture,gRenderer);
 	}
 }
 void render_Brick_Lv5(Brick brick[]){
 	vector<char> color5=load_Color("source/Data/data_txt/lev5C.txt");
 	for(int i=0;i<TOTAL_BRICKSLV5;i++){
-		brick[i].renderB(color5[i]);
+		brick[i].renderB(color5[i],gBricksTexture,gRenderer);
 	}
+}
+
+void renderPaddle(){
+	paddle.renderP(gPaddleTexture,gRenderer);
+	
 }

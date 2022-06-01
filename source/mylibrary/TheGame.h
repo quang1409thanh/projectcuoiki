@@ -1,41 +1,84 @@
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <SDL_mixer.h>
-#include <stdio.h>
-#include <string>
-#include <sstream>
-#include <iostream>
-#include <cstdlib>
-#include <vector>
-#include <fstream>
-using namespace std;
-#include "var_common.h"
-#include "LTexture.h"
-#include"var_texture.h"
-#include"LTimer.h"
-#include"LButton.h"
-#include"Brick.h"
-#include"Paddle.h"
-#include"Dot.h"
-#include"fun_common.h"
-#include"play1.h"
 
+#include"play.h"
 class TheGame{
 
     int status;
     std::string status_next;
     public:
-    TheGame(){
+    TheGame();
+    int get_Char();
+    
+    void update_Status_Game();
+    void render_Game();
+};
+TheGame::TheGame(){
     // Initialize the game
     this->status=MAIN_MENU;
     this->status_next="menu";
     }
-    int get_Char(){
+
+int TheGame::get_Char(){
         return this->status;
     }
     
-    void update_Status_Game(){
+void TheGame::render_Game(){
+        switch(this->status){
+            case MAIN_MENU:
+            {
+                this->status_next=main_menu();
+                break;
+            }
+            // chỗ này để chạy level thôi :v
+            case GAME_PLAY:
+            {
+                this->status_next=playlv1();
+                break;
+            }
+            case ABOUT:
+            {
+                this->status_next=about();
+                break;
+            }
+            case SOUND:
+            {
+                this->status_next=sound();
+                break;
+            }
+            case LOSE :
+            {
+                this->status_next=lose();
+                break;
+            }
+            case GAME_PLAY2 :
+            {
+                this->status_next=playlv2();
+                break;
+            }
+            case GAME_PLAY3 :
+            {
+                this->status_next=playlv3();
+                break;
+            }
+            case GAME_PLAY4 :
+            {
+                this->status_next=playlv4();
+                break;
+            }
+            case GAME_PLAY5 :
+            {
+                this->status_next=playlv5();
+                break;
+            }
+
+            case WIN :
+            {
+                this->status_next=win();
+                break;
+            }
+        }
+    }
+
+void TheGame::update_Status_Game(){
         if(this->status_next=="playlv1"){
             if(this->status==MAIN_MENU){
                 this->status=GAME_PLAY;
@@ -136,60 +179,4 @@ class TheGame{
             return;
         }
     }
-    void render_Game(){
-        switch(this->status){
-            case MAIN_MENU:
-            {
-                this->status_next=main_menu();
-                break;
-            }
-            // chỗ này để chạy level thôi :v
-            case GAME_PLAY:
-            {
-                this->status_next=playlv1();
-                break;
-            }
-            case ABOUT:
-            {
-                this->status_next=about();
-                break;
-            }
-            case SOUND:
-            {
-                this->status_next=sound();
-                break;
-            }
-            case LOSE :
-            {
-                this->status_next=lose();
-                break;
-            }
-            case GAME_PLAY2 :
-            {
-                this->status_next=playlv2();
-                break;
-            }
-            case GAME_PLAY3 :
-            {
-                this->status_next=playlv3();
-                break;
-            }
-            case GAME_PLAY4 :
-            {
-                this->status_next=playlv4();
-                break;
-            }
-            case GAME_PLAY5 :
-            {
-                this->status_next=playlv5();
-                break;
-            }
 
-            case WIN :
-            {
-                this->status_next=win();
-                break;
-            }
-        }
-    }
-};
