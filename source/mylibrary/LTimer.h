@@ -1,34 +1,34 @@
-#pragma once 
-#include<SDL.h>
+#pragma once
+#include <SDL.h>
 
 //=== class được tham khảo ở lazyfoo mục đích để thay đổi màu quả bóng sau mỗi giây chạy ==
 class LTimer
 {
 public:
-    //Initializes variables
+    // Initializes variables
     LTimer();
 
-    //The various clock actions
+    // The various clock actions
     void start();
     void stop();
     void pause();
     void unpause();
 
-    //Gets the timer's time
+    // Gets the timer's time
     Uint32 getTicks();
 
-    //Checks the status of the timer
+    // Checks the status of the timer
     bool isStarted();
     bool isPaused();
 
 private:
-    //The clock time when the timer started
+    // The clock time when the timer started
     Uint32 mStartTicks;
 
-    //The ticks stored when the timer was paused
+    // The ticks stored when the timer was paused
     Uint32 mPausedTicks;
 
-    //The timer status
+    // The timer status
     bool mPaused;
     bool mStarted;
 };
