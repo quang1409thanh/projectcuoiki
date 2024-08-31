@@ -3,6 +3,9 @@
 #include "GraphicsManager.hpp"
 #include "TextureManager.hpp"
 #include "../Entities/Paddle/Paddle.hpp"
+#include "../Entities/Dot/Dot.hpp"
+#include "../Entities/Brick/Brick.hpp"
+#include "utils.hpp"
 using namespace std;
 // Screen dimension constants
 const int SCREEN_WIDTH = 400;
@@ -30,40 +33,48 @@ int main(int argc, char *args[])
     }
 
     SDL_Renderer *gRenderer = GraphicsManager::getInstance().getRenderer();
+
+    // Tải tất cả textures vào TextureManager
+    loadAllTextures(gRenderer);
+
     // Khởi tạo EntityManager
     EntityManager entityManager;
 
-    // Tạo Paddle và các component liên quan
-    auto paddle = entityManager.createEntity<Paddle>();
+    // Load entities từ file
+    auto entities = loadEntitiesFromFile("D:/project/INT2215/projectcuoiki/source/BrickGameProject/src/GraphicsModule/entities.txt", entityManager);
 
-    cout << paddle.get()->getID() << endl;
-    // Chạy vòng lặp chính
+    // Main game loop
     bool quit = false;
     SDL_Event e;
 
     while (!quit)
     {
-        // Xử lý sự kiện
         while (SDL_PollEvent(&e) != 0)
         {
             if (e.type == SDL_QUIT)
             {
                 quit = true;
             }
-            // Gửi sự kiện đến Paddle
-            paddle->handleEvent(e);
+
+            for (auto& entity : entities)
+            {
+                entity->handleEvent(e);
+            }
         }
 
-        // Cập nhật tất cả các thực thể
-        paddle->update();
+        for (auto& entity : entities)
+        {
+            entity->update();
+        }
 
-        // Xóa màn hình
         SDL_SetRenderDrawColor(gRenderer, 0xF, 0xFF, 0xFF, 0xFF);
         SDL_RenderClear(gRenderer);
 
-        // Render tất cả các thực thể
-        paddle->render(gRenderer);
-        // Hiển thị các thay đổi trên màn hình
+        for (auto& entity : entities)
+        {
+            entity->render(gRenderer);
+        }
+
         SDL_RenderPresent(gRenderer);
     }
 

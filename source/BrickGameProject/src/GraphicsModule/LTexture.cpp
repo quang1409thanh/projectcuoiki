@@ -14,6 +14,28 @@ LTexture::~LTexture()
 	// Deallocate
 	free();
 }
+bool LTexture::loadFromTexture(SDL_Texture* texture, SDL_Renderer* renderer, SDL_Rect clipRect)
+{
+    // Giải phóng texture cũ nếu có
+    if (mTexture != nullptr)
+    {
+        SDL_DestroyTexture(mTexture);
+        mTexture = nullptr;
+    }
+
+    // Tạo một texture mới từ phần của ảnh lớn
+    mTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, clipRect.w, clipRect.h);
+    if (mTexture == nullptr)
+    {
+        return false;
+    }
+
+    SDL_SetRenderTarget(renderer, mTexture);
+    SDL_RenderCopy(renderer, texture, &clipRect, nullptr);
+    SDL_SetRenderTarget(renderer, nullptr);
+
+    return true;
+}
 
 bool LTexture::loadFromFile(const std::string path, SDL_Renderer *&gRenderer)
 {

@@ -4,69 +4,33 @@
 
 #ifndef BRICKRENDERCOMPONENT_HPP
 #define BRICKRENDERCOMPONENT_HPP
-#include "CoreModule/ECS/Component.hpp"
-#include "GraphicsModule/TextureManager.hpp"
+#include "../../CoreModule/ECS/Component.hpp"
+#include "../GraphicsManager.hpp"
+#include "../LTexture.h"
+#include <map>
+#include "BaseRenderComponent.hpp"
 
-enum class BrickColor
-{
-    RED,
-    BLUE,
-    GREEN,
-    DARK_GREEN,
-    INDIGO,
-    ORANGE,
-    PINK,
-    SOLID,
-    VIOLET,
-    YELLOW
-};
-
-class BrickRenderComponent : public RenderComponent
+// Các lớp kế thừa từ BaseRenderComponent
+class BrickRenderComponent : public BaseRenderComponent
 {
 public:
-    BrickRenderComponent(BrickColor color = BrickColor::RED)
-        : color_(color) {}
-
-    void render(SDL_Renderer *&renderer, int x, int y)
+    BrickRenderComponent() : BaseRenderComponent()
     {
-        TextureManager::getInstance().render(BrickColorToString(color_), x, y, renderer);
+        Logger::getInstance().log(INFO, "BrickRenderComponent created.");
+    }
+    ~BrickRenderComponent() override
+    {
+        Logger::getInstance().log(INFO, "BrickRenderComponent destroyed.");
+    }
+protected:
+    BaseLogicComponent* dynamic_castBaseLogicComponent() override
+    {
+        return dynamic_cast<BrickLogicComponent*>(owner_->getLogicComponent().get());
     }
 
-    BrickColor getColor() const { return color_; }
-    void setColor(BrickColor color) { color_ = color; }
-
-private:
-    BrickColor color_;
-
-    std::string BrickColorToString(BrickColor color)
+    std::string getComponentName() const override
     {
-        // Map BrickColor enum to a string identifier for the texture
-        // Implementation depends on your TextureManager
-        switch (color)
-        {
-        case BrickColor::BLUE:
-            return "BLUE";
-        case BrickColor::RED:
-            return "RED";
-        case BrickColor::GREEN:
-            return "GREEN";
-        case BrickColor::DARK_GREEN:
-            return "DARK_GREEN";
-        case BrickColor::INDIGO:
-            return "INDIGO";
-        case BrickColor::ORANGE:
-            return "ORANGE";
-        case BrickColor::PINK:
-            return "PINK";
-        case BrickColor::SOLID:
-            return "SOLID";
-        case BrickColor::VIOLET:
-            return "VIOLET";
-        case BrickColor::YELLOW:
-            return "YELLOW";
-        default:
-            return "";
-        }
+        return "BrickRenderComponent";
     }
 };
 

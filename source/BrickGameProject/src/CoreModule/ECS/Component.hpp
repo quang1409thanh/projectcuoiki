@@ -9,7 +9,7 @@
 
 #include "Entity.hpp"  // Đảm bảo Entity được định nghĩa trước khi sử dụng trong Component
 #include <SDL.h>       // Thư viện SDL cho các sự kiện và renderer
-
+#include "../../GraphicsModule/LTexture.h"  // Thêm header LTexture
 class Entity; // Forward declaration
 
 // Lớp cơ sở Component
@@ -31,12 +31,14 @@ public:
     virtual ~LogicComponent() = default;
 };
 
+
 // Interface cho RenderComponent
 class RenderComponent : public Component {
 public:
     virtual void render(SDL_Renderer *&renderer) = 0; // Phương thức trừu tượng phải được override
     virtual ~RenderComponent() = default;
 };
+
 
 // Interface cho InputComponent
 class InputComponent : public Component {

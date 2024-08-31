@@ -8,40 +8,64 @@
 #include <SDL_image.h>
 #include "LTexture.h"
 #include <map>
-class TextureManager {
+#include <map>
+#include <string>
+#include <memory>
+#include <iostream>
+#include "LTexture.h" // Giả sử bạn có một lớp LTexture tương tự SDL_Texture
+
+enum class EntityType { PADDLE, DOT, BRICK };
+
+class TextureManager
+{
 public:
-    static TextureManager& getInstance() {
+    // Singleton pattern to ensure only one instance of TextureManager exists
+    static TextureManager& getInstance()
+    {
         static TextureManager instance;
         return instance;
     }
 
-    bool load(std::string id, std::string fileName, SDL_Renderer* renderer) {
-        LTexture texture;
-        if (!texture.loadFromFile(fileName, renderer)) {
+    // Load texture for a specific entity type and texture key
+    bool loadTexture(EntityType type, const std::string& key, const std::string& filePath, SDL_Renderer* renderer)
+    {
+        // Create a new LTexture object
+        std::shared_ptr<LTexture> texture = std::make_shared<LTexture>();
+        if (!texture->loadFromFile(filePath, renderer)) // Assuming LTexture has a loadFromFile method
+        {
             return false;
         }
-        textureMap[id] = texture;
+
+        textures[type][key] = texture;
         return true;
     }
 
-    void render(std::string id, int x, int y, SDL_Renderer* renderer) {
-        textureMap[id].render(x, y, renderer);
-    }
-
-    void clear() {
-        for (auto& texturePair : textureMap) {
-            texturePair.second.free();
+    // Get texture for a specific entity type and texture key
+    std::shared_ptr<LTexture> getTexture(EntityType type, const std::string& key) const
+    {
+        auto typeIt = textures.find(type);
+        if (typeIt != textures.end())
+        {
+            auto keyIt = typeIt->second.find(key);
+            if (keyIt != typeIt->second.end())
+            {
+                return keyIt->second;
+            }
         }
-        textureMap.clear();
+        return nullptr;
     }
 
-    LTexture& getTexture(std::string id) {
-        return textureMap[id];
+    // Free all loaded textures
+    void freeTextures()
+    {
+        textures.clear(); // Shared pointers will automatically free the textures
     }
 
 private:
     TextureManager() {}
-    std::map<std::string, LTexture> textureMap;
+    ~TextureManager() { freeTextures(); }
+
+    std::map<EntityType, std::map<std::string, std::shared_ptr<LTexture>>> textures;
 };
 
 #endif //TEXTUREMANAGER_HPP

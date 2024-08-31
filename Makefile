@@ -8,7 +8,6 @@ all:
 	    -Lsource\src\SDL2_ttf\lib \
 	    -Lsource\src\SDL2_mixer\lib \
 	    -o main \
-	    source\BrickGameProject\src\Entities\Paddle\Paddle.cpp \
 	    source\BrickGameProject\src\GraphicsModule\LTexture.cpp \
 	    source\BrickGameProject\src\GraphicsModule\GraphicsManager.cpp \
 	    source\BrickGameProject\src\GraphicsModule\main.cpp \

@@ -5,18 +5,44 @@
 #ifndef BRICK_HPP
 #define BRICK_HPP
 
-#include "CoreModule/ECS/Entity.hpp"
+#include "../../CoreModule/ECS/Entity.hpp"
 #include "BrickComponent.hpp"
-#include "BrickRenderComponent.hpp"
-
-class Brick : public Entity {
+#include "../../GraphicsModule/Components/BrickRenderComponent.hpp"
+#include <vector>
+#include "../../GraphicsModule/TextureManager.hpp"
+class Brick : public Entity
+{
 public:
-    Brick(Entity::ID id, int x = 0, int y = 0, int velX = 0, int velY = 0, BrickColor color = BrickColor::RED);
+    Brick(Entity::ID id, int x, int y, const std::string &textureKey) : Entity(id)
+    {
+        Logger::getInstance().log(INFO, "Brick created with ID: " + std::to_string(id));
 
-private:
-    BrickComponent brickComponent;
-    BrickRenderComponent brickRenderComponent;
+        auto inputComp = std::make_shared<BrickInputComponent>();
+        auto logicComp = std::make_shared<BrickLogicComponent>();
+        auto renderComp = std::make_shared<BrickRenderComponent>();
+
+        // Lấy texture từ TextureManager
+        auto texture = TextureManager::getInstance().getTexture(EntityType::BRICK, textureKey);
+        if (texture)
+        {
+            renderComp->setTexture(texture);
+        }
+        else
+        {
+            Logger::getInstance().log(WARNING, "Brick texture not found: " + textureKey);
+        }
+
+        logicComp->setX(x);
+        logicComp->setY(y);
+
+        setInputComponent(inputComp);
+        setLogicComponent(logicComp);
+        setRenderComponent(renderComp);
+    }
+
+    ~Brick() override
+    {
+        Logger::getInstance().log(INFO, "Brick destroyed with ID: " + std::to_string(getID()));
+    }
 };
-
-
 #endif // BRICK_HPP

@@ -87,6 +87,7 @@ public:
         Logger::getInstance().log(INFO, "EntityManager created.");
     }
 
+    // Phương thức để tạo một thực thể mới
     template<typename T, typename... Args>
     std::shared_ptr<T> createEntity(Args&&... args) {
         Entity::ID newID = nextID_++;
@@ -94,6 +95,11 @@ public:
         entities_[newID] = entity;
         Logger::getInstance().log(INFO, "Entity created with ID: " + std::to_string(newID));
         return entity;
+    }
+
+    // Lấy ID tiếp theo
+    Entity::ID getNextID() {
+        return nextID_++;
     }
 
     std::shared_ptr<Entity> getEntity(Entity::ID id) {
@@ -107,6 +113,11 @@ public:
     void removeEntity(Entity::ID id) {
         entities_.erase(id);
         Logger::getInstance().log(INFO, "Entity removed with ID: " + std::to_string(id));
+    }
+
+    // Thêm thực thể đã tạo vào EntityManager
+    void addEntity(const std::shared_ptr<Entity>& entity) {
+        entities_[entity->getID()] = entity;
     }
 
 private:

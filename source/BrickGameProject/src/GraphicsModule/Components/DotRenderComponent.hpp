@@ -4,36 +4,34 @@
 
 #ifndef DOTRENDERCOMPONENT_HPP
 #define DOTRENDERCOMPONENT_HPP
-#include "CoreModule/ECS/Component.hpp"
+#include "../../CoreModule/ECS/Component.hpp"
 #include <SDL.h>
-#include "GraphicsModule/LTexture.h"
+#include "../LTexture.h"
 #include <map>
 #include <string>
+#include "BaseRenderComponent.hpp"
 
-class DotRenderComponent : public RenderComponent {
+class DotRenderComponent : public BaseRenderComponent
+{
 public:
-    DotRenderComponent() {}
-
-    // Thêm một texture với key cụ thể
-    void addTexture(const std::string& key, const LTexture& texture) {
-        textures_[key] = texture;
+    DotRenderComponent() : BaseRenderComponent()
+    {
+        Logger::getInstance().log(INFO, "DotRenderComponent created.");
+    }
+    ~DotRenderComponent() override
+    {
+        Logger::getInstance().log(INFO, "DotRenderComponent destroyed.");
+    }
+protected:
+    BaseLogicComponent* dynamic_castBaseLogicComponent() override
+    {
+        return dynamic_cast<DotLogicComponent*>(owner_->getLogicComponent().get());
     }
 
-    // Đặt key của texture hiện tại
-    void setCurrentTextureKey(const std::string& key) {
-        currentTextureKey_ = key;
+    std::string getComponentName() const override
+    {
+        return "DotRenderComponent";
     }
-
-    // Render dot sử dụng texture hiện tại
-    void render(SDL_Renderer *&renderer, int x, int y) {
-        if (textures_.find(currentTextureKey_) != textures_.end()) {
-            textures_[currentTextureKey_].render(x, y, renderer);
-        }
-    }
-
-private:
-    std::map<std::string, LTexture> textures_; // Lưu trữ các texture với key
-    std::string currentTextureKey_; // Key của texture hiện tại
 };
 
-#endif //DOTRENDERCOMPONENT_HPP
+#endif // DOT_RENDER_COMPONENT_HPP

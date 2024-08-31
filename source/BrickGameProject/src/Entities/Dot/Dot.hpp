@@ -5,36 +5,46 @@
 #ifndef DOT_HPP
 #define DOT_HPP
 
-#include "CoreModule/ECS/Entity.hpp"
+#include "../../CoreModule/ECS/Entity.hpp"
 #include "DotComponent.hpp"
-#include "GraphicsModule/Components/DotRenderComponent.hpp"
-#include "Entities/Paddle/Paddle.hpp"
-#include "Entities/Brick/Brick.hpp"
+#include "../../GraphicsModule/Components/DotRenderComponent.hpp"
+#include "../../Entities/Paddle/Paddle.hpp"
 #include <vector>
+#include "../../GraphicsModule/TextureManager.hpp"
 class Dot : public Entity
 {
 public:
-    Dot(Entity::ID id, Paddle &paddle);
+    Dot(Entity::ID id, int x, int y, const std::string &textureKey) : Entity(id)
+    {
+        Logger::getInstance().log(INFO, "Dot created with ID: " + std::to_string(id));
 
-    void handleEvent(SDL_Event &e, Paddle &paddle);
+        auto inputComp = std::make_shared<DotInputComponent>();
+        auto logicComp = std::make_shared<DotLogicComponent>();
+        auto renderComp = std::make_shared<DotRenderComponent>();
 
-    void Dot::move(float deltaTime, std::vector<Brick>& bricks, Paddle &paddle, int &count_Broken_Bricks, int &COUNT_DIES);
-    void render(SDL_Renderer* renderer);
-    void reset(Paddle& paddle);
+        // Lấy texture từ TextureManager
+        auto texture = TextureManager::getInstance().getTexture(EntityType::DOT, textureKey);
+        if (texture)
+        {
+            renderComp->setTexture(texture);
+        }
+        else
+        {
+            Logger::getInstance().log(WARNING, "Dot texture not found: " + textureKey);
+        }
 
-    // Thêm các texture vào render component
-    void addTexture(const std::string& key, const LTexture& texture) {
-        dotRenderComponent.addTexture(key, texture);
+        logicComp->setX(x);
+        logicComp->setY(y);
+
+        setInputComponent(inputComp);
+        setLogicComponent(logicComp);
+        setRenderComponent(renderComp);
     }
 
-    // Đặt key của texture hiện tại để render
-    void setCurrentTextureKey(const std::string& key) {
-        dotRenderComponent.setCurrentTextureKey(key);
+    ~Dot() override
+    {
+        Logger::getInstance().log(INFO, "Dot destroyed with ID: " + std::to_string(getID()));
     }
-
-private:
-    DotComponent dotComponent;
-    DotRenderComponent dotRenderComponent;
 };
 
 #endif // DOT_HPP

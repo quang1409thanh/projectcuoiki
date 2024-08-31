@@ -10,34 +10,37 @@
 #include "../../GraphicsModule/Components/PaddleRenderComponent.hpp"
 #include <vector>
 #include <string>
+#include "../../GraphicsModule/TextureManager.hpp"
 // Lớp Paddle kế thừa từ Entity
 class Paddle : public Entity
 {
 public:
-    Paddle(Entity::ID id) : Entity(id) {
-    Logger::getInstance().log(INFO, "Paddle created with ID: " + std::to_string(id));
+    Paddle(Entity::ID id, int x, int y, const std::string &textureKey) : Entity(id)
+    {
+        Logger::getInstance().log(INFO, "Paddle created with ID: " + std::to_string(id));
 
-    // Khởi tạo các component cụ thể cho Paddle
-    auto inputComp = std::make_shared<PaddleInputComponent>();
-    auto logicComp = std::make_shared<PaddleLogicComponent>();
-    auto renderComp = std::make_shared<PaddleRenderComponent>();
+        auto inputComp = std::make_shared<PaddleInputComponent>();
+        auto logicComp = std::make_shared<PaddleLogicComponent>();
+        auto renderComp = std::make_shared<PaddleRenderComponent>();
 
-    // Khởi tạo các texture
-    std::vector<std::pair<std::string, std::string>> textureFiles = {
-        {"small", "D:/project/INT2215/projectcuoiki/source/Data/img/paddle/paddlesmall.png"},
-        {"medium", "D:/project/INT2215/projectcuoiki/source/Data/img/paddle/paddlemedium.png"},
-        {"large", "D:/project/INT2215/projectcuoiki/source/Data/img/paddle/paddlelarge.png"}
-    };
+        // Lấy texture từ TextureManager
+        auto texture = TextureManager::getInstance().getTexture(EntityType::PADDLE, textureKey);
+        if (texture)
+        {
+            renderComp->setTexture(texture);
+        }
+        else
+        {
+            Logger::getInstance().log(WARNING, "Paddle texture not found: " + textureKey);
+        }
 
-    // Gọi phương thức khởi tạo textures
-    renderComp->initTextures(textureFiles);
-    renderComp->setCurrentTextureKey("medium");
+        logicComp->setX(x);
+        logicComp->setY(y);
 
-    // Đặt các component cho thực thể
-    setInputComponent(inputComp);
-    setLogicComponent(logicComp);
-    setRenderComponent(renderComp);
-}
+        setInputComponent(inputComp);
+        setLogicComponent(logicComp);
+        setRenderComponent(renderComp);
+    }
 
     ~Paddle() override
     {

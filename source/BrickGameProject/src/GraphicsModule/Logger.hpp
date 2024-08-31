@@ -1,13 +1,13 @@
-// C++ program to implement a basic logging system. 
+// C++ program to implement a basic logging system.
 
-#include <ctime> 
-#include <fstream> 
-#include <iostream> 
-#include <sstream> 
-using namespace std; 
+#include <ctime>
+#include <fstream>
+#include <iostream>
+#include <sstream>
+using namespace std;
 
-// Enum to represent log levels 
-enum LogLevel { DEBUG, INFO, WARNING, ERROR, CRITICAL }; 
+// Enum to represent log levels
+enum LogLevel { DEBUG, INFO, WARNING, ERROR, CRITICAL };
 
 class Logger {
 public:
@@ -49,14 +49,16 @@ public:
 private:
     // Private constructor for singleton
     Logger(const string& filename) {
-        logFile.open(filename, ios::app);
+        logFile.open(filename, ios::out | ios::trunc); // Open with truncate mode
         if (!logFile.is_open()) {
             cerr << "Error opening log file." << endl;
         }
     }
 
     ~Logger() {
-        logFile.close();
+        if (logFile.is_open()) {
+            logFile.close();
+        }
     }
 
     ofstream logFile; // File stream for the log file
@@ -79,4 +81,3 @@ private:
         }
     }
 };
-
